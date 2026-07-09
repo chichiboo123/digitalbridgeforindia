@@ -42,6 +42,7 @@
     --spacing-md: 16px;
     --spacing-lg: 24px;
     --spacing-xl: 40px;
+    --focus-ring: 0 0 0 4px rgba(0, 109, 210, 0.22);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -110,6 +111,7 @@
     color: var(--color-white);
   }
   .lang-btn:active { transform: scale(0.93); }
+  .lang-btn:focus-visible, .app-card:focus-visible, .home-btn:focus-visible { outline: none; box-shadow: var(--focus-ring); }
 
   .hub-title {
     font-size: 24px;
@@ -135,6 +137,12 @@
     border-radius: 999px;
   }
   .hub-note .material-icons-outlined { font-size: 14px; }
+  .hub-guide { margin-top: var(--spacing-md); display: grid; gap: 8px; }
+  .guide-chip { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.72); border-radius: 14px; padding: 8px 10px; font-size: 13px; font-weight: 700; color: var(--color-gray-700); }
+  .guide-chip strong { color: var(--color-gray-900); }
+  .ux-report { margin: 0 0 var(--spacing-md); padding: var(--spacing-md); border-radius: var(--border-radius-lg); background: #fff; border: 2px dashed var(--color-primary-light); color: var(--color-gray-700); }
+  .ux-report summary { cursor: pointer; font-weight: 800; color: var(--color-primary); font-size: 14px; }
+  .ux-report ul { margin: 10px 0 0 18px; font-size: 12.5px; line-height: 1.55; }
 
   .card-grid-wrap {
     flex: 1;
@@ -165,7 +173,7 @@
 
   .app-card .icon { font-size: 38px; line-height: 1; margin-bottom: 2px; }
   .app-card .name { font-size: 15px; font-weight: 800; }
-  .app-card .desc { font-size: 11.5px; line-height: 1.4; font-weight: 500; min-height: 32px; }
+  .app-card .desc { font-size: 11.5px; line-height: 1.4; font-weight: 500; min-height: 42px; }
   .app-card .open-btn {
     margin-top: var(--spacing-xs);
     font-size: 12px;
@@ -175,6 +183,7 @@
     gap: 2px;
   }
 
+  .app-card:hover { transform: translateY(-2px); }
   .card-green  { background: var(--color-pastel-green);  color: var(--color-pastel-green-dark); }
   .card-yellow { background: var(--color-pastel-yellow); color: var(--color-pastel-yellow-dark); }
   .card-blue   { background: var(--color-pastel-blue);   color: var(--color-pastel-blue-dark); }
@@ -251,16 +260,29 @@
   <div id="hubView">
     <div class="hub-header">
       <div class="lang-switch">
-        <button class="lang-btn active" id="langBtn-ko" onclick="setLang('ko')">KR</button>
-        <button class="lang-btn" id="langBtn-en" onclick="setLang('en')">EN</button>
-        <button class="lang-btn" id="langBtn-hi" onclick="setLang('hi')">HI</button>
+        <button class="lang-btn" id="langBtn-ko" onclick="setLang('ko')" aria-label="한국어">KR</button>
+        <button class="lang-btn" id="langBtn-en" onclick="setLang('en')" aria-label="English">EN</button>
+        <button class="lang-btn active" id="langBtn-hi" onclick="setLang('hi')" aria-label="हिन्दी">HI</button>
       </div>
       <div class="hub-title" data-i18n="main_title">고민해결 프렌즈</div>
       <div class="hub-subtitle" data-i18n="main_subtitle">친구들을 위해 우리가 만든 앱이에요</div>
       <div class="hub-note"><span class="material-icons-outlined">touch_app</span><span data-i18n="main_note">카드를 눌러서 앱을 열어보세요!</span></div>
+      <div class="hub-guide" aria-label="사용 안내">
+        <div class="guide-chip">1️⃣ <span data-i18n="guide_lang"><strong>HI</strong>부터 보여줘요. KR/EN도 바꿀 수 있어요.</span></div>
+        <div class="guide-chip">2️⃣ <span data-i18n="guide_simple">큰 그림 카드를 누르면 바로 시작해요.</span></div>
+      </div>
     </div>
 
     <div class="card-grid-wrap">
+      <details class="ux-report">
+        <summary data-i18n="report_title">UI/UX 1차 진단 보고서 보기</summary>
+        <ul>
+          <li data-i18n="report_1">인도 어린이가 처음 볼 때 한국어 기본값이 장벽이어서 HI를 우선 노출했습니다.</li>
+          <li data-i18n="report_2">앱마다 조작 방식과 언어 선택 위치가 달라 혼란이 있어, 허브에서 공통 안내를 먼저 제공합니다.</li>
+          <li data-i18n="report_3">작은 설명 문구와 약한 포커스 표시를 보완해 터치/키보드 접근성을 높였습니다.</li>
+          <li data-i18n="report_4">다음 단계는 4개 앱의 공통 헤더, 같은 위치의 홈/언어 버튼, 오프라인 안내를 통일하는 것입니다.</li>
+        </ul>
+      </details>
       <div class="card-grid">
         <button class="app-card card-green" onclick="openApp('global-exercise.html','global')">
           <span class="icon">🏃</span>
@@ -319,6 +341,13 @@
     ko: {
       main_title: "고민해결 프렌즈",
       main_subtitle: "친구들을 위해 우리가 만든 앱이에요",
+      guide_lang: "<strong>HI</strong>부터 보여줘요. KR/EN도 바꿀 수 있어요.",
+      guide_simple: "큰 그림 카드를 누르면 바로 시작해요.",
+      report_title: "UI/UX 1차 진단 보고서 보기",
+      report_1: "인도 어린이가 처음 볼 때 한국어 기본값이 장벽이어서 HI를 우선 노출했습니다.",
+      report_2: "앱마다 조작 방식과 언어 선택 위치가 달라 혼란이 있어, 허브에서 공통 안내를 먼저 제공합니다.",
+      report_3: "작은 설명 문구와 약한 포커스 표시를 보완해 터치/키보드 접근성을 높였습니다.",
+      report_4: "다음 단계는 4개 앱의 공통 헤더, 같은 위치의 홈/언어 버튼, 오프라인 안내를 통일하는 것입니다.",
       main_note: "카드를 눌러서 앱을 열어보세요!",
       name_global: "글로벌 운동",
       desc_global: "건강하게 운동하는 습관을 길러줘요",
@@ -334,6 +363,13 @@
     en: {
       main_title: "Worry-Solving Friends",
       main_subtitle: "Apps we made for friends around the world",
+      guide_lang: "Start with <strong>HI</strong>. KR/EN are also available.",
+      guide_simple: "Tap a big picture card to start right away.",
+      report_title: "View first UI/UX review",
+      report_1: "Korean as the first screen can block Indian children, so HI is shown first.",
+      report_2: "Each app places controls differently; the hub now gives shared instructions first.",
+      report_3: "Small text and weak focus states were improved for touch and keyboard access.",
+      report_4: "Next: unify headers, home/language button positions, and offline guidance across all 4 apps.",
       main_note: "Tap a card to open the app!",
       name_global: "Global Exercise",
       desc_global: "Builds healthy exercise habits",
@@ -349,6 +385,13 @@
     hi: {
       main_title: "समस्या-समाधान मित्र",
       main_subtitle: "दुनिया के दोस्तों के लिए हमने बनाए ये ऐप्स",
+      guide_lang: "पहले <strong>HI</strong> दिखता है। KR/EN भी बदल सकते हैं।",
+      guide_simple: "शुरू करने के लिए बड़े चित्र वाले कार्ड पर टैप करें।",
+      report_title: "पहली UI/UX समीक्षा देखें",
+      report_1: "भारतीय बच्चों के लिए पहली स्क्रीन कोरियाई होने से कठिनाई थी, इसलिए HI पहले दिखाया गया है।",
+      report_2: "हर ऐप में बटन अलग जगह थे; अब हब में पहले साझा निर्देश हैं।",
+      report_3: "छोटे पाठ और कमजोर फोकस संकेत को बेहतर किया गया है।",
+      report_4: "अगला कदम: 4 ऐप में समान हेडर, होम/भाषा बटन और ऑफलाइन 안내 को एक जैसा करना।",
       main_note: "ऐप खोलने के लिए कार्ड पर टैप करें!",
       name_global: "ग्लोबल एक्सरसाइज़",
       desc_global: "स्वस्थ व्यायाम की आदत बनाता है",
@@ -363,7 +406,7 @@
     }
   };
 
-  let currentLang = 'ko';
+  let currentLang = 'hi';
   let currentAppKey = null;
 
   function setLang(lang) {
@@ -372,7 +415,7 @@
 
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.getAttribute('data-i18n');
-      if (t[key]) el.textContent = t[key];
+      if (t[key]) el.innerHTML = t[key];
     });
 
     ['ko','en','hi'].forEach(l => {
@@ -399,7 +442,7 @@
     currentAppKey = null;
   }
 
-  window.onload = () => setLang('ko');
+  window.onload = () => setLang('hi');
 </script>
 
 </body>
