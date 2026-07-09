@@ -102,8 +102,8 @@
         
         <!-- 언어 선택 바 (모든 화면에서 고정) -->
         <header class="absolute top-0 right-0 z-50 p-4 flex gap-2">
-            <button onclick="changeLanguage('ko')" class="lang-btn bg-white px-2 py-1 rounded-full shadow text-sm font-bold border-2 border-primary text-primary focus:outline-none focus:ring-2 focus:ring-primary" aria-label="한국어">KR</button>
-            <button onclick="changeLanguage('hi')" class="lang-btn bg-white px-2 py-1 rounded-full shadow text-sm font-bold border-2 border-transparent text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary" aria-label="Hindi">HI</button>
+            <button onclick="changeLanguage('ko')" class="lang-btn bg-white px-2 py-1 rounded-full shadow text-sm font-bold border-2 border-transparent text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary" aria-label="한국어">KR</button>
+            <button onclick="changeLanguage('hi')" class="lang-btn bg-white px-2 py-1 rounded-full shadow text-sm font-bold border-2 border-primary text-primary focus:outline-none focus:ring-2 focus:ring-primary" aria-label="Hindi">HI</button>
             <button onclick="changeLanguage('en')" class="lang-btn bg-white px-2 py-1 rounded-full shadow text-sm font-bold border-2 border-transparent text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary" aria-label="English">EN</button>
         </header>
 
@@ -115,7 +115,12 @@
                     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
                 </svg>
                 <h1 id="t-app-title" class="font-title text-5xl text-primary mb-2 drop-shadow-md tracking-wider">숙제챙겨</h1>
-                <p id="t-app-desc" class="text-lg text-gray-600 mb-10 font-bold">숙제 잊지 않게 도와줄게!</p>
+                <p id="t-app-desc" class="text-lg text-gray-600 mb-6 font-bold">숙제 잊지 않게 도와줄게!</p>
+                <div class="grid grid-cols-3 gap-2 mb-8 text-center" aria-label="앱 사용 순서">
+                    <div class="bg-white/80 rounded-2xl p-3 shadow-sm"><div class="text-2xl">⏰</div><p id="t-step-alarm" class="text-sm font-bold text-primaryDark">알람</p></div>
+                    <div class="bg-white/80 rounded-2xl p-3 shadow-sm"><div class="text-2xl">✅</div><p id="t-step-check" class="text-sm font-bold text-primaryDark">확인</p></div>
+                    <div class="bg-white/80 rounded-2xl p-3 shadow-sm"><div class="text-2xl">🎉</div><p id="t-step-done" class="text-sm font-bold text-primaryDark">칭찬</p></div>
+                </div>
                 
                 <button onclick="startApp()" id="t-btn-start" class="bg-primary hover:bg-primaryDark text-white font-title text-2xl py-4 px-10 rounded-full shadow-lg transform transition active:scale-95 focus:outline-none focus:ring-4 focus:ring-primaryLight">
                     시작하기
@@ -238,7 +243,10 @@
                 navAlarm: "알리미",
                 navTracker: "기입장",
                 homeGreeting: "안녕! 오늘도 힘내자!",
-                homeStatus: "아래 메뉴에서 숙제 알림을 맞추고 기입장을 확인해봐.",
+                homeStatus: "1) 알람 시간을 고르고 2) 숙제를 했는지 눌러봐. 아래 메뉴 3개만 기억하면 돼!",
+                stepAlarm: "알람",
+                stepCheck: "확인",
+                stepDone: "칭찬",
                 alarmTitle: "알리미 설정",
                 alarmLabel: "언제 알려줄까?",
                 btnAddAlarm: "추가",
@@ -266,7 +274,10 @@
                 navAlarm: "अलार्म",
                 navTracker: "डायरी",
                 homeGreeting: "नमस्ते! आज का दिन शुभ हो!",
-                homeStatus: "अपना अलार्म सेट करें और नीचे डायरी जांचें।",
+                homeStatus: "1) अलार्म समय चुनें 2) होमवर्क हुआ या नहीं दबाएं। बस नीचे के 3 मेनू याद रखें!",
+                stepAlarm: "अलार्म",
+                stepCheck: "जांच",
+                stepDone: "शाबाश",
                 alarmTitle: "अलार्म सेट करें",
                 alarmLabel: "मुझे आपको कब याद दिलाना चाहिए?",
                 btnAddAlarm: "जोड़ें",
@@ -294,7 +305,10 @@
                 navAlarm: "Alarm",
                 navTracker: "Tracker",
                 homeGreeting: "Hello! Have a great day!",
-                homeStatus: "Set your alarms and check the tracker below.",
+                homeStatus: "1) Pick an alarm time 2) Tap if homework is done. Just remember the 3 bottom menus!",
+                stepAlarm: "Alarm",
+                stepCheck: "Check",
+                stepDone: "Praise",
                 alarmTitle: "Set Reminder",
                 alarmLabel: "When should I remind you?",
                 btnAddAlarm: "Add",
@@ -316,7 +330,7 @@
         };
 
         // --- 2. 상태 관리 ---
-        let currentLang = 'ko';
+        let currentLang = 'hi';
         let alarms = []; // 알람 목록 [{time: "14:30", active: true}]
         let isHomeworkDone = false;
         let alarmChecker = null;
@@ -338,6 +352,9 @@
             document.getElementById('t-nav-tracker').innerText = t.navTracker;
             document.getElementById('t-home-greeting').innerText = t.homeGreeting;
             document.getElementById('t-home-status').innerText = t.homeStatus;
+            document.getElementById('t-step-alarm').innerText = t.stepAlarm;
+            document.getElementById('t-step-check').innerText = t.stepCheck;
+            document.getElementById('t-step-done').innerText = t.stepDone;
             document.getElementById('t-alarm-title').innerText = t.alarmTitle;
             document.getElementById('t-alarm-label').innerText = t.alarmLabel;
             document.getElementById('t-btn-add-alarm').innerText = t.btnAddAlarm;
@@ -537,7 +554,7 @@
         }
 
         // --- 초기화 ---
-        changeLanguage('ko'); // 기본 한국어
+        changeLanguage('hi'); // 인도 어린이를 위해 기본 힌디어
         document.getElementById('t-app-title').style.transform = "translateY(0)"; // 폰트 로드 후 높이 튀는 현상 방지
     </script>
 </body>

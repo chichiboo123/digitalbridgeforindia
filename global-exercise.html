@@ -88,7 +88,7 @@
             <select id="langSelect" class="bg-fire-800 text-white font-title text-xl rounded-lg p-1 border-2 border-white focus:outline-none" aria-label="언어 선택" onchange="changeLanguage(this.value)">
                 <option value="ko">KR</option>
                 <option value="en">EN</option>
-                <option value="hi">HI</option>
+                <option value="hi" selected>HI</option>
             </select>
         </header>
 
@@ -103,6 +103,10 @@
             <!-- 화면 1. 홈 화면 -->
             <section id="screen-home" class="flex flex-col gap-4 h-full justify-center">
                 <p class="text-center text-fire-600 font-bold text-3xl mb-4" data-i18n="slogan">🔥 불꽃같은 열정으로 운동하자! 🔥</p>
+                <div class="bg-white/80 border-2 border-fire-100 rounded-3xl p-4 text-center shadow-sm mb-4">
+                    <p class="text-fire-700 font-bold text-2xl" data-i18n="home_guide">큰 버튼 4개 중 하나를 고르세요</p>
+                    <p class="text-gray-600 text-xl" data-i18n="home_guide_sub">걷기 · 타이머 · 일기 · 추천을 쉽게 시작해요</p>
+                </div>
                 
                 <div class="grid grid-cols-2 gap-4">
                     <!-- 기능 1. 지도 -->
@@ -226,6 +230,8 @@
             ko: {
                 title: "글로벌 운동",
                 slogan: "🔥 불꽃같은 열정으로 운동하자! 🔥",
+                home_guide: "큰 버튼 4개 중 하나를 고르세요",
+                home_guide_sub: "걷기 · 타이머 · 일기 · 추천을 쉽게 시작해요",
                 menu_map: "길찾기 & 걷기",
                 menu_timer: "운동 타이머",
                 menu_diary: "운동 일기",
@@ -259,6 +265,8 @@
             en: {
                 title: "Global Exercise",
                 slogan: "🔥 Exercise with Fiery Passion! 🔥",
+                home_guide: "Choose one of the 4 big buttons",
+                home_guide_sub: "Start walking, timer, diary, or recommendations easily",
                 menu_map: "Map & Walk",
                 menu_timer: "Timer",
                 menu_diary: "Diary",
@@ -292,6 +300,8 @@
             hi: {
                 title: "ग्लोबल व्यायाम",
                 slogan: "🔥 जुनून के साथ व्यायाम करें! 🔥",
+                home_guide: "4 बड़े बटनों में से एक चुनें",
+                home_guide_sub: "चलना, टाइमर, डायरी या सुझाव आसानी से शुरू करें",
                 menu_map: "नक्शा और चलना",
                 menu_timer: "टाइमर",
                 menu_diary: "डायरी",
@@ -324,7 +334,7 @@
             }
         };
 
-        let currentLang = 'ko';
+        let currentLang = 'hi';
 
         function changeLanguage(lang) {
             currentLang = lang;
@@ -553,7 +563,7 @@
             document.getElementById('diaryDate').value = today;
             
             // 초기 언어 적용 (한국어)
-            changeLanguage('ko');
+            changeLanguage('hi');
             
             // 홈 화면 표시
             navigate('home');

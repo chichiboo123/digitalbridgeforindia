@@ -116,6 +116,8 @@
                 nav_ideas: "놀이",
                 nav_settings: "설정",
                 title_home: "나의 놀이 시간 저금통",
+                guide_home: "할 일을 누르면 놀이 시간이 모여요",
+                guide_tasks: "카드를 누르면 완료! 시간이 바로 저금돼요",
                 title_tasks: "빨리 끝내고 놀자!",
                 title_ideas: "어떻게 놀까?",
                 title_settings: "언어 설정",
@@ -142,6 +144,8 @@
                 nav_ideas: "Play",
                 nav_settings: "Settings",
                 title_home: "My Playtime Bank",
+                guide_home: "Tap tasks to earn playtime",
+                guide_tasks: "Tap a card to finish it and save time",
                 title_tasks: "Finish fast, Play hard!",
                 title_ideas: "How to play?",
                 title_settings: "Language Settings",
@@ -168,6 +172,8 @@
                 nav_ideas: "खेल",
                 nav_settings: "सेटिंग्स",
                 title_home: "मेरा खेल समय बैंक",
+                guide_home: "खेल समय कमाने के लिए काम दबाएं",
+                guide_tasks: "कार्ड दबाएं, काम पूरा और समय जमा",
                 title_tasks: "जल्दी खत्म करो, खेलो!",
                 title_ideas: "कैसे खेलें?",
                 title_settings: "भाषा सेटिंग्स",
@@ -193,7 +199,7 @@
         // --- 2. 앱 상태 (State) 관리 ---
         const state = {
             currentScreen: 'home', // 'home', 'tasks', 'ideas', 'settings'
-            lang: 'ko',            // 기본 언어
+            lang: 'hi',            // 인도 어린이를 위해 기본 힌디어
             savedTime: 0,          // 모은 놀이 시간 (분)
             tasks: [
                 { id: 1, key: 'task_hw', time: 15, done: false, icon: '📚' },
@@ -212,6 +218,7 @@
             return `
                 <div class="flex flex-col items-center justify-center h-full space-y-8 mt-10">
                     <h2 class="text-2xl text-center text-textMain">${t('title_home')}</h2>
+                    <p class="bg-white/90 border-2 border-primaryDark rounded-2xl px-4 py-3 text-lg text-center text-textMain shadow-sm">${t('guide_home')}</p>
                     
                     <!-- 놀이 시간 저금통 UI -->
                     <div class="w-56 h-56 rounded-full bg-white border-8 border-primaryDark shadow-cute flex flex-col items-center justify-center relative">
@@ -230,7 +237,7 @@
         function renderTasks() {
             const pendingTasks = state.tasks.filter(task => !task.done);
             
-            let html = `<h2 class="text-2xl text-textMain mb-6 text-center">${t('title_tasks')}</h2>`;
+            let html = `<h2 class="text-2xl text-textMain mb-2 text-center">${t('title_tasks')}</h2><p class="bg-white rounded-2xl p-3 mb-4 text-center text-gray-600 shadow-sm">${t('guide_tasks')}</p>`;
             
             if (pendingTasks.length === 0) {
                 html += `

@@ -92,7 +92,7 @@
             <select id="langSelect" onchange="changeLanguage()" class="bg-white text-gray-800 rounded-full px-3 py-1 text-sm font-sans focus:outline-none focus:ring-2 focus:ring-white">
                 <option value="ko">🇰🇷 한국어</option>
                 <option value="en">🇺🇸 English</option>
-                <option value="hi">🇮🇳 हिन्दी</option>
+                <option value="hi" selected>🇮🇳 हिन्दी</option>
             </select>
         </div>
     </header>
@@ -139,7 +139,11 @@
             </div>
             <h2 class="text-2xl mb-4 text-gray-700" id="ui-feedback-title">어떤 이야기를 할 건가요?</h2>
             
-            <textarea id="topicInput" rows="3" class="w-full border-4 border-primary rounded-2xl p-4 text-lg focus:outline-none focus:ring-4 focus:ring-blue-200 resize-none mb-4" placeholder="예: 친구들 앞에서 내 취미 소개하기"></textarea>
+            <textarea id="topicInput" rows="3" class="w-full border-4 border-primary rounded-2xl p-4 text-lg focus:outline-none focus:ring-4 focus:ring-blue-200 resize-none mb-3" placeholder="예: 친구들 앞에서 내 취미 소개하기"></textarea>
+            <div class="grid grid-cols-2 gap-2 mb-4" aria-label="빠른 주제 선택">
+                <button onclick="setTopic('classIntro')" id="ui-chip-intro" class="bg-blue-50 border-2 border-blue-100 rounded-2xl p-3 text-blue-700 active:scale-95">자기소개</button>
+                <button onclick="setTopic('favorite')" id="ui-chip-favorite" class="bg-blue-50 border-2 border-blue-100 rounded-2xl p-3 text-blue-700 active:scale-95">좋아하는 것</button>
+            </div>
             
             <button onclick="getFeedback()" class="bg-primary hover-bg-primary-dark text-white rounded-full py-3 px-8 text-xl shadow-md transition-transform transform hover:scale-105 w-full font-bold" id="ui-btn-get-feedback">
                 나에게 맞는 목소리 찾기 🔍
@@ -203,7 +207,13 @@
                 btnGetFeedback: "나에게 맞는 목소리 찾기 🔍",
                 adviceTitle: "많이 떨리나요?<br>제가 힘을 줄게요!",
                 btnGetAdvice: "힘이 나는 마법의 주문 듣기 🪄",
-                errorText: "앗, 통신이 조금 지연되고 있어요. 다시 시도해볼까요? 🐶"
+                errorText: "앗, 통신이 조금 지연되고 있어요. 다시 시도해볼까요? 🐶",
+                chipIntro: "자기소개",
+                chipFavorite: "좋아하는 것",
+                topicClassIntro: "친구들 앞에서 나를 소개하기",
+                topicFavorite: "내가 좋아하는 음식이나 놀이 소개하기",
+                offlineTip: "또렷한 목소리로 천천히 말해봐요. 시작 전에 숨을 크게 한 번 쉬고, 친구 한 명을 보고 웃으면 쉬워져요! 🌟",
+                offlineAdvice: "나는 할 수 있어! 틀려도 괜찮아. 한 문장씩 천천히 말하면 모두가 내 이야기를 들어줄 거야! 🪄"
             },
             en: {
                 title: "ShipDae",
@@ -217,7 +227,13 @@
                 btnGetFeedback: "Find my voice tone 🔍",
                 adviceTitle: "Feeling nervous?<br>Let me give you strength!",
                 btnGetAdvice: "Hear a magic cheering spell 🪄",
-                errorText: "Oops, connection is a bit slow. Let's try again! 🐶"
+                errorText: "Oops, connection is a bit slow. Let's try again! 🐶",
+                chipIntro: "Self intro",
+                chipFavorite: "Favorite thing",
+                topicClassIntro: "Introducing myself to friends",
+                topicFavorite: "Talking about my favorite food or game",
+                offlineTip: "Speak slowly with a clear voice. Take one big breath first, smile at one friend, and begin! 🌟",
+                offlineAdvice: "I can do this! Mistakes are okay. One sentence at a time, my story will be heard! 🪄"
             },
             hi: {
                 title: "शिपडे",
@@ -231,11 +247,17 @@
                 btnGetFeedback: "मेरी आवाज़ का स्वर खोजें 🔍",
                 adviceTitle: "घबराहट हो रही है?<br>मैं आपको हिम्मत दूँगा!",
                 btnGetAdvice: "एक जादुई मंत्र सुनें 🪄",
-                errorText: "उफ़, कनेक्शन थोड़ा धीमा है। आइए फिर से कोशिश करें! 🐶"
+                errorText: "उफ़, कनेक्शन थोड़ा धीमा है। आइए फिर से कोशिश करें! 🐶",
+                chipIntro: "मेरा परिचय",
+                chipFavorite: "मेरी पसंद",
+                topicClassIntro: "दोस्तों के सामने अपना परिचय देना",
+                topicFavorite: "मेरे पसंदीदा खाने या खेल के बारे में बताना",
+                offlineTip: "धीरे और साफ आवाज़ में बोलें। पहले एक गहरी सांस लें, एक दोस्त को देखकर मुस्कुराएं, फिर शुरू करें! 🌟",
+                offlineAdvice: "मैं कर सकता/सकती हूँ! गलती हो तो भी ठीक है। एक-एक वाक्य बोलूंगा/बोलूंगी और सब मेरी बात सुनेंगे! 🪄"
             }
         };
 
-        let currentLang = 'ko';
+        let currentLang = 'hi';
 
         // ==========================================
         // 2. 초기화 및 UI 제어
@@ -255,6 +277,8 @@
             document.getElementById('ui-feedback-title').innerText = t.feedbackTitle;
             document.getElementById('topicInput').placeholder = t.placeholder;
             document.getElementById('ui-btn-get-feedback').innerText = t.btnGetFeedback;
+            document.getElementById('ui-chip-intro').innerText = t.chipIntro;
+            document.getElementById('ui-chip-favorite').innerText = t.chipFavorite;
             document.getElementById('ui-advice-title').innerHTML = t.adviceTitle; // <br> 처리를 위해 innerHTML
             document.getElementById('ui-btn-get-advice').innerText = t.btnGetAdvice;
         }
@@ -272,6 +296,11 @@
                 document.getElementById('adviceResultArea').classList.add('hidden');
                 document.getElementById('topicInput').value = '';
             }
+        }
+
+        function setTopic(kind) {
+            const t = translations[currentLang];
+            document.getElementById('topicInput').value = kind === 'classIntro' ? t.topicClassIntro : t.topicFavorite;
         }
 
         // 배경음악 토글
@@ -304,7 +333,8 @@
         const apiKey = ""; // 시스템 환경에서 주입됨
 
         // API 호출 공통 함수 (지수 백오프 적용)
-        async function fetchGeminiAPI(systemInstruction, userPrompt) {
+        async function fetchGeminiAPI(systemInstruction, userPrompt, fallbackText) {
+            if (!apiKey) return fallbackText;
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
             const payload = {
                 contents: [{ parts: [{ text: userPrompt }] }],
@@ -364,7 +394,7 @@
             
             const userPrompt = `내가 할 이야기 주제: "${topic}"`;
 
-            const result = await fetchGeminiAPI(systemPrompt, userPrompt);
+            const result = await fetchGeminiAPI(systemPrompt, userPrompt, translations[currentLang].offlineTip);
             
             loader.classList.add('hidden');
             // 타이핑 효과로 텍스트 출력
@@ -389,7 +419,7 @@
             
             const userPrompt = `나에게 용기를 줘!`;
 
-            const result = await fetchGeminiAPI(systemPrompt, userPrompt);
+            const result = await fetchGeminiAPI(systemPrompt, userPrompt, translations[currentLang].offlineAdvice);
             
             loader.classList.add('hidden');
             // 타이핑 효과로 텍스트 출력
