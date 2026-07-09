@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>놀팡 (Nolpang)</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: 도현체 & 블랙한산스 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&display=swap" rel="stylesheet">
+
+    <!-- Tailwind 커스텀 설정 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FFECB3', // 대표 색상 (밝은 노랑)
+                        primaryDark: '#FFD54F',
+                        secondary: '#FFB74D', // 강조 색상 (주황)
+                        accent: '#4FC3F7', // 포인트 색상 (하늘)
+                        textMain: '#3E2723', // 부드러운 검은 갈색 (가독성)
+                    },
+                    boxShadow: {
+                        'cute': '0 10px 25px -5px rgba(255, 183, 77, 0.4)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- 커스텀 CSS -->
+    <style>
+        /* 폰트 적용 */
+        .font-title { font-family: "Black Han Sans", sans-serif; font-weight: 400; font-style: normal; }
+        .font-body { font-family: "Do Hyeon", sans-serif; font-weight: 400; font-style: normal; }
+        
+        body {
+            background-color: #FFF8E1;
+            color: #3E2723;
+            /* 터치 하이라이트 제거 (모바일 앱 느낌) */
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        /* 탭 전환 애니메이션 */
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 버튼 눌림 효과 */
+        .btn-press:active {
+            transform: scale(0.95);
+        }
+
+        /* 스크롤바 숨기기 */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body class="font-body antialiased flex justify-center min-h-screen">
+
+    <!-- 모바일 화면 비율을 맞춘 컨테이너 -->
+    <div id="app" class="w-full max-w-md bg-white shadow-2xl relative flex flex-col h-screen overflow-hidden">
+        
+        <!-- 상단 헤더 -->
+        <header class="bg-primary pt-10 pb-4 px-6 rounded-b-3xl shadow-sm z-10 flex justify-between items-center">
+            <h1 class="font-title text-4xl text-secondary tracking-wide drop-shadow-sm" aria-label="놀팡 앱 이름">
+                🎈놀팡
+            </h1>
+            <button onclick="navigate('settings')" class="text-3xl btn-press" aria-label="설정" title="설정">
+                ⚙️
+            </button>
+        </header>
+
+        <!-- 메인 콘텐츠 영역 (스크롤 가능) -->
+        <main id="main-content" class="flex-1 overflow-y-auto p-6 pb-24 bg-[#FFF8E1] fade-in">
+            <!-- 화면 내용이 JS에 의해 여기에 동적으로 렌더링 됩니다. -->
+        </main>
+
+        <!-- 하단 네비게이션 탭 -->
+        <nav class="absolute bottom-0 w-full bg-white rounded-t-3xl shadow-[0_-5px_15px_rgba(0,0,0,0.05)] pb-safe">
+            <div class="flex justify-around items-center p-4">
+                <button onclick="navigate('home')" class="flex flex-col items-center btn-press p-2" aria-label="홈 탭">
+                    <span class="text-3xl mb-1" id="nav-icon-home">🏠</span>
+                    <span class="text-sm text-gray-500 font-title" id="nav-text-home" data-i18n="nav_home">홈</span>
+                </button>
+                <button onclick="navigate('tasks')" class="flex flex-col items-center btn-press p-2" aria-label="할일 탭">
+                    <span class="text-3xl mb-1" id="nav-icon-tasks">📝</span>
+                    <span class="text-sm text-gray-500 font-title" id="nav-text-tasks" data-i18n="nav_tasks">할일</span>
+                </button>
+                <button onclick="navigate('ideas')" class="flex flex-col items-center btn-press p-2" aria-label="놀이 탭">
+                    <span class="text-3xl mb-1" id="nav-icon-ideas">💡</span>
+                    <span class="text-sm text-gray-500 font-title" id="nav-text-ideas" data-i18n="nav_ideas">놀이</span>
+                </button>
+            </div>
+        </nav>
+    </div>
+
+    <!-- 앱 로직 및 상태 관리 -->
+    <script>
+        // --- 1. 다국어 (i18n) 데이터 사전 ---
+        const translations = {
+            ko: {
+                nav_home: "홈",
+                nav_tasks: "할일",
+                nav_ideas: "놀이",
+                nav_settings: "설정",
+                title_home: "나의 놀이 시간 저금통",
+                title_tasks: "빨리 끝내고 놀자!",
+                title_ideas: "어떻게 놀까?",
+                title_settings: "언어 설정",
+                min: "분",
+                msg_empty_tasks: "오늘 할 일을 다 했어요! 신나게 놀아요! 🎉",
+                btn_earn_time: "+ 시간 벌기",
+                task_hw: "숙제 빨리 끝내기",
+                task_clean: "내 방 장난감 정리하기",
+                task_eat: "밥 투정 안하고 빨리 먹기",
+                task_wash: "외출 후 손발 씻기",
+                idea_1: "끝말잇기",
+                idea_1_desc: "친구, 가족과 함께 재미있는 단어 연결하기!",
+                idea_2: "종이접기",
+                idea_2_desc: "색종이 한 장으로 비행기, 배 접어보기!",
+                idea_3: "스트레칭 체조",
+                idea_3_desc: "음악을 틀고 신나게 몸을 움직여요!",
+                lang_ko: "한국어",
+                lang_en: "English",
+                lang_hi: "हिन्दी (Hindi)"
+            },
+            en: {
+                nav_home: "Home",
+                nav_tasks: "Tasks",
+                nav_ideas: "Play",
+                nav_settings: "Settings",
+                title_home: "My Playtime Bank",
+                title_tasks: "Finish fast, Play hard!",
+                title_ideas: "How to play?",
+                title_settings: "Language Settings",
+                min: "min",
+                msg_empty_tasks: "All done for today! Let's play! 🎉",
+                btn_earn_time: "+ Earn Time",
+                task_hw: "Finish Homework Fast",
+                task_clean: "Clean Up Toys",
+                task_eat: "Eat Meal Quickly",
+                task_wash: "Wash Hands & Feet",
+                idea_1: "Word Chain Game",
+                idea_1_desc: "Connect words with family or friends!",
+                idea_2: "Origami",
+                idea_2_desc: "Make paper planes or boats!",
+                idea_3: "Stretching Dance",
+                idea_3_desc: "Turn on music and move your body!",
+                lang_ko: "한국어",
+                lang_en: "English",
+                lang_hi: "हिन्दी (Hindi)"
+            },
+            hi: {
+                nav_home: "मुख्य पृष्ठ",
+                nav_tasks: "कार्य",
+                nav_ideas: "खेल",
+                nav_settings: "सेटिंग्स",
+                title_home: "मेरा खेल समय बैंक",
+                title_tasks: "जल्दी खत्म करो, खेलो!",
+                title_ideas: "कैसे खेलें?",
+                title_settings: "भाषा सेटिंग्स",
+                min: "मिनट",
+                msg_empty_tasks: "आज के लिए सब हो गया! चलो खेलें! 🎉",
+                btn_earn_time: "+ समय कमाएं",
+                task_hw: "होमवर्क जल्दी खत्म करें",
+                task_clean: "खिलौने साफ करें",
+                task_eat: "खाना जल्दी खाएं",
+                task_wash: "हाथ और पैर धोएं",
+                idea_1: "शब्द श्रृंखला",
+                idea_1_desc: "दोस्तों के साथ शब्दों को जोड़ें!",
+                idea_2: "ओरिगामी",
+                idea_2_desc: "कागज के हवाई जहाज या नावें बनाएं!",
+                idea_3: "स्ट्रेचिंग डांस",
+                idea_3_desc: "संगीत चालू करें और शरीर हिलाएं!",
+                lang_ko: "한국어",
+                lang_en: "English",
+                lang_hi: "हिन्दी (Hindi)"
+            }
+        };
+
+        // --- 2. 앱 상태 (State) 관리 ---
+        const state = {
+            currentScreen: 'home', // 'home', 'tasks', 'ideas', 'settings'
+            lang: 'ko',            // 기본 언어
+            savedTime: 0,          // 모은 놀이 시간 (분)
+            tasks: [
+                { id: 1, key: 'task_hw', time: 15, done: false, icon: '📚' },
+                { id: 2, key: 'task_clean', time: 10, done: false, icon: '🧸' },
+                { id: 3, key: 'task_eat', time: 10, done: false, icon: '🍚' },
+                { id: 4, key: 'task_wash', time: 5, done: false, icon: '🧼' },
+            ]
+        };
+
+        // 번역 도우미 함수
+        const t = (key) => translations[state.lang][key] || key;
+
+        // --- 3. 화면 렌더링 함수들 ---
+
+        function renderHome() {
+            return `
+                <div class="flex flex-col items-center justify-center h-full space-y-8 mt-10">
+                    <h2 class="text-2xl text-center text-textMain">${t('title_home')}</h2>
+                    
+                    <!-- 놀이 시간 저금통 UI -->
+                    <div class="w-56 h-56 rounded-full bg-white border-8 border-primaryDark shadow-cute flex flex-col items-center justify-center relative">
+                        <div class="absolute -top-6 text-5xl">🐷</div>
+                        <span class="text-6xl font-title text-secondary mt-4">${state.savedTime}</span>
+                        <span class="text-xl text-gray-500">${t('min')}</span>
+                    </div>
+
+                    <button onclick="navigate('tasks')" class="btn-press bg-secondary text-white font-title text-xl py-4 px-10 rounded-full shadow-cute w-full max-w-xs mt-6 transition-transform">
+                        ${t('btn_earn_time')}
+                    </button>
+                </div>
+            `;
+        }
+
+        function renderTasks() {
+            const pendingTasks = state.tasks.filter(task => !task.done);
+            
+            let html = `<h2 class="text-2xl text-textMain mb-6 text-center">${t('title_tasks')}</h2>`;
+            
+            if (pendingTasks.length === 0) {
+                html += `
+                    <div class="flex flex-col items-center mt-20 p-6 bg-white rounded-3xl shadow-sm text-center">
+                        <span class="text-6xl mb-4">🏆</span>
+                        <p class="text-xl text-gray-600">${t('msg_empty_tasks')}</p>
+                    </div>`;
+            } else {
+                html += `<div class="space-y-4">`;
+                pendingTasks.forEach(task => {
+                    html += `
+                        <div class="bg-white p-4 rounded-3xl shadow-sm flex items-center justify-between border-2 border-transparent active:border-primary transition-colors cursor-pointer btn-press" onclick="completeTask(${task.id})">
+                            <div class="flex items-center space-x-4">
+                                <span class="text-4xl bg-primary w-14 h-14 flex items-center justify-center rounded-full shadow-inner">${task.icon}</span>
+                                <span class="text-xl text-textMain">${t(task.key)}</span>
+                            </div>
+                            <div class="bg-accent text-white px-3 py-1 rounded-full font-title text-lg shadow-sm">
+                                +${task.time}${t('min')}
+                            </div>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+            }
+            return html;
+        }
+
+        function renderIdeas() {
+            const ideas = [
+                { title: 'idea_1', desc: 'idea_1_desc', icon: '🗣️' },
+                { title: 'idea_2', desc: 'idea_2_desc', icon: '✈️' },
+                { title: 'idea_3', desc: 'idea_3_desc', icon: '🤸‍♂️' },
+            ];
+
+            let html = `<h2 class="text-2xl text-textMain mb-6 text-center">${t('title_ideas')}</h2>`;
+            html += `<div class="grid grid-cols-1 gap-4">`;
+            ideas.forEach(idea => {
+                html += `
+                    <div class="bg-white p-5 rounded-3xl shadow-sm flex flex-col items-start border-l-8 border-secondary">
+                        <div class="flex items-center space-x-3 mb-2">
+                            <span class="text-3xl">${idea.icon}</span>
+                            <h3 class="text-2xl font-title text-textMain">${t(idea.title)}</h3>
+                        </div>
+                        <p class="text-gray-600 text-lg ml-1">${t(idea.desc)}</p>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+            return html;
+        }
+
+        function renderSettings() {
+            return `
+                <h2 class="text-2xl text-textMain mb-6 text-center">${t('title_settings')}</h2>
+                <div class="space-y-4">
+                    <button onclick="setLanguage('ko')" class="w-full bg-white p-4 rounded-3xl shadow-sm text-xl flex justify-between items-center btn-press ${state.lang === 'ko' ? 'border-4 border-primaryDark' : ''}">
+                        🇰🇷 ${t('lang_ko')}
+                        ${state.lang === 'ko' ? '✅' : ''}
+                    </button>
+                    <button onclick="setLanguage('en')" class="w-full bg-white p-4 rounded-3xl shadow-sm text-xl flex justify-between items-center btn-press ${state.lang === 'en' ? 'border-4 border-primaryDark' : ''}">
+                        🇺🇸 ${t('lang_en')}
+                        ${state.lang === 'en' ? '✅' : ''}
+                    </button>
+                    <button onclick="setLanguage('hi')" class="w-full bg-white p-4 rounded-3xl shadow-sm text-xl flex justify-between items-center btn-press ${state.lang === 'hi' ? 'border-4 border-primaryDark' : ''}">
+                        🇮🇳 ${t('lang_hi')}
+                        ${state.lang === 'hi' ? '✅' : ''}
+                    </button>
+                </div>
+            `;
+        }
+
+        // --- 4. 코어 로직 ---
+
+        // 화면 전환 함수
+        function navigate(screen) {
+            state.currentScreen = screen;
+            updateApp();
+            updateNavUI();
+        }
+
+        // 언어 변경 함수
+        function setLanguage(lang) {
+            state.lang = lang;
+            updateApp();
+            updateNavUI(); // 하단 네비게이션 텍스트도 업데이트
+        }
+
+        // 할 일 완료 처리 함수
+        function completeTask(taskId) {
+            const task = state.tasks.find(t => t.id === taskId);
+            if (task && !task.done) {
+                task.done = true;
+                state.savedTime += task.time;
+                
+                // 완료 시 간단한 시각적 피드백 제공 후 홈으로 이동
+                updateApp();
+                setTimeout(() => navigate('home'), 300);
+            }
+        }
+
+        // 메인 콘텐츠 업데이트
+        function updateApp() {
+            const mainContent = document.getElementById('main-content');
+            
+            // 애니메이션 재시작을 위해 클래스 제거 후 추가
+            mainContent.classList.remove('fade-in');
+            void mainContent.offsetWidth; // DOM reflow 강제 발생
+            mainContent.classList.add('fade-in');
+
+            let contentHTML = '';
+            switch(state.currentScreen) {
+                case 'home': contentHTML = renderHome(); break;
+                case 'tasks': contentHTML = renderTasks(); break;
+                case 'ideas': contentHTML = renderIdeas(); break;
+                case 'settings': contentHTML = renderSettings(); break;
+            }
+            mainContent.innerHTML = contentHTML;
+        }
+
+        // 하단 네비게이션 UI 업데이트 (선택된 탭 강조 및 다국어 반영)
+        function updateNavUI() {
+            const tabs = ['home', 'tasks', 'ideas'];
+            
+            // 다국어 텍스트 업데이트
+            tabs.forEach(tab => {
+                document.getElementById(`nav-text-${tab}`).innerText = t(`nav_${tab}`);
+            });
+
+            // 색상 강조 업데이트
+            tabs.forEach(tab => {
+                const icon = document.getElementById(`nav-icon-${tab}`);
+                const text = document.getElementById(`nav-text-${tab}`);
+                
+                if(state.currentScreen === tab) {
+                    text.classList.remove('text-gray-500');
+                    text.classList.add('text-secondary');
+                    icon.classList.add('scale-110', 'transform', 'transition');
+                } else {
+                    text.classList.remove('text-secondary');
+                    text.classList.add('text-gray-500');
+                    icon.classList.remove('scale-110', 'transform', 'transition');
+                }
+            });
+        }
+
+        // --- 5. 초기화 ---
+        window.onload = () => {
+            updateApp();
+            updateNavUI();
+        };
+
+    </script>
+</body>
+</html>

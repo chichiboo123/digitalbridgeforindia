@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>숙제챙겨 - Homework Helper</title>
+    
+    <!-- Google Fonts: Black Han Sans (타이틀용), Do Hyeon (본문용) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6', // 대표 색상 (Blue)
+                        primaryLight: '#93C5FD',
+                        primaryDark: '#2563EB',
+                        accent: '#FBBF24', // 포인트 색상 (Yellow)
+                        success: '#10B981', // 성공 색상 (Green)
+                        bgLight: '#EFF6FF', // 배경 색상
+                    },
+                    fontFamily: {
+                        title: ['"Black Han Sans"', 'sans-serif'],
+                        body: ['"Do Hyeon"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* 커스텀 애니메이션 및 기본 스타일 */
+        body {
+            background-color: #f3f4f6; /* 바탕 화면 회색 (앱 영역을 돋보이게 함) */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* 모바일 앱 화면처럼 보이도록 컨테이너 크기 제한 */
+        #app-container {
+            width: 100%;
+            max-width: 420px;
+            height: 100vh;
+            max-height: 850px;
+            background-color: #EFF6FF; /* bgLight */
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        @media (min-width: 421px) {
+            #app-container {
+                height: 90vh;
+                border-radius: 24px;
+            }
+        }
+
+        /* 스크롤바 숨기기 */
+        ::-webkit-scrollbar { display: none; }
+        
+        /* 톡 애니메이션 (아래에서 위로 팝업) */
+        @keyframes slideUpFade {
+            0% { transform: translateY(50px) translateX(-50%); opacity: 0; }
+            100% { transform: translateY(0) translateX(-50%); opacity: 1; }
+        }
+        
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .chat-notification {
+            animation: slideUpFade 0.4s ease-out forwards;
+        }
+        
+        .pop-animation {
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        /* 숨김 클래스 */
+        .hidden-screen {
+            display: none !important;
+        }
+    </style>
+</head>
+<body class="font-body text-gray-800">
+
+    <!-- 앱 컨테이너 -->
+    <main id="app-container" aria-label="숙제챙겨 앱">
+        
+        <!-- 언어 선택 바 (모든 화면에서 고정) -->
+        <header class="absolute top-0 right-0 z-50 p-4 flex gap-2">
+            <button onclick="changeLanguage('ko')" class="lang-btn bg-white px-2 py-1 rounded-full shadow text-sm font-bold border-2 border-primary text-primary focus:outline-none focus:ring-2 focus:ring-primary" aria-label="한국어">KR</button>
+            <button onclick="changeLanguage('hi')" class="lang-btn bg-white px-2 py-1 rounded-full shadow text-sm font-bold border-2 border-transparent text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary" aria-label="Hindi">HI</button>
+            <button onclick="changeLanguage('en')" class="lang-btn bg-white px-2 py-1 rounded-full shadow text-sm font-bold border-2 border-transparent text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary" aria-label="English">EN</button>
+        </header>
+
+        <!-- 화면 1: 처음 화면 (스플래시/시작) -->
+        <section id="screen-start" class="flex-1 flex flex-col justify-center items-center p-6 bg-gradient-to-b from-primaryLight to-bgLight">
+            <div class="pop-animation text-center">
+                <!-- 귀여운 캐릭터/아이콘 Placeholder (SVG) -->
+                <svg class="w-32 h-32 mx-auto mb-6 text-primary drop-shadow-lg" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
+                </svg>
+                <h1 id="t-app-title" class="font-title text-5xl text-primary mb-2 drop-shadow-md tracking-wider">숙제챙겨</h1>
+                <p id="t-app-desc" class="text-lg text-gray-600 mb-10 font-bold">숙제 잊지 않게 도와줄게!</p>
+                
+                <button onclick="startApp()" id="t-btn-start" class="bg-primary hover:bg-primaryDark text-white font-title text-2xl py-4 px-10 rounded-full shadow-lg transform transition active:scale-95 focus:outline-none focus:ring-4 focus:ring-primaryLight">
+                    시작하기
+                </button>
+            </div>
+        </section>
+
+        <!-- 화면 2: 메인 화면 (탭 컨테이너) -->
+        <section id="screen-main" class="hidden-screen flex-1 flex flex-col relative h-full">
+            
+            <!-- 상단 타이틀바 -->
+            <header class="bg-primary text-white p-4 pt-12 rounded-b-3xl shadow-md text-center z-10 shrink-0">
+                <h2 id="t-main-title" class="font-title text-3xl tracking-wide">오늘의 할 일</h2>
+            </header>
+
+            <!-- 탭 내용 영역 -->
+            <div class="flex-1 overflow-y-auto p-4 pb-24 relative">
+                
+                <!-- 탭: 홈 (요약) -->
+                <div id="tab-home" class="tab-content h-full flex flex-col justify-center items-center">
+                    <svg class="w-24 h-24 text-accent mb-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                    </svg>
+                    <h3 id="t-home-greeting" class="text-2xl font-bold text-center text-primaryDark mb-4">안녕! 오늘도 힘내자!</h3>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm w-full border-2 border-blue-100">
+                        <p id="t-home-status" class="text-lg text-center">아래 메뉴에서 숙제 알림을 맞추고 기입장을 확인해봐.</p>
+                    </div>
+                </div>
+
+                <!-- 탭: 알리미 -->
+                <div id="tab-alarm" class="tab-content hidden-screen">
+                    <h3 id="t-alarm-title" class="text-2xl font-title text-primary mb-4">알리미 설정</h3>
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border-2 border-blue-100 mb-6">
+                        <label id="t-alarm-label" class="block text-gray-700 font-bold mb-2">언제 알려줄까?</label>
+                        <div class="flex gap-2 mb-4">
+                            <input type="time" id="alarm-time" class="flex-1 p-3 border-2 border-gray-200 rounded-xl font-bold text-lg focus:border-primary focus:outline-none">
+                            <button onclick="addAlarm()" id="t-btn-add-alarm" class="bg-primary text-white px-4 py-2 rounded-xl font-bold shadow active:scale-95">추가</button>
+                        </div>
+                    </div>
+
+                    <h4 id="t-alarm-list-title" class="text-xl font-bold text-gray-600 mb-3">설정된 알림</h4>
+                    <ul id="alarm-list" class="space-y-3">
+                        <!-- 알림 리스트가 동적으로 추가됨 -->
+                        <li class="text-gray-400 text-center py-4" id="t-no-alarms">아직 설정된 알림이 없어!</li>
+                    </ul>
+                </div>
+
+                <!-- 탭: 일일 기입장 -->
+                <div id="tab-tracker" class="tab-content hidden-screen">
+                    <h3 id="t-tracker-title" class="text-2xl font-title text-primary mb-4">일일 기입장</h3>
+                    
+                    <!-- 출석/숙제 체크 카드 -->
+                    <div class="bg-white p-6 rounded-3xl shadow-sm border-2 border-blue-100 text-center mb-6 relative overflow-hidden">
+                        <div id="stamp-overlay" class="absolute inset-0 bg-success/10 flex justify-center items-center hidden-screen">
+                            <div class="pop-animation transform rotate-12 border-4 border-success text-success font-title text-4xl py-2 px-6 rounded-xl bg-white shadow-lg">
+                                참 잘했어요!
+                            </div>
+                        </div>
+                        <h4 id="t-tracker-question" class="text-xl font-bold text-gray-700 mb-6">오늘 숙제는 다 챙겼어?</h4>
+                        <div class="flex justify-center gap-4">
+                            <button onclick="checkHomework(true)" id="t-btn-done" class="flex-1 bg-success text-white py-3 rounded-2xl font-bold text-lg shadow-md active:scale-95 transition">다 했어!</button>
+                            <button onclick="checkHomework(false)" id="t-btn-notyet" class="flex-1 bg-gray-200 text-gray-700 py-3 rounded-2xl font-bold text-lg shadow-md active:scale-95 transition">아직이야</button>
+                        </div>
+                    </div>
+
+                    <!-- 보호자/시스템 톡 시뮬레이션 영역 -->
+                    <div class="bg-blue-50 p-4 rounded-2xl">
+                        <p id="t-tracker-desc" class="text-sm text-gray-500 mb-2 text-center">숙제를 안 챙기면 알림이 올지도 몰라!</p>
+                        <button onclick="simulateForget()" id="t-btn-simulate" class="w-full border-2 border-primary text-primary py-2 rounded-xl font-bold text-sm hover:bg-blue-100 transition">
+                            (테스트) 숙제 안 챙겼을 때 톡 받기
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 하단 네비게이션 바 -->
+            <nav class="bg-white border-t-2 border-gray-100 absolute bottom-0 w-full flex justify-around p-3 pb-6 shrink-0 z-10 shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
+                <button onclick="switchTab('home')" class="nav-btn flex flex-col items-center gap-1 text-primary focus:outline-none" data-tab="home">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                    <span id="t-nav-home" class="text-xs font-bold">홈</span>
+                </button>
+                <button onclick="switchTab('alarm')" class="nav-btn flex flex-col items-center gap-1 text-gray-400 hover:text-primary focus:outline-none transition-colors" data-tab="alarm">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/></svg>
+                    <span id="t-nav-alarm" class="text-xs font-bold">알리미</span>
+                </button>
+                <button onclick="switchTab('tracker')" class="nav-btn flex flex-col items-center gap-1 text-gray-400 hover:text-primary focus:outline-none transition-colors" data-tab="tracker">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M3 3v18h18V3H3zm14 14H7v-2h10v2zm0-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                    <span id="t-nav-tracker" class="text-xs font-bold">기입장</span>
+                </button>
+            </nav>
+        </section>
+
+        <!-- 공통 톡 알림 (모달 대신 사용) -->
+        <div id="chat-toast" class="chat-notification hidden-screen fixed bottom-24 left-1/2 w-11/12 max-w-[380px] bg-white rounded-2xl shadow-xl border-2 border-primary overflow-hidden z-50 flex items-center p-4 gap-4">
+            <div class="bg-primaryLight rounded-full p-2 text-white shrink-0">
+                <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12zM7 9h2v2H7zm4 0h2v2h-2zm4 0h2v2h-2z"/></svg>
+            </div>
+            <div class="flex-1">
+                <h4 id="toast-title" class="font-title text-primary text-lg">알림</h4>
+                <p id="toast-msg" class="text-gray-700 font-bold text-sm">숙제 챙겨! 늦기 전에 빨리 하자!</p>
+            </div>
+            <button onclick="closeToast()" class="text-gray-400 hover:text-gray-600 focus:outline-none p-1">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+            </button>
+        </div>
+
+    </main>
+
+    <!-- 앱 로직 및 다국어 지원 스크립트 -->
+    <script>
+        // --- 1. 다국어 (i18n) 데이터 ---
+        const translations = {
+            ko: {
+                appTitle: "숙제챙겨",
+                appDesc: "숙제 잊지 않게 도와줄게!",
+                btnStart: "시작하기",
+                mainTitle: "오늘의 할 일",
+                navHome: "홈",
+                navAlarm: "알리미",
+                navTracker: "기입장",
+                homeGreeting: "안녕! 오늘도 힘내자!",
+                homeStatus: "아래 메뉴에서 숙제 알림을 맞추고 기입장을 확인해봐.",
+                alarmTitle: "알리미 설정",
+                alarmLabel: "언제 알려줄까?",
+                btnAddAlarm: "추가",
+                alarmListTitle: "설정된 알림",
+                noAlarms: "아직 설정된 알림이 없어!",
+                trackerTitle: "일일 기입장",
+                trackerQuestion: "오늘 숙제는 다 챙겼어?",
+                btnDone: "다 했어!",
+                btnNotYet: "아직이야",
+                trackerDesc: "숙제를 안 챙기면 알림이 올지도 몰라!",
+                btnSimulate: "(테스트) 숙제 안 챙겼을 때 톡 받기",
+                toastAlarmTitle: "⏰ 삐빅! 시간이야!",
+                toastAlarmMsg: "숙제 챙겨! 설정한 시간이 되었어.",
+                toastNagTitle: "💬 톡 도착!",
+                toastNagMsg: "앗! 아직 숙제를 안 챙겼어? 얼른 챙기자!",
+                delete: "삭제",
+                stampText: "참 잘했어요!"
+            },
+            hi: {
+                appTitle: "होमवर्क हेल्पर",
+                appDesc: "होमवर्क कभी मत भूलना!",
+                btnStart: "शुरू करें",
+                mainTitle: "आज के काम",
+                navHome: "होम",
+                navAlarm: "अलार्म",
+                navTracker: "डायरी",
+                homeGreeting: "नमस्ते! आज का दिन शुभ हो!",
+                homeStatus: "अपना अलार्म सेट करें और नीचे डायरी जांचें।",
+                alarmTitle: "अलार्म सेट करें",
+                alarmLabel: "मुझे आपको कब याद दिलाना चाहिए?",
+                btnAddAlarm: "जोड़ें",
+                alarmListTitle: "आपके अलार्म",
+                noAlarms: "अभी तक कोई अलार्म नहीं!",
+                trackerTitle: "दैनिक डायरी",
+                trackerQuestion: "क्या आपने अपना होमवर्क कर लिया?",
+                btnDone: "हो गया!",
+                btnNotYet: "अभी नहीं",
+                trackerDesc: "यदि आप भूल गए, तो आपको एक संदेश मिलेगा!",
+                btnSimulate: "(टेस्ट) संदेश प्राप्त करें",
+                toastAlarmTitle: "⏰ समय हो गया!",
+                toastAlarmMsg: "अपना होमवर्क याद रखें! समय आ गया है।",
+                toastNagTitle: "💬 नया संदेश!",
+                toastNagMsg: "अरे! आपने अपना होमवर्क नहीं किया? जल्दी करो!",
+                delete: "हटाएं",
+                stampText: "बहुत अच्छा!"
+            },
+            en: {
+                appTitle: "HW Helper",
+                appDesc: "Never forget your homework!",
+                btnStart: "Start",
+                mainTitle: "Today's Tasks",
+                navHome: "Home",
+                navAlarm: "Alarm",
+                navTracker: "Tracker",
+                homeGreeting: "Hello! Have a great day!",
+                homeStatus: "Set your alarms and check the tracker below.",
+                alarmTitle: "Set Reminder",
+                alarmLabel: "When should I remind you?",
+                btnAddAlarm: "Add",
+                alarmListTitle: "Your Alarms",
+                noAlarms: "No alarms set yet!",
+                trackerTitle: "Daily Tracker",
+                trackerQuestion: "Did you pack your homework?",
+                btnDone: "Done!",
+                btnNotYet: "Not Yet",
+                trackerDesc: "If you forget, you might get a message!",
+                btnSimulate: "(Test) Get a reminder message",
+                toastAlarmTitle: "⏰ Time's Up!",
+                toastAlarmMsg: "Don't forget your homework! It's time.",
+                toastNagTitle: "💬 New Message!",
+                toastNagMsg: "Hey! You haven't done your homework? Let's do it!",
+                delete: "Delete",
+                stampText: "Great Job!"
+            }
+        };
+
+        // --- 2. 상태 관리 ---
+        let currentLang = 'ko';
+        let alarms = []; // 알람 목록 [{time: "14:30", active: true}]
+        let isHomeworkDone = false;
+        let alarmChecker = null;
+
+        // --- 3. UI 조작 함수 ---
+
+        // 언어 변경
+        function changeLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            
+            // 텍스트 업데이트
+            document.getElementById('t-app-title').innerText = t.appTitle;
+            document.getElementById('t-app-desc').innerText = t.appDesc;
+            document.getElementById('t-btn-start').innerText = t.btnStart;
+            document.getElementById('t-main-title').innerText = t.mainTitle;
+            document.getElementById('t-nav-home').innerText = t.navHome;
+            document.getElementById('t-nav-alarm').innerText = t.navAlarm;
+            document.getElementById('t-nav-tracker').innerText = t.navTracker;
+            document.getElementById('t-home-greeting').innerText = t.homeGreeting;
+            document.getElementById('t-home-status').innerText = t.homeStatus;
+            document.getElementById('t-alarm-title').innerText = t.alarmTitle;
+            document.getElementById('t-alarm-label').innerText = t.alarmLabel;
+            document.getElementById('t-btn-add-alarm').innerText = t.btnAddAlarm;
+            document.getElementById('t-alarm-list-title').innerText = t.alarmListTitle;
+            document.getElementById('t-tracker-title').innerText = t.trackerTitle;
+            document.getElementById('t-tracker-question').innerText = t.trackerQuestion;
+            document.getElementById('t-btn-done').innerText = t.btnDone;
+            document.getElementById('t-btn-notyet').innerText = t.btnNotYet;
+            document.getElementById('t-tracker-desc').innerText = t.trackerDesc;
+            document.getElementById('t-btn-simulate').innerText = t.btnSimulate;
+            
+            if(document.querySelector('#stamp-overlay div')) {
+                document.querySelector('#stamp-overlay div').innerText = t.stampText;
+            }
+
+            // 버튼 스타일 업데이트
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                if (btn.innerText.toLowerCase() === lang || (lang==='ko' && btn.innerText==='KR')) {
+                    btn.classList.replace('border-transparent', 'border-primary');
+                    btn.classList.replace('text-gray-400', 'text-primary');
+                } else {
+                    btn.classList.replace('border-primary', 'border-transparent');
+                    btn.classList.replace('text-primary', 'text-gray-400');
+                }
+            });
+
+            renderAlarms(); // 알람 리스트 "삭제", "알람 없음" 텍스트 갱신
+        }
+
+        // 시작하기 버튼 (화면 전환)
+        function startApp() {
+            document.getElementById('screen-start').classList.add('hidden-screen');
+            document.getElementById('screen-main').classList.remove('hidden-screen');
+            startAlarmChecker(); // 알람 백그라운드 체크 시작
+        }
+
+        // 탭 전환
+        function switchTab(tabId) {
+            // 모든 탭 숨기기
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden-screen'));
+            // 선택된 탭 보이기
+            document.getElementById('tab-' + tabId).classList.remove('hidden-screen');
+            
+            // 네비게이션 버튼 스타일 변경
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if (btn.dataset.tab === tabId) {
+                    btn.classList.remove('text-gray-400');
+                    btn.classList.add('text-primary');
+                } else {
+                    btn.classList.add('text-gray-400');
+                    btn.classList.remove('text-primary');
+                }
+            });
+
+            // 타이틀 변경
+            const t = translations[currentLang];
+            const titleEl = document.getElementById('t-main-title');
+            if(tabId === 'home') titleEl.innerText = t.mainTitle;
+            if(tabId === 'alarm') titleEl.innerText = t.navAlarm;
+            if(tabId === 'tracker') titleEl.innerText = t.navTracker;
+        }
+
+        // --- 4. 알리미 기능 ---
+        
+        function addAlarm() {
+            const timeInput = document.getElementById('alarm-time').value;
+            if (!timeInput) return;
+            
+            // 중복 방지
+            if (alarms.find(a => a.time === timeInput)) return;
+
+            alarms.push({ time: timeInput, active: true });
+            // 시간순 정렬
+            alarms.sort((a, b) => a.time.localeCompare(b.time));
+            
+            document.getElementById('alarm-time').value = '';
+            renderAlarms();
+        }
+
+        function removeAlarm(time) {
+            alarms = alarms.filter(a => a.time !== time);
+            renderAlarms();
+        }
+
+        function renderAlarms() {
+            const listEl = document.getElementById('alarm-list');
+            const t = translations[currentLang];
+            listEl.innerHTML = '';
+
+            if (alarms.length === 0) {
+                listEl.innerHTML = `<li class="text-gray-400 text-center py-4" id="t-no-alarms">${t.noAlarms}</li>`;
+                return;
+            }
+
+            alarms.forEach(alarm => {
+                const li = document.createElement('li');
+                li.className = "flex justify-between items-center bg-gray-50 p-3 rounded-xl border border-gray-100";
+                
+                // 시간 포맷 (AM/PM)
+                const [h, m] = alarm.time.split(':');
+                const isPm = parseInt(h) >= 12;
+                const formattedH = parseInt(h) % 12 || 12;
+                const timeStr = `${isPm ? 'PM' : 'AM'} ${formattedH}:${m}`;
+
+                li.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <svg class="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+                        <span class="font-bold text-xl text-gray-800 font-title tracking-wide">${timeStr}</span>
+                    </div>
+                    <button onclick="removeAlarm('${alarm.time}')" class="text-red-400 hover:text-red-500 font-bold text-sm bg-red-50 px-3 py-1 rounded-lg">${t.delete}</button>
+                `;
+                listEl.appendChild(li);
+            });
+        }
+
+        // 실시간 알람 체크
+        function startAlarmChecker() {
+            if (alarmChecker) clearInterval(alarmChecker);
+            alarmChecker = setInterval(() => {
+                const now = new Date();
+                const h = String(now.getHours()).padStart(2, '0');
+                const m = String(now.getMinutes()).padStart(2, '0');
+                const currentTime = `${h}:${m}`;
+                // 초가 00일때만 한 번 울리도록 제어 (여기서는 데모를 위해 단순화)
+                const s = now.getSeconds();
+
+                if (s === 0) {
+                    const triggeredAlarm = alarms.find(a => a.time === currentTime);
+                    if (triggeredAlarm) {
+                        showToast('alarm');
+                    }
+                }
+            }, 1000); // 1초마다 확인
+        }
+
+        // --- 5. 기입장 (Tracker) 기능 ---
+        
+        function checkHomework(isDone) {
+            isHomeworkDone = isDone;
+            const overlay = document.getElementById('stamp-overlay');
+            if (isDone) {
+                overlay.classList.remove('hidden-screen');
+                // 출석 도장 애니메이션 리셋 트릭
+                const stamp = overlay.querySelector('div');
+                stamp.classList.remove('pop-animation');
+                void stamp.offsetWidth; // trigger reflow
+                stamp.classList.add('pop-animation');
+            } else {
+                overlay.classList.add('hidden-screen');
+            }
+        }
+
+        // 톡 알림(잔소리) 시뮬레이션
+        function simulateForget() {
+            if (isHomeworkDone) {
+                // 이미 다 했다면 알림 안 보냄 (또는 칭찬)
+                alert(currentLang === 'ko' ? "이미 다 했잖아! 최고야!" : currentLang === 'hi' ? "तुमने पहले ही कर लिया है! बढ़िया!" : "You already did it! Awesome!");
+                return;
+            }
+            showToast('nag');
+        }
+
+        // --- 6. 커스텀 토스트 알림 (톡 디자인) ---
+        
+        let toastTimeout;
+        function showToast(type) {
+            const toast = document.getElementById('chat-toast');
+            const titleEl = document.getElementById('toast-title');
+            const msgEl = document.getElementById('toast-msg');
+            const t = translations[currentLang];
+
+            if (type === 'alarm') {
+                titleEl.innerText = t.toastAlarmTitle;
+                msgEl.innerText = t.toastAlarmMsg;
+                toast.querySelector('.bg-primaryLight').className = "bg-accent rounded-full p-2 text-white shrink-0"; // 노란색 아이콘 배경
+            } else if (type === 'nag') {
+                titleEl.innerText = t.toastNagTitle;
+                msgEl.innerText = t.toastNagMsg;
+                toast.querySelector('.bg-accent')?.classList.replace('bg-accent', 'bg-primaryLight');
+                toast.querySelector('.bg-primaryLight').className = "bg-primary rounded-full p-2 text-white shrink-0"; // 파란색 아이콘 배경
+            }
+
+            // 애니메이션 재시작 및 표시
+            toast.classList.remove('hidden-screen');
+            toast.style.animation = 'none';
+            toast.offsetHeight; /* trigger reflow */
+            toast.style.animation = null;
+
+            // 5초 후 자동 닫기
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(closeToast, 5000);
+        }
+
+        function closeToast() {
+            const toast = document.getElementById('chat-toast');
+            toast.classList.add('hidden-screen');
+        }
+
+        // --- 초기화 ---
+        changeLanguage('ko'); // 기본 한국어
+        document.getElementById('t-app-title').style.transform = "translateY(0)"; // 폰트 로드 후 높이 튀는 현상 방지
+    </script>
+</body>
+</html>

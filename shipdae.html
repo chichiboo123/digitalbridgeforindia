@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>쉽대 (ShipDae) - 자신감 키우기</title>
+    
+    <!-- 폰트 불러오기: 귀엽고 친근한 주아체 사용 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS (스타일링 용도) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 아이콘 (FontAwesome) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* 기본 폰트 설정 */
+        body {
+            font-family: 'Jua', sans-serif;
+            background-color: #FFFFFF; /* 배경색: 흰색 */
+            color: #333333;
+            overflow-x: hidden;
+        }
+
+        /* 메인 컬러 설정 */
+        .bg-primary { background-color: #A0D8EF; }
+        .text-primary { color: #A0D8EF; }
+        .border-primary { border-color: #A0D8EF; }
+        .hover-bg-primary-dark:hover { background-color: #85C7E6; }
+
+        /* 애니메이션 효과 */
+        .bounce-soft {
+            animation: bounce-soft 2s infinite ease-in-out;
+        }
+        @keyframes bounce-soft {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 화면 전환용 클래스 */
+        .screen { display: none; }
+        .screen.active { display: block; }
+
+        /* 스피너 애니메이션 */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #A0D8EF;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- 잔잔한 배경 음악 (안전한 저작권 무료 음원 URL 예시) -->
+    <audio id="bgMusic" loop>
+        <source src="https://cdn.pixabay.com/download/audio/2022/02/07/audio_4fb4274900.mp3?filename=ambient-piano-amp-strings-10711.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- 네비게이션 및 상단 바 -->
+    <header class="bg-primary text-white p-4 shadow-md sticky top-0 z-50 flex justify-between items-center rounded-b-3xl">
+        <div class="flex items-center gap-2 cursor-pointer" onclick="navigate('home')" tabindex="0" aria-label="홈으로 가기" onkeydown="if(event.key==='Enter') navigate('home')">
+            <i class="fa-solid fa-seedling text-2xl"></i>
+            <h1 class="text-2xl tracking-wide" id="ui-title">쉽대</h1>
+        </div>
+        
+        <div class="flex items-center gap-4">
+            <!-- 음악 토글 버튼 -->
+            <button id="musicBtn" onclick="toggleMusic()" class="text-white hover:text-yellow-200 transition-colors" aria-label="배경음악 켜기/끄기">
+                <i class="fa-solid fa-music text-xl" id="musicIcon"></i>
+            </button>
+
+            <!-- 언어 선택 -->
+            <select id="langSelect" onchange="changeLanguage()" class="bg-white text-gray-800 rounded-full px-3 py-1 text-sm font-sans focus:outline-none focus:ring-2 focus:ring-white">
+                <option value="ko">🇰🇷 한국어</option>
+                <option value="en">🇺🇸 English</option>
+                <option value="hi">🇮🇳 हिन्दी</option>
+            </select>
+        </div>
+    </header>
+
+    <!-- 메인 컨텐츠 영역 -->
+    <main class="flex-grow p-4 flex flex-col items-center justify-center max-w-md mx-auto w-full relative">
+        
+        <!-- ================= 화면 1. 홈 화면 ================= -->
+        <section id="screen-home" class="screen active text-center w-full fade-in">
+            <div class="mb-8 bounce-soft">
+                <span class="text-7xl">🐻‍❄️</span>
+            </div>
+            <h2 class="text-3xl mb-2 text-gray-700" id="ui-welcome">안녕! 난 네 친구 쉽대야.</h2>
+            <p class="text-gray-500 mb-8 text-lg" id="ui-desc">남들 앞에서 말하기 떨릴 때, 내가 도와줄게!</p>
+
+            <div class="flex flex-col gap-4 w-full px-4">
+                <button onclick="navigate('feedback')" class="bg-primary hover-bg-primary-dark text-white rounded-2xl p-5 text-xl shadow-lg transition-transform transform hover:scale-105 active:scale-95 flex items-center justify-between group">
+                    <span class="flex items-center gap-3">
+                        <i class="fa-solid fa-microphone-lines text-2xl group-hover:animate-pulse"></i>
+                        <span id="ui-btn-feedback">말하기 팁 받기</span>
+                    </span>
+                    <i class="fa-solid fa-chevron-right opacity-70"></i>
+                </button>
+
+                <button onclick="navigate('advice')" class="bg-yellow-100 hover:bg-yellow-200 text-yellow-700 rounded-2xl p-5 text-xl shadow-lg transition-transform transform hover:scale-105 active:scale-95 flex items-center justify-between group border-2 border-yellow-300">
+                    <span class="flex items-center gap-3">
+                        <i class="fa-solid fa-heart text-2xl text-red-400 group-hover:animate-bounce"></i>
+                        <span id="ui-btn-advice">응원 한마디 듣기</span>
+                    </span>
+                    <i class="fa-solid fa-chevron-right opacity-70"></i>
+                </button>
+            </div>
+        </section>
+
+
+        <!-- ================= 화면 2. AI 피드백 화면 ================= -->
+        <section id="screen-feedback" class="screen w-full fade-in text-center">
+            <button onclick="navigate('home')" class="absolute top-0 left-4 text-gray-400 hover:text-gray-600 mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-arrow-left"></i> <span id="ui-back-1">뒤로</span>
+            </button>
+            
+            <div class="mt-10 mb-4">
+                <span class="text-5xl">🗣️</span>
+            </div>
+            <h2 class="text-2xl mb-4 text-gray-700" id="ui-feedback-title">어떤 이야기를 할 건가요?</h2>
+            
+            <textarea id="topicInput" rows="3" class="w-full border-4 border-primary rounded-2xl p-4 text-lg focus:outline-none focus:ring-4 focus:ring-blue-200 resize-none mb-4" placeholder="예: 친구들 앞에서 내 취미 소개하기"></textarea>
+            
+            <button onclick="getFeedback()" class="bg-primary hover-bg-primary-dark text-white rounded-full py-3 px-8 text-xl shadow-md transition-transform transform hover:scale-105 w-full font-bold" id="ui-btn-get-feedback">
+                나에게 맞는 목소리 찾기 🔍
+            </button>
+
+            <!-- 결과 표시 영역 -->
+            <div id="feedbackResultArea" class="mt-8 hidden bg-blue-50 border-2 border-blue-200 rounded-2xl p-6 text-left relative">
+                <div id="feedbackLoader" class="loader hidden"></div>
+                <div id="feedbackContent" class="text-gray-700 text-lg leading-relaxed whitespace-pre-wrap"></div>
+                <!-- 닫기 버튼 -->
+                <button onclick="document.getElementById('feedbackResultArea').classList.add('hidden')" class="absolute top-2 right-3 text-gray-400 hover:text-gray-600">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+        </section>
+
+
+        <!-- ================= 화면 3. AI 조언 화면 ================= -->
+        <section id="screen-advice" class="screen w-full fade-in text-center">
+            <button onclick="navigate('home')" class="absolute top-0 left-4 text-gray-400 hover:text-gray-600 mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-arrow-left"></i> <span id="ui-back-2">뒤로</span>
+            </button>
+            
+            <div class="mt-10 mb-6 bounce-soft">
+                <span class="text-6xl">✨</span>
+            </div>
+            <h2 class="text-2xl mb-6 text-gray-700 leading-snug" id="ui-advice-title">많이 떨리나요?<br>제가 힘을 줄게요!</h2>
+            
+            <button onclick="getAdvice()" class="bg-yellow-300 hover:bg-yellow-400 text-yellow-800 rounded-full py-4 px-8 text-2xl shadow-lg transition-transform transform hover:scale-105 w-full font-bold shadow-yellow-200" id="ui-btn-get-advice">
+                힘이 나는 마법의 주문 듣기 🪄
+            </button>
+
+            <!-- 결과 표시 영역 -->
+            <div id="adviceResultArea" class="mt-8 hidden bg-yellow-50 border-2 border-yellow-200 rounded-2xl p-6 relative">
+                <div id="adviceLoader" class="loader hidden" style="border-top-color: #FCD34D;"></div>
+                <div id="adviceContent" class="text-gray-800 text-xl leading-relaxed font-bold break-keep"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center p-4 text-gray-400 text-sm">
+        &copy; 2026 쉽대 (ShipDae) App
+    </footer>
+
+    <!-- JavaScript 로직 -->
+    <script>
+        // ==========================================
+        // 1. 다국어 (I18N) 데이터
+        // ==========================================
+        const translations = {
+            ko: {
+                title: "쉽대",
+                welcome: "안녕! 난 네 친구 쉽대야.",
+                desc: "남들 앞에서 말하기 떨릴 때, 내가 도와줄게!",
+                btnFeedback: "말하기 팁 받기",
+                btnAdvice: "응원 한마디 듣기",
+                back: "뒤로",
+                feedbackTitle: "어떤 이야기를 할 건가요?",
+                placeholder: "예: 친구들 앞에서 내 취미 소개하기",
+                btnGetFeedback: "나에게 맞는 목소리 찾기 🔍",
+                adviceTitle: "많이 떨리나요?<br>제가 힘을 줄게요!",
+                btnGetAdvice: "힘이 나는 마법의 주문 듣기 🪄",
+                errorText: "앗, 통신이 조금 지연되고 있어요. 다시 시도해볼까요? 🐶"
+            },
+            en: {
+                title: "ShipDae",
+                welcome: "Hi! I'm your friend, ShipDae.",
+                desc: "I'll help you when you feel nervous speaking in front of others!",
+                btnFeedback: "Get Speaking Tips",
+                btnAdvice: "Hear Cheering Words",
+                back: "Back",
+                feedbackTitle: "What are you going to talk about?",
+                placeholder: "Ex: Introducing my hobby to friends",
+                btnGetFeedback: "Find my voice tone 🔍",
+                adviceTitle: "Feeling nervous?<br>Let me give you strength!",
+                btnGetAdvice: "Hear a magic cheering spell 🪄",
+                errorText: "Oops, connection is a bit slow. Let's try again! 🐶"
+            },
+            hi: {
+                title: "शिपडे",
+                welcome: "नमस्ते! मैं आपका दोस्त शिपडे हूँ।",
+                desc: "जब आपको दूसरों के सामने बोलने में घबराहट हो, तो मैं आपकी मदद करूँगा!",
+                btnFeedback: "बोलने के टिप्स लें",
+                btnAdvice: "प्रोत्साहक शब्द सुनें",
+                back: "पीछे",
+                feedbackTitle: "आप किस बारे में बात करने जा रहे हैं?",
+                placeholder: "उदा: दोस्तों को अपने शौक के बारे में बताना",
+                btnGetFeedback: "मेरी आवाज़ का स्वर खोजें 🔍",
+                adviceTitle: "घबराहट हो रही है?<br>मैं आपको हिम्मत दूँगा!",
+                btnGetAdvice: "एक जादुई मंत्र सुनें 🪄",
+                errorText: "उफ़, कनेक्शन थोड़ा धीमा है। आइए फिर से कोशिश करें! 🐶"
+            }
+        };
+
+        let currentLang = 'ko';
+
+        // ==========================================
+        // 2. 초기화 및 UI 제어
+        // ==========================================
+        function changeLanguage() {
+            currentLang = document.getElementById('langSelect').value;
+            const t = translations[currentLang];
+            
+            // UI 텍스트 업데이트
+            document.getElementById('ui-title').innerText = t.title;
+            document.getElementById('ui-welcome').innerText = t.welcome;
+            document.getElementById('ui-desc').innerText = t.desc;
+            document.getElementById('ui-btn-feedback').innerText = t.btnFeedback;
+            document.getElementById('ui-btn-advice').innerText = t.btnAdvice;
+            document.getElementById('ui-back-1').innerText = t.back;
+            document.getElementById('ui-back-2').innerText = t.back;
+            document.getElementById('ui-feedback-title').innerText = t.feedbackTitle;
+            document.getElementById('topicInput').placeholder = t.placeholder;
+            document.getElementById('ui-btn-get-feedback').innerText = t.btnGetFeedback;
+            document.getElementById('ui-advice-title').innerHTML = t.adviceTitle; // <br> 처리를 위해 innerHTML
+            document.getElementById('ui-btn-get-advice').innerText = t.btnGetAdvice;
+        }
+
+        // 화면 네비게이션 함수
+        function navigate(screenId) {
+            // 모든 화면 숨기기
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            // 대상 화면 보이기
+            document.getElementById(`screen-${screenId}`).classList.add('active');
+            
+            // 화면 전환 시 이전 결과 초기화
+            if(screenId === 'home') {
+                document.getElementById('feedbackResultArea').classList.add('hidden');
+                document.getElementById('adviceResultArea').classList.add('hidden');
+                document.getElementById('topicInput').value = '';
+            }
+        }
+
+        // 배경음악 토글
+        let isMusicPlaying = false;
+        function toggleMusic() {
+            const music = document.getElementById('bgMusic');
+            const icon = document.getElementById('musicIcon');
+            
+            if (isMusicPlaying) {
+                music.pause();
+                icon.classList.remove('fa-music');
+                icon.classList.add('fa-volume-xmark');
+                icon.parentElement.classList.remove('text-yellow-200');
+                icon.parentElement.classList.add('text-white');
+            } else {
+                music.volume = 0.3; // 잔잔하게 30% 볼륨
+                music.play().catch(e => console.log("음악 자동재생 차단됨:", e));
+                icon.classList.remove('fa-volume-xmark');
+                icon.classList.add('fa-music');
+                icon.parentElement.classList.remove('text-white');
+                icon.parentElement.classList.add('text-yellow-200');
+            }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+
+        // ==========================================
+        // 3. Gemini API 연동 로직
+        // ==========================================
+        const apiKey = ""; // 시스템 환경에서 주입됨
+
+        // API 호출 공통 함수 (지수 백오프 적용)
+        async function fetchGeminiAPI(systemInstruction, userPrompt) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            const payload = {
+                contents: [{ parts: [{ text: userPrompt }] }],
+                systemInstruction: { parts: [{ text: systemInstruction }] }
+            };
+
+            const delays = [1000, 2000, 4000, 8000, 16000];
+            
+            for (let i = 0; i < delays.length + 1; i++) {
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    
+                    const data = await response.json();
+                    return data.candidates?.[0]?.content?.parts?.[0]?.text || "응답을 가져올 수 없습니다.";
+                } catch (error) {
+                    if (i === delays.length) {
+                        console.error("API Call failed after retries:", error);
+                        return translations[currentLang].errorText;
+                    }
+                    // 지연 후 재시도
+                    await new Promise(resolve => setTimeout(resolve, delays[i]));
+                }
+            }
+        }
+
+        // 기능 1: AI 피드백 (목소리/톤 추천)
+        async function getFeedback() {
+            const topic = document.getElementById('topicInput').value.trim();
+            const area = document.getElementById('feedbackResultArea');
+            const loader = document.getElementById('feedbackLoader');
+            const content = document.getElementById('feedbackContent');
+
+            if (!topic) {
+                // 입력값이 없을 때 힌트 애니메이션
+                document.getElementById('topicInput').classList.add('animate-pulse', 'border-red-400');
+                setTimeout(() => document.getElementById('topicInput').classList.remove('animate-pulse', 'border-red-400'), 1000);
+                return;
+            }
+
+            // UI 상태 변경 (로딩 중)
+            area.classList.remove('hidden');
+            loader.classList.remove('hidden');
+            content.innerText = '';
+
+            const systemPrompt = `당신은 초등학생 어린이에게 자신감을 불어넣어주는 다정하고 귀여운 AI 친구 '쉽대'입니다.
+어린이가 남들 앞에서 발표나 이야기를 하려고 합니다. 어린이의 주제를 보고,
+1. 어떤 목소리 톤(예: 밝고 통통 튀게, 차분하고 또렷하게)이 어울릴지 알려주세요.
+2. 긴장을 풀 수 있는 간단한 몸짓 팁(예: 심호흡 1번, 활짝 웃기)을 1개 주세요.
+답변은 매우 짧고, 이모지를 섞어서, 초등학생이 이해하기 쉬운 친절한 말투로 작성하세요.
+반드시 사용자가 요청한 언어(${currentLang})로만 대답하세요.`;
+            
+            const userPrompt = `내가 할 이야기 주제: "${topic}"`;
+
+            const result = await fetchGeminiAPI(systemPrompt, userPrompt);
+            
+            loader.classList.add('hidden');
+            // 타이핑 효과로 텍스트 출력
+            typeWriter(content, result);
+        }
+
+        // 기능 2: AI 조언 (응원 한마디)
+        async function getAdvice() {
+            const area = document.getElementById('adviceResultArea');
+            const loader = document.getElementById('adviceLoader');
+            const content = document.getElementById('adviceContent');
+
+            // UI 상태 변경 (로딩 중)
+            area.classList.remove('hidden');
+            loader.classList.remove('hidden');
+            content.innerText = '';
+
+            const systemPrompt = `당신은 남들 앞에서 말하기를 두려워하는(특히 인도 어린이) 초등학생에게 용기를 주는 친근한 요정입니다.
+자신감을 가질 수 있도록 짧고, 긍정적이고, 마법 주문 같은 힘찬 응원의 말을 2~3문장으로 해주세요.
+이모지를 풍부하게 사용하세요.
+반드시 사용자가 요청한 언어(${currentLang})로만 대답하세요.`;
+            
+            const userPrompt = `나에게 용기를 줘!`;
+
+            const result = await fetchGeminiAPI(systemPrompt, userPrompt);
+            
+            loader.classList.add('hidden');
+            // 타이핑 효과로 텍스트 출력
+            typeWriter(content, result);
+        }
+
+        // 타이핑 효과 유틸리티 함수
+        function typeWriter(element, text) {
+            element.innerHTML = '';
+            let i = 0;
+            // 줄바꿈 문자를 <br>로 변환
+            const formattedText = text.replace(/\n/g, '<br>');
+            element.innerHTML = formattedText;
+            
+            // 단순 출력을 원하면 위 코드만 유지하고, 한글자씩 나오게 하려면 아래 주석 해제 및 수정 필요. 
+            // 현재는 HTML태그(<br>)가 포함될 수 있어 innerHTML로 즉시 출력하는 것이 안전함.
+            // 아이들이 기다리기 지루해할 수 있으므로 페이드인 애니메이션으로 대체.
+            element.classList.add('fade-in');
+            setTimeout(() => element.classList.remove('fade-in'), 500);
+        }
+
+        // 초기화 실행
+        changeLanguage();
+        // 초기 음악 아이콘 상태 설정
+        document.getElementById('musicIcon').classList.add('fa-volume-xmark');
+        
+    </script>
+</body>
+</html>
