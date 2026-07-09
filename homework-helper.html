@@ -2,7 +2,7 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>होमवर्क हेल्पर - Homework Helper</title>
     
     <!-- Google Fonts: Black Han Sans (타이틀용), Noto Sans (본문용) -->
@@ -92,9 +92,9 @@
         
         <!-- 언어 선택 바 (모든 화면에서 고정) -->
         <header class="absolute top-0 right-0 z-50 p-4 flex gap-2">
-            <button onclick="changeLanguage('ko')" class="lang-btn bg-white px-2 py-1 rounded-full shadow text-sm font-bold border-2 border-transparent text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary" aria-label="Korean">KR</button>
-            <button onclick="changeLanguage('hi')" class="lang-btn bg-white px-2 py-1 rounded-full shadow text-sm font-bold border-2 border-primary text-primary focus:outline-none focus:ring-2 focus:ring-primary" aria-label="Hindi">HI</button>
-            <button onclick="changeLanguage('en')" class="lang-btn bg-white px-2 py-1 rounded-full shadow text-sm font-bold border-2 border-transparent text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary" aria-label="English">EN</button>
+            <button onclick="changeLanguage('ko')" class="lang-btn bg-white px-4 py-2 min-w-[48px] rounded-full shadow text-base font-bold border-2 border-transparent text-gray-400 focus:outline-none focus:ring-4 focus:ring-primary" aria-label="Korean">KR</button>
+            <button onclick="changeLanguage('hi')" class="lang-btn bg-white px-4 py-2 min-w-[48px] rounded-full shadow text-base font-bold border-2 border-primary text-primary focus:outline-none focus:ring-4 focus:ring-primary" aria-label="Hindi">HI</button>
+            <button onclick="changeLanguage('en')" class="lang-btn bg-white px-4 py-2 min-w-[48px] rounded-full shadow text-base font-bold border-2 border-transparent text-gray-400 focus:outline-none focus:ring-4 focus:ring-primary" aria-label="English">EN</button>
         </header>
 
         <!-- 화면 1: 처음 화면 (스플래시/시작) -->
@@ -206,7 +206,7 @@
 
         <!-- 공통 톡 알림 (모달 대신 사용) -->
         <div id="chat-toast" class="chat-notification hidden-screen fixed bottom-24 left-1/2 w-11/12 md:w-[520px] bg-white rounded-2xl shadow-xl border-2 border-primary overflow-hidden z-50 flex items-center p-4 gap-4">
-            <div class="bg-primaryLight rounded-full p-2 text-white shrink-0">
+            <div id="toast-icon" class="bg-primaryLight rounded-full p-2 text-white shrink-0">
                 <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12zM7 9h2v2H7zm4 0h2v2h-2zm4 0h2v2h-2z"/></svg>
             </div>
             <div class="flex-1">
@@ -252,6 +252,8 @@
                 toastAlarmMsg: "숙제 챙겨! 설정한 시간이 되었어.",
                 toastNagTitle: "💬 톡 도착!",
                 toastNagMsg: "앗! 아직 숙제를 안 챙겼어? 얼른 챙기자!",
+                toastDoneTitle: "🎉 최고야!",
+                toastDoneMsg: "이미 숙제를 다 했구나! 정말 잘했어!",
                 delete: "삭제",
                 stampText: "बहुत अच्छा!"
             },
@@ -283,6 +285,8 @@
                 toastAlarmMsg: "अपना होमवर्क याद रखें! समय आ गया है।",
                 toastNagTitle: "💬 नया संदेश!",
                 toastNagMsg: "अरे! आपने अपना होमवर्क नहीं किया? जल्दी करो!",
+                toastDoneTitle: "🎉 शाबाश!",
+                toastDoneMsg: "तुमने पहले ही होमवर्क कर लिया! बहुत बढ़िया!",
                 delete: "हटाएं",
                 stampText: "बहुत अच्छा!"
             },
@@ -314,14 +318,44 @@
                 toastAlarmMsg: "Don't forget your homework! It's time.",
                 toastNagTitle: "💬 New Message!",
                 toastNagMsg: "Hey! You haven't done your homework? Let's do it!",
+                toastDoneTitle: "🎉 Awesome!",
+                toastDoneMsg: "You already did your homework! Great job!",
                 delete: "Delete",
                 stampText: "Great Job!"
             }
         };
 
         // --- 2. 상태 관리 ---
+        // 허브·다른 앱과 언어를 공유하기 위한 헬퍼
+        const LANG_KEY = 'dbfi_lang';
+        const SUPPORTED_LANGS = ['ko', 'en', 'hi'];
+        function getInitialLang() {
+            try {
+                const p = new URLSearchParams(location.search).get('lang');
+                if (p && SUPPORTED_LANGS.includes(p)) return p;
+            } catch (e) { /* 무시 */ }
+            try {
+                const s = localStorage.getItem(LANG_KEY);
+                if (s && SUPPORTED_LANGS.includes(s)) return s;
+            } catch (e) { /* 무시 */ }
+            return 'hi';
+        }
+
+        // 알람 저장/복원 (새로고침 후에도 알람이 유지되도록)
+        const ALARM_KEY = 'homeworkAlarms';
+        function saveAlarms() {
+            try { localStorage.setItem(ALARM_KEY, JSON.stringify(alarms)); } catch (e) { /* 무시 */ }
+        }
+        function loadAlarms() {
+            try {
+                const raw = localStorage.getItem(ALARM_KEY);
+                const data = raw ? JSON.parse(raw) : [];
+                return Array.isArray(data) ? data : [];
+            } catch (e) { return []; }
+        }
+
         let currentLang = 'hi';
-        let alarms = []; // 알람 목록 [{time: "14:30", active: true}]
+        let alarms = loadAlarms(); // 저장된 알람 목록 [{time: "14:30", active: true}]
         let isHomeworkDone = false;
         let alarmChecker = null;
 
@@ -331,6 +365,7 @@
         function changeLanguage(lang) {
             currentLang = lang;
             document.documentElement.lang = lang;
+            try { localStorage.setItem(LANG_KEY, lang); } catch (e) { /* 무시 */ }
             const t = translations[lang];
             
             // 텍스트 업데이트
@@ -420,13 +455,15 @@
             alarms.push({ time: timeInput, active: true });
             // 시간순 정렬
             alarms.sort((a, b) => a.time.localeCompare(b.time));
-            
+
+            saveAlarms();
             document.getElementById('alarm-time').value = '';
             renderAlarms();
         }
 
         function removeAlarm(time) {
             alarms = alarms.filter(a => a.time !== time);
+            saveAlarms();
             renderAlarms();
         }
 
@@ -501,8 +538,8 @@
         // 톡 알림(잔소리) 시뮬레이션
         function simulateForget() {
             if (isHomeworkDone) {
-                // 이미 다 했다면 알림 안 보냄 (또는 칭찬)
-                alert(currentLang === 'ko' ? "이미 다 했잖아! 최고야!" : currentLang === 'hi' ? "तुमने पहले ही कर लिया है! बढ़िया!" : "You already did it! Awesome!");
+                // 이미 다 했다면 잔소리 대신 칭찬 (딱딱한 alert 대체)
+                showToast('done');
                 return;
             }
             showToast('nag');
@@ -516,16 +553,20 @@
             const titleEl = document.getElementById('toast-title');
             const msgEl = document.getElementById('toast-msg');
             const t = translations[currentLang];
+            const iconWrap = document.getElementById('toast-icon');
 
             if (type === 'alarm') {
                 titleEl.innerText = t.toastAlarmTitle;
                 msgEl.innerText = t.toastAlarmMsg;
-                toast.querySelector('.bg-primaryLight').className = "bg-accent rounded-full p-2 text-white shrink-0"; // 노란색 아이콘 배경
+                iconWrap.className = "bg-accent rounded-full p-2 text-white shrink-0"; // 노란색 아이콘 배경
             } else if (type === 'nag') {
                 titleEl.innerText = t.toastNagTitle;
                 msgEl.innerText = t.toastNagMsg;
-                toast.querySelector('.bg-accent')?.classList.replace('bg-accent', 'bg-primaryLight');
-                toast.querySelector('.bg-primaryLight').className = "bg-primary rounded-full p-2 text-white shrink-0"; // 파란색 아이콘 배경
+                iconWrap.className = "bg-primary rounded-full p-2 text-white shrink-0"; // 파란색 아이콘 배경
+            } else if (type === 'done') {
+                titleEl.innerText = t.toastDoneTitle;
+                msgEl.innerText = t.toastDoneMsg;
+                iconWrap.className = "bg-success rounded-full p-2 text-white shrink-0"; // 초록색 아이콘 배경 (칭찬)
             }
 
             // 애니메이션 재시작 및 표시
@@ -545,7 +586,7 @@
         }
 
         // --- 초기화 ---
-        changeLanguage('hi'); // 인도 어린이를 위해 기본 힌디어
+        changeLanguage(getInitialLang()); // 허브/저장값에서 이어받은 언어 (기본 힌디어)
         document.getElementById('t-app-title').style.transform = "translateY(0)"; // 폰트 로드 후 높이 튀는 현상 방지
     </script>
 </body>

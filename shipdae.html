@@ -262,6 +262,21 @@
             }
         };
 
+        // 허브·다른 앱과 언어를 공유하기 위한 헬퍼
+        const LANG_KEY = 'dbfi_lang';
+        const SUPPORTED_LANGS = ['ko', 'en', 'hi'];
+        function getInitialLang() {
+            try {
+                const p = new URLSearchParams(location.search).get('lang');
+                if (p && SUPPORTED_LANGS.includes(p)) return p;
+            } catch (e) { /* 무시 */ }
+            try {
+                const s = localStorage.getItem(LANG_KEY);
+                if (s && SUPPORTED_LANGS.includes(s)) return s;
+            } catch (e) { /* 무시 */ }
+            return 'hi';
+        }
+
         let currentLang = 'hi';
 
         // ==========================================
@@ -270,6 +285,7 @@
         function changeLanguage() {
             currentLang = document.getElementById('langSelect').value;
             document.documentElement.lang = currentLang;
+            try { localStorage.setItem(LANG_KEY, currentLang); } catch (e) { /* 무시 */ }
             const t = translations[currentLang];
             
             // UI 텍스트 업데이트
@@ -446,7 +462,8 @@ Answer only in the requested language code: ${currentLang}.`;
             setTimeout(() => element.classList.remove('fade-in'), 500);
         }
 
-        // 초기화 실행
+        // 초기화 실행 (허브/저장값에서 이어받은 언어 적용)
+        document.getElementById('langSelect').value = getInitialLang();
         changeLanguage();
         // 초기 음악 아이콘 상태 설정
         document.getElementById('musicIcon').classList.add('fa-volume-xmark');

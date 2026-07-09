@@ -2,7 +2,7 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ग्लोबल व्यायाम (Global Exercise)</title>
     
     <!-- 폰트 불러오기: 타이틀용(Black Han Sans), 본문용(Noto Sans) -->
@@ -221,6 +221,20 @@
         </main>
     </div>
 
+    <!-- 어린이용 인앱 토스트 (딱딱한 alert 대체) -->
+    <div id="appToast" role="status" aria-live="polite" class="screen-hidden fixed left-1/2 -translate-x-1/2 bottom-8 z-50 bg-white border-4 border-fire-400 text-fire-700 font-bold text-2xl px-6 py-4 rounded-3xl shadow-2xl text-center max-w-[90%]"></div>
+
+    <!-- 어린이용 확인 모달 (딱딱한 confirm 대체) -->
+    <div id="appConfirm" class="screen-hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-6">
+        <div class="bg-white rounded-3xl p-6 w-full max-w-sm text-center shadow-2xl">
+            <p id="appConfirmMsg" class="text-2xl font-bold text-gray-700 mb-6"></p>
+            <div class="flex gap-3">
+                <button id="appConfirmNo" class="flex-1 bg-gray-200 text-gray-700 font-bold py-3 rounded-2xl text-2xl btn-bounce"></button>
+                <button id="appConfirmYes" class="flex-1 bg-fire-600 text-white font-bold py-3 rounded-2xl text-2xl btn-bounce"></button>
+            </div>
+        </div>
+    </div>
+
     <!-- 스크립트: 앱 로직 및 다국어 처리 -->
     <script>
         // ==========================================
@@ -259,6 +273,8 @@
                 locating: "탐색 중... 🧭",
                 location_found: "내 주변 위치를 찾았어요!",
                 confirm_clear: "정말 다 지울까요?",
+                yes: "네",
+                no: "아니요",
                 ex_1: "💪 팔벌려뛰기 20회",
                 ex_2: "🏃 제자리 걷기 5분",
                 ex_3: "🧘 고양이 자세 스트레칭",
@@ -297,6 +313,8 @@
                 locating: "Searching... 🧭",
                 location_found: "Found your nearby location!",
                 confirm_clear: "Delete all records?",
+                yes: "Yes",
+                no: "No",
                 ex_1: "💪 20 Jumping Jacks",
                 ex_2: "🏃 Walk in place (5 mins)",
                 ex_3: "🧘 Cat-cow stretching",
@@ -335,6 +353,8 @@
                 locating: "खोज रहे हैं... 🧭",
                 location_found: "आपके आसपास का स्थान मिल गया!",
                 confirm_clear: "क्या सब मिटाना है?",
+                yes: "हाँ",
+                no: "नहीं",
                 ex_1: "💪 20 जंपिंग जैक",
                 ex_2: "🏃 अपनी जगह पर चलें (5 मिनट)",
                 ex_3: "🧘 स्ट्रेचिंग करें",
@@ -343,11 +363,51 @@
             }
         };
 
+        // 허브·다른 앱과 언어를 공유하기 위한 헬퍼
+        const LANG_KEY = 'dbfi_lang';
+        const SUPPORTED_LANGS = ['ko', 'en', 'hi'];
+        function getInitialLang() {
+            try {
+                const p = new URLSearchParams(location.search).get('lang');
+                if (p && SUPPORTED_LANGS.includes(p)) return p;
+            } catch (e) { /* 무시 */ }
+            try {
+                const s = localStorage.getItem(LANG_KEY);
+                if (s && SUPPORTED_LANGS.includes(s)) return s;
+            } catch (e) { /* 무시 */ }
+            return 'hi';
+        }
+        function persistLang(lang) { try { localStorage.setItem(LANG_KEY, lang); } catch (e) { /* 무시 */ } }
+
         let currentLang = 'hi';
+
+        // 어린이용 인앱 알림 / 확인 (네이티브 alert·confirm 대체)
+        function showToast(msg) {
+            const el = document.getElementById('appToast');
+            el.textContent = msg;
+            el.classList.remove('screen-hidden');
+            clearTimeout(el._t);
+            el._t = setTimeout(() => el.classList.add('screen-hidden'), 2800);
+        }
+        function showConfirm(msg, onYes) {
+            const modal = document.getElementById('appConfirm');
+            document.getElementById('appConfirmMsg').textContent = msg;
+            const yes = document.getElementById('appConfirmYes');
+            const no = document.getElementById('appConfirmNo');
+            yes.textContent = translations[currentLang].yes;
+            no.textContent = translations[currentLang].no;
+            modal.classList.remove('screen-hidden');
+            const close = () => { modal.classList.add('screen-hidden'); yes.onclick = null; no.onclick = null; };
+            yes.onclick = () => { close(); onYes(); };
+            no.onclick = close;
+        }
 
         function changeLanguage(lang) {
             currentLang = lang;
             document.documentElement.lang = lang;
+            persistLang(lang);
+            const sel = document.getElementById('langSelect');
+            if (sel && sel.value !== lang) sel.value = lang;
             const elements = document.querySelectorAll('[data-i18n]');
             elements.forEach(el => {
                 const key = el.getAttribute('data-i18n');
@@ -378,7 +438,7 @@
         // ==========================================
         // 3. 기능 1: 지도 및 걸음수 (가상 구현)
         // ==========================================
-        let steps = 0;
+        let steps = parseInt(localStorage.getItem('globalExerciseSteps') || '0', 10) || 0;
         function getLocation() {
             const locText = document.getElementById('locationText');
             locText.innerHTML = translations[currentLang].locating;
@@ -403,6 +463,7 @@
 
         function simulateStep() {
             steps++;
+            try { localStorage.setItem('globalExerciseSteps', String(steps)); } catch (e) { /* 무시 */ }
             const counter = document.getElementById('stepCounter');
             counter.innerText = steps;
             counter.classList.remove('animate-bounce-slow');
@@ -463,8 +524,8 @@
                     btn.innerText = translations[currentLang].btn_start;
                     inputsDiv.style.display = 'flex';
                     
-                    // 완료 알람 소리 (브라우저 기본 비프음 역할)
-                    alert(translations[currentLang].alert_timer_end);
+                    // 완료 축하 (딱딱한 alert 대신 인앱 토스트)
+                    showToast(translations[currentLang].alert_timer_end);
                 }
             }, 1000);
         }
@@ -490,7 +551,7 @@
             const text = document.getElementById('diaryText').value;
             
             if (!date || !text.trim()) {
-                alert(translations[currentLang].alert_diary_empty);
+                showToast(translations[currentLang].alert_diary_empty);
                 return;
             }
 
@@ -517,10 +578,10 @@
         }
 
         function clearDiary() {
-            if(confirm(translations[currentLang].confirm_clear)) {
+            showConfirm(translations[currentLang].confirm_clear, () => {
                 localStorage.removeItem('globalExerciseDiary');
                 loadDiary();
-            }
+            });
         }
 
         // ==========================================
@@ -571,10 +632,16 @@
             // 날짜 기본값을 오늘로 설정
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('diaryDate').value = today;
-            
-            // 초기 언어 적용 (한국어)
-            changeLanguage('hi');
-            
+
+            // 저장된 걸음수 복원
+            document.getElementById('stepCounter').innerText = steps;
+
+            // 허브/저장값에서 이어받은 언어 적용
+            changeLanguage(getInitialLang());
+
+            // 저장된 일기 불러오기
+            loadDiary();
+
             // 홈 화면 표시
             navigate('home');
         };

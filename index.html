@@ -2,7 +2,7 @@
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>समस्या-समाधान मित्र | Digital Bridge for India</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -90,11 +90,13 @@
   }
   .lang-btn {
     border: none;
-    background: rgba(255,255,255,0.75);
-    color: var(--color-gray-700);
-    font-weight: 700;
-    font-size: 12px;
-    padding: 5px 9px;
+    background: rgba(255,255,255,0.85);
+    color: var(--color-gray-900);
+    font-weight: 800;
+    font-size: 15px;
+    min-width: 44px;
+    min-height: 40px;
+    padding: 8px 14px;
     border-radius: 999px;
     cursor: pointer;
     transition: all 0.15s;
@@ -269,12 +271,12 @@
 
     <div class="card-grid-wrap">
       <details class="ux-report">
-        <summary data-i18n="report_title">पहली UI/UX समीक्षा देखें</summary>
+        <summary data-i18n="report_title">UI/UX सुधार (दूसरा दौर) देखें</summary>
         <ul>
-          <li data-i18n="report_1">भारतीय बच्चों के लिए पहली स्क्रीन कोरियाई होने से कठिनाई थी, इसलिए HI पहले दिखाया गया है।</li>
-          <li data-i18n="report_2">हर ऐप में बटन अलग जगह थे; अब हब में पहले साझा निर्देश हैं।</li>
-          <li data-i18n="report_3">छोटे पाठ और कमजोर फोकस संकेत को बेहतर किया गया है।</li>
-          <li data-i18n="report_4">अगला कदम: 4 ऐप में समान हेडर, होम/भाषा बटन और ऑफलाइन मार्गदर्शन को एक जैसा करना।</li>
+          <li data-i18n="report_1">अब हब में चुनी गई भाषा हर ऐप में वैसी ही रहती है और दोबारा खोलने पर भी याद रहती है।</li>
+          <li data-i18n="report_2">खेल का समय, अलार्म, कदम और डायरी सेव होते हैं — ऐप बंद करके फिर खोलें तो भी नहीं मिटते।</li>
+          <li data-i18n="report_3">सिस्टम पॉप-अप की जगह नरम इन-ऐप संदेश, बड़े बटन और ज़ूम की सुविधा जोड़ी गई है।</li>
+          <li data-i18n="report_4">अगला कदम: धीमे इंटरनेट पर भी चले, इसके लिए फ़ॉन्ट और डिज़ाइन ऐप के अंदर रखना (ऑफलाइन)।</li>
         </ul>
       </details>
       <div class="card-grid">
@@ -337,11 +339,11 @@
       main_subtitle: "친구들을 위해 우리가 만든 앱이에요",
       guide_lang: "<strong>HI</strong>부터 보여줘요. KR/EN도 바꿀 수 있어요.",
       guide_simple: "큰 그림 카드를 누르면 바로 시작해요.",
-      report_title: "UI/UX 1차 진단 보고서 보기",
-      report_1: "인도 어린이가 처음 볼 때 한국어 기본값이 장벽이어서 HI를 우선 노출했습니다.",
-      report_2: "앱마다 조작 방식과 언어 선택 위치가 달라 혼란이 있어, 허브에서 공통 안내를 먼저 제공합니다.",
-      report_3: "작은 설명 문구와 약한 포커스 표시를 보완해 터치/키보드 접근성을 높였습니다.",
-      report_4: "다음 단계는 4개 앱의 공통 헤더, 같은 위치의 홈/언어 버튼, 오프라인 안내를 통일하는 것입니다.",
+      report_title: "UI/UX 개선 보고서(2차) 보기",
+      report_1: "허브에서 고른 언어가 각 앱에 그대로 이어지고, 앱을 다시 열어도 기억됩니다.",
+      report_2: "놀이시간·알람·걸음수·일기가 저장되어 앱을 껐다 켜도 사라지지 않습니다.",
+      report_3: "딱딱한 시스템 팝업을 부드러운 인앱 안내로 바꾸고, 큰 버튼과 화면 확대로 접근성을 높였습니다.",
+      report_4: "다음 단계는 인터넷이 약한 곳에서도 쓰도록 글꼴·디자인을 앱 안에 담는 오프라인 작업입니다.",
       main_note: "카드를 눌러서 앱을 열어보세요!",
       name_global: "글로벌 운동",
       desc_global: "건강하게 운동하는 습관을 길러줘요",
@@ -359,11 +361,11 @@
       main_subtitle: "Apps we made for friends around the world",
       guide_lang: "Start with <strong>HI</strong>. KR/EN are also available.",
       guide_simple: "Tap a big picture card to start right away.",
-      report_title: "View first UI/UX review",
-      report_1: "Korean as the first screen can block Indian children, so HI is shown first.",
-      report_2: "Each app places controls differently; the hub now gives shared instructions first.",
-      report_3: "Small text and weak focus states were improved for touch and keyboard access.",
-      report_4: "Next: unify headers, home/language button positions, and offline guidance across all 4 apps.",
+      report_title: "View UI/UX improvements (round 2)",
+      report_1: "The language you pick in the hub now carries into every app and is remembered when you reopen.",
+      report_2: "Playtime, alarms, steps, and diary are saved, so nothing is lost when you close and reopen an app.",
+      report_3: "Harsh system pop-ups became gentle in-app messages, with bigger buttons and pinch-to-zoom.",
+      report_4: "Next: bundle fonts and design inside the apps so they work on slow or offline connections.",
       main_note: "Tap a card to open the app!",
       name_global: "Global Exercise",
       desc_global: "Builds healthy exercise habits",
@@ -381,11 +383,11 @@
       main_subtitle: "दुनिया के दोस्तों के लिए हमने बनाए ये ऐप्स",
       guide_lang: "पहले <strong>HI</strong> दिखता है। KR/EN भी बदल सकते हैं।",
       guide_simple: "शुरू करने के लिए बड़े चित्र वाले कार्ड पर टैप करें।",
-      report_title: "पहली UI/UX समीक्षा देखें",
-      report_1: "भारतीय बच्चों के लिए पहली स्क्रीन कोरियाई होने से कठिनाई थी, इसलिए HI पहले दिखाया गया है।",
-      report_2: "हर ऐप में बटन अलग जगह थे; अब हब में पहले साझा निर्देश हैं।",
-      report_3: "छोटे पाठ और कमजोर फोकस संकेत को बेहतर किया गया है।",
-      report_4: "अगला कदम: 4 ऐप में समान हेडर, होम/भाषा बटन और ऑफलाइन मार्गदर्शन को एक जैसा करना।",
+      report_title: "UI/UX सुधार (दूसरा दौर) देखें",
+      report_1: "अब हब में चुनी गई भाषा हर ऐप में वैसी ही रहती है और दोबारा खोलने पर भी याद रहती है।",
+      report_2: "खेल का समय, अलार्म, कदम और डायरी सेव होते हैं — ऐप बंद करके फिर खोलें तो भी नहीं मिटते।",
+      report_3: "सिस्टम पॉप-अप की जगह नरम इन-ऐप संदेश, बड़े बटन और ज़ूम की सुविधा जोड़ी गई है।",
+      report_4: "अगला कदम: धीमे इंटरनेट पर भी चले, इसके लिए फ़ॉन्ट और डिज़ाइन ऐप के अंदर रखना (ऑफलाइन)।",
       main_note: "ऐप खोलने के लिए कार्ड पर टैप करें!",
       name_global: "ग्लोबल एक्सरसाइज़",
       desc_global: "स्वस्थ व्यायाम की आदत बनाता है",
@@ -400,12 +402,25 @@
     }
   };
 
-  let currentLang = 'hi';
+  const LANG_KEY = 'dbfi_lang';          // 허브·모든 앱이 공유하는 언어 저장 키
+  const SUPPORTED_LANGS = ['ko', 'en', 'hi'];
+
+  function readStoredLang() {
+    try {
+      const saved = localStorage.getItem(LANG_KEY);
+      if (saved && SUPPORTED_LANGS.includes(saved)) return saved;
+    } catch (e) { /* localStorage 차단 환경 무시 */ }
+    return 'hi';
+  }
+
+  let currentLang = readStoredLang();
   let currentAppKey = null;
+  let currentAppUrl = null;
 
   function setLang(lang) {
     currentLang = lang;
     document.documentElement.lang = lang;
+    try { localStorage.setItem(LANG_KEY, lang); } catch (e) { /* 무시 */ }
     const t = translations[lang];
 
     document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -424,7 +439,9 @@
 
   function openApp(url, appKey) {
     currentAppKey = appKey;
-    document.getElementById('appFrame').src = url;
+    // 허브에서 고른 언어를 앱에 전달 (localStorage도 공유하지만 URL로 확실히 전달)
+    currentAppUrl = url + '?lang=' + encodeURIComponent(currentLang);
+    document.getElementById('appFrame').src = currentAppUrl;
     document.getElementById('currentAppName').textContent = translations[currentLang]['name_' + appKey];
     document.getElementById('hubView').style.display = 'none';
     document.getElementById('appView').style.display = 'flex';
@@ -435,9 +452,13 @@
     document.getElementById('hubView').style.display = 'flex';
     document.getElementById('appFrame').src = 'about:blank';
     currentAppKey = null;
+    currentAppUrl = null;
+    // 앱 안에서 언어를 바꿨을 수 있으니 허브도 다시 맞춤
+    const stored = readStoredLang();
+    if (stored !== currentLang) setLang(stored);
   }
 
-  window.onload = () => setLang('hi');
+  window.onload = () => setLang(currentLang);
 </script>
 
 </body>

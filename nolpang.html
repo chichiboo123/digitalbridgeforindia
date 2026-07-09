@@ -2,7 +2,7 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>नोलपंग (Nolpang)</title>
     
     <!-- Tailwind CSS -->
@@ -123,6 +123,7 @@
                 title_settings: "언어 설정",
                 min: "분",
                 msg_empty_tasks: "오늘 할 일을 다 했어요! 신나게 놀아요! 🎉",
+                btn_restart: "🔄 다시 시작하기",
                 btn_earn_time: "+ 시간 벌기",
                 task_hw: "숙제 빨리 끝내기",
                 task_clean: "내 방 장난감 정리하기",
@@ -151,6 +152,7 @@
                 title_settings: "Language Settings",
                 min: "min",
                 msg_empty_tasks: "All done for today! Let's play! 🎉",
+                btn_restart: "🔄 Start again",
                 btn_earn_time: "+ Earn Time",
                 task_hw: "Finish Homework Fast",
                 task_clean: "Clean Up Toys",
@@ -179,6 +181,7 @@
                 title_settings: "भाषा सेटिंग्स",
                 min: "मिनट",
                 msg_empty_tasks: "आज के लिए सब हो गया! चलो खेलें! 🎉",
+                btn_restart: "🔄 फिर से शुरू करें",
                 btn_earn_time: "+ समय कमाएं",
                 task_hw: "होमवर्क जल्दी खत्म करें",
                 task_clean: "खिलौने साफ करें",
@@ -196,10 +199,25 @@
             }
         };
 
+        // 허브·다른 앱과 언어를 공유하기 위한 헬퍼
+        const LANG_KEY = 'dbfi_lang';
+        const SUPPORTED_LANGS = ['ko', 'en', 'hi'];
+        function getInitialLang() {
+            try {
+                const p = new URLSearchParams(location.search).get('lang');
+                if (p && SUPPORTED_LANGS.includes(p)) return p;
+            } catch (e) { /* 무시 */ }
+            try {
+                const s = localStorage.getItem(LANG_KEY);
+                if (s && SUPPORTED_LANGS.includes(s)) return s;
+            } catch (e) { /* 무시 */ }
+            return 'hi';
+        }
+
         // --- 2. 앱 상태 (State) 관리 ---
         const state = {
             currentScreen: 'home', // 'home', 'tasks', 'ideas', 'settings'
-            lang: 'hi',            // 인도 어린이를 위해 기본 힌디어
+            lang: getInitialLang(), // 허브/저장값에서 이어받은 언어 (기본 힌디어)
             savedTime: 0,          // 모은 놀이 시간 (분)
             tasks: [
                 { id: 1, key: 'task_hw', time: 15, done: false, icon: '📚' },
@@ -208,6 +226,28 @@
                 { id: 4, key: 'task_wash', time: 5, done: false, icon: '🧼' },
             ]
         };
+
+        // 상태 저장/복원 (놀이시간·완료한 할일이 새로고침 후에도 유지되도록)
+        const STATE_KEY = 'nolpangState';
+        function saveState() {
+            try {
+                localStorage.setItem(STATE_KEY, JSON.stringify({
+                    savedTime: state.savedTime,
+                    doneIds: state.tasks.filter(task => task.done).map(task => task.id)
+                }));
+            } catch (e) { /* 무시 */ }
+        }
+        function loadState() {
+            try {
+                const raw = localStorage.getItem(STATE_KEY);
+                if (!raw) return;
+                const data = JSON.parse(raw);
+                if (typeof data.savedTime === 'number') state.savedTime = data.savedTime;
+                if (Array.isArray(data.doneIds)) {
+                    state.tasks.forEach(task => { task.done = data.doneIds.includes(task.id); });
+                }
+            } catch (e) { /* 무시 */ }
+        }
 
         // 번역 도우미 함수
         const t = (key) => translations[state.lang][key] || key;
@@ -243,7 +283,10 @@
                 html += `
                     <div class="flex flex-col items-center mt-20 p-6 bg-white rounded-3xl shadow-sm text-center">
                         <span class="text-6xl mb-4">🏆</span>
-                        <p class="text-xl text-gray-600">${t('msg_empty_tasks')}</p>
+                        <p class="text-xl text-gray-600 mb-6">${t('msg_empty_tasks')}</p>
+                        <button onclick="resetTasks()" class="btn-press bg-secondary text-white font-title text-xl py-3 px-8 rounded-full shadow-cute transition-transform">
+                            ${t('btn_restart')}
+                        </button>
                     </div>`;
             } else {
                 html += `<div class="space-y-4">`;
@@ -322,6 +365,7 @@
         function setLanguage(lang) {
             state.lang = lang;
             document.documentElement.lang = lang;
+            try { localStorage.setItem(LANG_KEY, lang); } catch (e) { /* 무시 */ }
             updateApp();
             updateNavUI(); // 하단 네비게이션 텍스트도 업데이트
         }
@@ -332,11 +376,19 @@
             if (task && !task.done) {
                 task.done = true;
                 state.savedTime += task.time;
-                
+                saveState(); // 놀이시간·완료 상태 저장
+
                 // 완료 시 간단한 시각적 피드백 제공 후 홈으로 이동
                 updateApp();
                 setTimeout(() => navigate('home'), 300);
             }
+        }
+
+        // 모든 할 일을 다 끝냈을 때 새로 시작 (아이가 계속 이용할 수 있도록)
+        function resetTasks() {
+            state.tasks.forEach(task => { task.done = false; });
+            saveState();
+            navigate('tasks');
         }
 
         // 메인 콘텐츠 업데이트
@@ -386,6 +438,7 @@
 
         // --- 5. 초기화 ---
         window.onload = () => {
+            loadState(); // 저장된 놀이시간·완료 상태 복원
             document.documentElement.lang = state.lang;
             updateApp();
             updateNavUI();
