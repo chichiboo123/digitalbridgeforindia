@@ -83,6 +83,16 @@
         .hidden-screen {
             display: none !important;
         }
+
+        /* 모바일: 전체 화면 / 데스크톱: 폰 크기 중앙 프레임 */
+        #app-container { max-width: 480px; margin: 0 auto; }
+        @media (min-width: 540px) {
+            #app-container {
+                min-height: calc(100vh - 48px);
+                border-radius: 32px;
+                box-shadow: 0 24px 70px rgba(0, 40, 90, 0.18);
+            }
+        }
     </style>
 </head>
 <body class="font-body text-gray-800">

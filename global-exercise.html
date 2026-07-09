@@ -64,6 +64,18 @@
 
         /* 탭 숨김 처리용 클래스 */
         .screen-hidden { display: none !important; }
+
+        /* 모바일: 전체 화면 / 데스크톱: 폰 크기 중앙 프레임 */
+        .app-root { width: 100%; max-width: 480px; margin: 0 auto; }
+        @media (min-width: 540px) {
+            body { padding-top: 24px; padding-bottom: 24px; }
+            .app-root {
+                min-height: calc(100vh - 48px) !important;
+                border-radius: 32px;
+                overflow: hidden;
+                box-shadow: 0 24px 70px rgba(0, 40, 90, 0.18);
+            }
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-yellow-100 via-orange-100 to-red-100 min-h-screen text-gray-800 flex flex-col items-center">
@@ -75,7 +87,7 @@
     </audio>
 
     <!-- 모바일 화면 크기에 맞춘 메인 컨테이너 -->
-    <div class="w-full min-h-screen bg-white/60 relative flex flex-col">
+    <div class="app-root w-full min-h-screen bg-white/60 relative flex flex-col">
         
         <!-- 헤더 영역 -->
         <header class="bg-fire-600 text-white p-4 rounded-b-3xl shadow-md flex justify-between items-center z-10">

@@ -71,6 +71,25 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* 모바일: 전체 화면 / 데스크톱: 폰 크기 중앙 프레임 */
+        html {
+            background: linear-gradient(160deg, #EAF6FC 0%, #F1F3F6 50%, #FFF7E6 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+        body { width: 100%; max-width: 480px; margin: 0 auto; }
+        @media (min-width: 540px) {
+            body {
+                height: calc(100vh - 48px);
+                min-height: calc(100vh - 48px) !important;
+                margin: 24px auto;
+                border-radius: 32px;
+                overflow: hidden;
+                box-shadow: 0 24px 70px rgba(0, 40, 90, 0.18);
+            }
+            main { overflow-y: auto; }
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">

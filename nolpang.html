@@ -65,6 +65,18 @@
         ::-webkit-scrollbar {
             display: none;
         }
+
+        /* 모바일: 전체 화면 / 데스크톱: 폰 크기 중앙 프레임 */
+        body { margin: 0; }
+        #app { width: 100%; max-width: 480px; margin: 0 auto; }
+        @media (min-width: 540px) {
+            body { padding-top: 24px; padding-bottom: 24px; }
+            #app {
+                min-height: calc(100vh - 48px) !important;
+                border-radius: 32px;
+                box-shadow: 0 24px 70px rgba(120, 80, 0, 0.18);
+            }
+        }
     </style>
 </head>
 <body class="font-body antialiased flex justify-center min-h-screen">
