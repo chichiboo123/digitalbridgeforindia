@@ -1,0 +1,14 @@
+{
+  "name": "digitalbridgeforindia",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static four-app platform for Digital Bridge for India.",
+  "scripts": {
+    "build": "node scripts/validate-static-site.js",
+    "test": "node scripts/validate-static-site.js",
+    "start": "python3 -m http.server 8000"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

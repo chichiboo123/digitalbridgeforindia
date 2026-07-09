@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>숙제챙겨 - Homework Helper</title>
+    <title>होमवर्क हेल्पर - Homework Helper</title>
     
-    <!-- Google Fonts: Black Han Sans (타이틀용), Do Hyeon (본문용) -->
+    <!-- Google Fonts: Black Han Sans (타이틀용), Noto Sans (본문용) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans:wght@400;500;700;800&family=Noto+Sans+Devanagari:wght@400;500;700;800&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -25,8 +25,8 @@
                         bgLight: '#EFF6FF', // 배경 색상
                     },
                     fontFamily: {
-                        title: ['"Black Han Sans"', 'sans-serif'],
-                        body: ['"Do Hyeon"', 'sans-serif'],
+                        title: ['"Black Han Sans"', '"Noto Sans Devanagari"', 'sans-serif'],
+                        body: ['"Noto Sans"', '"Noto Sans Devanagari"', 'sans-serif'],
                     }
                 }
             }
@@ -42,29 +42,19 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            overflow: hidden;
+            overflow-x: hidden;
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* 모바일 앱 화면처럼 보이도록 컨테이너 크기 제한 */
+        /* 전체 화면을 사용하는 반응형 앱 컨테이너 */
         #app-container {
             width: 100%;
-            max-width: 420px;
-            height: 100vh;
-            max-height: 850px;
+            min-height: 100vh;
             background-color: #EFF6FF; /* bgLight */
             position: relative;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
             overflow: hidden;
-        }
-
-        @media (min-width: 421px) {
-            #app-container {
-                height: 90vh;
-                border-radius: 24px;
-            }
         }
 
         /* 스크롤바 숨기기 */
@@ -98,11 +88,11 @@
 <body class="font-body text-gray-800">
 
     <!-- 앱 컨테이너 -->
-    <main id="app-container" aria-label="숙제챙겨 앱">
+    <main id="app-container" aria-label="Homework Helper app">
         
         <!-- 언어 선택 바 (모든 화면에서 고정) -->
         <header class="absolute top-0 right-0 z-50 p-4 flex gap-2">
-            <button onclick="changeLanguage('ko')" class="lang-btn bg-white px-2 py-1 rounded-full shadow text-sm font-bold border-2 border-transparent text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary" aria-label="한국어">KR</button>
+            <button onclick="changeLanguage('ko')" class="lang-btn bg-white px-2 py-1 rounded-full shadow text-sm font-bold border-2 border-transparent text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary" aria-label="Korean">KR</button>
             <button onclick="changeLanguage('hi')" class="lang-btn bg-white px-2 py-1 rounded-full shadow text-sm font-bold border-2 border-primary text-primary focus:outline-none focus:ring-2 focus:ring-primary" aria-label="Hindi">HI</button>
             <button onclick="changeLanguage('en')" class="lang-btn bg-white px-2 py-1 rounded-full shadow text-sm font-bold border-2 border-transparent text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary" aria-label="English">EN</button>
         </header>
@@ -114,16 +104,16 @@
                 <svg class="w-32 h-32 mx-auto mb-6 text-primary drop-shadow-lg" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
                 </svg>
-                <h1 id="t-app-title" class="font-title text-5xl text-primary mb-2 drop-shadow-md tracking-wider">숙제챙겨</h1>
-                <p id="t-app-desc" class="text-lg text-gray-600 mb-6 font-bold">숙제 잊지 않게 도와줄게!</p>
-                <div class="grid grid-cols-3 gap-2 mb-8 text-center" aria-label="앱 사용 순서">
-                    <div class="bg-white/80 rounded-2xl p-3 shadow-sm"><div class="text-2xl">⏰</div><p id="t-step-alarm" class="text-sm font-bold text-primaryDark">알람</p></div>
-                    <div class="bg-white/80 rounded-2xl p-3 shadow-sm"><div class="text-2xl">✅</div><p id="t-step-check" class="text-sm font-bold text-primaryDark">확인</p></div>
-                    <div class="bg-white/80 rounded-2xl p-3 shadow-sm"><div class="text-2xl">🎉</div><p id="t-step-done" class="text-sm font-bold text-primaryDark">칭찬</p></div>
+                <h1 id="t-app-title" class="font-title text-5xl text-primary mb-2 drop-shadow-md tracking-wider">होमवर्क हेल्पर</h1>
+                <p id="t-app-desc" class="text-lg text-gray-600 mb-6 font-bold">होमवर्क कभी मत भूलना!</p>
+                <div class="grid grid-cols-3 gap-2 mb-8 text-center" aria-label="App steps">
+                    <div class="bg-white/80 rounded-2xl p-3 shadow-sm"><div class="text-2xl">⏰</div><p id="t-step-alarm" class="text-sm font-bold text-primaryDark">अलार्म</p></div>
+                    <div class="bg-white/80 rounded-2xl p-3 shadow-sm"><div class="text-2xl">✅</div><p id="t-step-check" class="text-sm font-bold text-primaryDark">जांच</p></div>
+                    <div class="bg-white/80 rounded-2xl p-3 shadow-sm"><div class="text-2xl">🎉</div><p id="t-step-done" class="text-sm font-bold text-primaryDark">शाबाश</p></div>
                 </div>
                 
                 <button onclick="startApp()" id="t-btn-start" class="bg-primary hover:bg-primaryDark text-white font-title text-2xl py-4 px-10 rounded-full shadow-lg transform transition active:scale-95 focus:outline-none focus:ring-4 focus:ring-primaryLight">
-                    시작하기
+                    शुरू करें
                 </button>
             </div>
         </section>
@@ -133,7 +123,7 @@
             
             <!-- 상단 타이틀바 -->
             <header class="bg-primary text-white p-4 pt-12 rounded-b-3xl shadow-md text-center z-10 shrink-0">
-                <h2 id="t-main-title" class="font-title text-3xl tracking-wide">오늘의 할 일</h2>
+                <h2 id="t-main-title" class="font-title text-3xl tracking-wide">आज के काम</h2>
             </header>
 
             <!-- 탭 내용 영역 -->
@@ -144,53 +134,53 @@
                     <svg class="w-24 h-24 text-accent mb-4" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
                     </svg>
-                    <h3 id="t-home-greeting" class="text-2xl font-bold text-center text-primaryDark mb-4">안녕! 오늘도 힘내자!</h3>
+                    <h3 id="t-home-greeting" class="text-2xl font-bold text-center text-primaryDark mb-4">नमस्ते! आज का दिन शुभ हो!</h3>
                     <div class="bg-white p-6 rounded-2xl shadow-sm w-full border-2 border-blue-100">
-                        <p id="t-home-status" class="text-lg text-center">아래 메뉴에서 숙제 알림을 맞추고 기입장을 확인해봐.</p>
+                        <p id="t-home-status" class="text-lg text-center">1) अलार्म समय चुनें 2) होमवर्क हुआ या नहीं दबाएं।</p>
                     </div>
                 </div>
 
                 <!-- 탭: 알리미 -->
                 <div id="tab-alarm" class="tab-content hidden-screen">
-                    <h3 id="t-alarm-title" class="text-2xl font-title text-primary mb-4">알리미 설정</h3>
+                    <h3 id="t-alarm-title" class="text-2xl font-title text-primary mb-4">अलार्म सेट करें</h3>
                     <div class="bg-white p-5 rounded-2xl shadow-sm border-2 border-blue-100 mb-6">
-                        <label id="t-alarm-label" class="block text-gray-700 font-bold mb-2">언제 알려줄까?</label>
+                        <label id="t-alarm-label" class="block text-gray-700 font-bold mb-2">मुझे आपको कब याद दिलाना चाहिए?</label>
                         <div class="flex gap-2 mb-4">
                             <input type="time" id="alarm-time" class="flex-1 p-3 border-2 border-gray-200 rounded-xl font-bold text-lg focus:border-primary focus:outline-none">
-                            <button onclick="addAlarm()" id="t-btn-add-alarm" class="bg-primary text-white px-4 py-2 rounded-xl font-bold shadow active:scale-95">추가</button>
+                            <button onclick="addAlarm()" id="t-btn-add-alarm" class="bg-primary text-white px-4 py-2 rounded-xl font-bold shadow active:scale-95">जोड़ें</button>
                         </div>
                     </div>
 
-                    <h4 id="t-alarm-list-title" class="text-xl font-bold text-gray-600 mb-3">설정된 알림</h4>
+                    <h4 id="t-alarm-list-title" class="text-xl font-bold text-gray-600 mb-3">आपके अलार्म</h4>
                     <ul id="alarm-list" class="space-y-3">
                         <!-- 알림 리스트가 동적으로 추가됨 -->
-                        <li class="text-gray-400 text-center py-4" id="t-no-alarms">아직 설정된 알림이 없어!</li>
+                        <li class="text-gray-400 text-center py-4" id="t-no-alarms">अभी तक कोई अलार्म नहीं!</li>
                     </ul>
                 </div>
 
                 <!-- 탭: 일일 기입장 -->
                 <div id="tab-tracker" class="tab-content hidden-screen">
-                    <h3 id="t-tracker-title" class="text-2xl font-title text-primary mb-4">일일 기입장</h3>
+                    <h3 id="t-tracker-title" class="text-2xl font-title text-primary mb-4">दैनिक डायरी</h3>
                     
                     <!-- 출석/숙제 체크 카드 -->
                     <div class="bg-white p-6 rounded-3xl shadow-sm border-2 border-blue-100 text-center mb-6 relative overflow-hidden">
                         <div id="stamp-overlay" class="absolute inset-0 bg-success/10 flex justify-center items-center hidden-screen">
                             <div class="pop-animation transform rotate-12 border-4 border-success text-success font-title text-4xl py-2 px-6 rounded-xl bg-white shadow-lg">
-                                참 잘했어요!
+                                बहुत अच्छा!
                             </div>
                         </div>
-                        <h4 id="t-tracker-question" class="text-xl font-bold text-gray-700 mb-6">오늘 숙제는 다 챙겼어?</h4>
+                        <h4 id="t-tracker-question" class="text-xl font-bold text-gray-700 mb-6">क्या आपने अपना होमवर्क कर लिया?</h4>
                         <div class="flex justify-center gap-4">
-                            <button onclick="checkHomework(true)" id="t-btn-done" class="flex-1 bg-success text-white py-3 rounded-2xl font-bold text-lg shadow-md active:scale-95 transition">다 했어!</button>
-                            <button onclick="checkHomework(false)" id="t-btn-notyet" class="flex-1 bg-gray-200 text-gray-700 py-3 rounded-2xl font-bold text-lg shadow-md active:scale-95 transition">아직이야</button>
+                            <button onclick="checkHomework(true)" id="t-btn-done" class="flex-1 bg-success text-white py-3 rounded-2xl font-bold text-lg shadow-md active:scale-95 transition">हो गया!</button>
+                            <button onclick="checkHomework(false)" id="t-btn-notyet" class="flex-1 bg-gray-200 text-gray-700 py-3 rounded-2xl font-bold text-lg shadow-md active:scale-95 transition">अभी नहीं</button>
                         </div>
                     </div>
 
                     <!-- 보호자/시스템 톡 시뮬레이션 영역 -->
                     <div class="bg-blue-50 p-4 rounded-2xl">
-                        <p id="t-tracker-desc" class="text-sm text-gray-500 mb-2 text-center">숙제를 안 챙기면 알림이 올지도 몰라!</p>
+                        <p id="t-tracker-desc" class="text-sm text-gray-500 mb-2 text-center">यदि आप भूल गए, तो आपको एक संदेश मिलेगा!</p>
                         <button onclick="simulateForget()" id="t-btn-simulate" class="w-full border-2 border-primary text-primary py-2 rounded-xl font-bold text-sm hover:bg-blue-100 transition">
-                            (테스트) 숙제 안 챙겼을 때 톡 받기
+                            (टेस्ट) संदेश प्राप्त करें
                         </button>
                     </div>
                 </div>
@@ -201,27 +191,27 @@
             <nav class="bg-white border-t-2 border-gray-100 absolute bottom-0 w-full flex justify-around p-3 pb-6 shrink-0 z-10 shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
                 <button onclick="switchTab('home')" class="nav-btn flex flex-col items-center gap-1 text-primary focus:outline-none" data-tab="home">
                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-                    <span id="t-nav-home" class="text-xs font-bold">홈</span>
+                    <span id="t-nav-home" class="text-xs font-bold">होम</span>
                 </button>
                 <button onclick="switchTab('alarm')" class="nav-btn flex flex-col items-center gap-1 text-gray-400 hover:text-primary focus:outline-none transition-colors" data-tab="alarm">
                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/></svg>
-                    <span id="t-nav-alarm" class="text-xs font-bold">알리미</span>
+                    <span id="t-nav-alarm" class="text-xs font-bold">अलार्म</span>
                 </button>
                 <button onclick="switchTab('tracker')" class="nav-btn flex flex-col items-center gap-1 text-gray-400 hover:text-primary focus:outline-none transition-colors" data-tab="tracker">
                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M3 3v18h18V3H3zm14 14H7v-2h10v2zm0-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
-                    <span id="t-nav-tracker" class="text-xs font-bold">기입장</span>
+                    <span id="t-nav-tracker" class="text-xs font-bold">डायरी</span>
                 </button>
             </nav>
         </section>
 
         <!-- 공통 톡 알림 (모달 대신 사용) -->
-        <div id="chat-toast" class="chat-notification hidden-screen fixed bottom-24 left-1/2 w-11/12 max-w-[380px] bg-white rounded-2xl shadow-xl border-2 border-primary overflow-hidden z-50 flex items-center p-4 gap-4">
+        <div id="chat-toast" class="chat-notification hidden-screen fixed bottom-24 left-1/2 w-11/12 md:w-[520px] bg-white rounded-2xl shadow-xl border-2 border-primary overflow-hidden z-50 flex items-center p-4 gap-4">
             <div class="bg-primaryLight rounded-full p-2 text-white shrink-0">
                 <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12zM7 9h2v2H7zm4 0h2v2h-2zm4 0h2v2h-2z"/></svg>
             </div>
             <div class="flex-1">
-                <h4 id="toast-title" class="font-title text-primary text-lg">알림</h4>
-                <p id="toast-msg" class="text-gray-700 font-bold text-sm">숙제 챙겨! 늦기 전에 빨리 하자!</p>
+                <h4 id="toast-title" class="font-title text-primary text-lg">अलर्ट</h4>
+                <p id="toast-msg" class="text-gray-700 font-bold text-sm">अपना होमवर्क याद रखें!</p>
             </div>
             <button onclick="closeToast()" class="text-gray-400 hover:text-gray-600 focus:outline-none p-1">
                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
@@ -237,7 +227,7 @@
             ko: {
                 appTitle: "숙제챙겨",
                 appDesc: "숙제 잊지 않게 도와줄게!",
-                btnStart: "시작하기",
+                btnStart: "शुरू करें",
                 mainTitle: "오늘의 할 일",
                 navHome: "홈",
                 navAlarm: "알리미",
@@ -257,13 +247,13 @@
                 btnDone: "다 했어!",
                 btnNotYet: "아직이야",
                 trackerDesc: "숙제를 안 챙기면 알림이 올지도 몰라!",
-                btnSimulate: "(테스트) 숙제 안 챙겼을 때 톡 받기",
+                btnSimulate: "(टेस्ट) संदेश प्राप्त करें",
                 toastAlarmTitle: "⏰ 삐빅! 시간이야!",
                 toastAlarmMsg: "숙제 챙겨! 설정한 시간이 되었어.",
                 toastNagTitle: "💬 톡 도착!",
                 toastNagMsg: "앗! 아직 숙제를 안 챙겼어? 얼른 챙기자!",
                 delete: "삭제",
-                stampText: "참 잘했어요!"
+                stampText: "बहुत अच्छा!"
             },
             hi: {
                 appTitle: "होमवर्क हेल्पर",
@@ -340,6 +330,7 @@
         // 언어 변경
         function changeLanguage(lang) {
             currentLang = lang;
+            document.documentElement.lang = lang;
             const t = translations[lang];
             
             // 텍스트 업데이트
@@ -384,7 +375,7 @@
             renderAlarms(); // 알람 리스트 "삭제", "알람 없음" 텍스트 갱신
         }
 
-        // 시작하기 버튼 (화면 전환)
+        // शुरू करें 버튼 (화면 전환)
         function startApp() {
             document.getElementById('screen-start').classList.add('hidden-screen');
             document.getElementById('screen-main').classList.remove('hidden-screen');

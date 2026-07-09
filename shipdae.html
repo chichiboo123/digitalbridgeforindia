@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>쉽대 (ShipDae) - 자신감 키우기</title>
+    <title>शिपडे (ShipDae) - Confidence Helper</title>
     
     <!-- 폰트 불러오기: 귀엽고 친근한 주아체 사용 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans:wght@400;500;700;800&family=Noto+Sans+Devanagari:wght@400;500;700;800&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS (스타일링 용도) -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -19,10 +19,15 @@
     <style>
         /* 기본 폰트 설정 */
         body {
-            font-family: 'Jua', sans-serif;
+            font-family: 'Noto Sans', 'Noto Sans Devanagari', sans-serif;
             background-color: #FFFFFF; /* 배경색: 흰색 */
             color: #333333;
             overflow-x: hidden;
+        }
+
+        h1, h2, .title-font {
+            font-family: 'Black Han Sans', 'Noto Sans Devanagari', sans-serif;
+            font-weight: 400;
         }
 
         /* 메인 컬러 설정 */
@@ -77,20 +82,20 @@
 
     <!-- 네비게이션 및 상단 바 -->
     <header class="bg-primary text-white p-4 shadow-md sticky top-0 z-50 flex justify-between items-center rounded-b-3xl">
-        <div class="flex items-center gap-2 cursor-pointer" onclick="navigate('home')" tabindex="0" aria-label="홈으로 가기" onkeydown="if(event.key==='Enter') navigate('home')">
+        <div class="flex items-center gap-2 cursor-pointer" onclick="navigate('home')" tabindex="0" aria-label="Home" onkeydown="if(event.key==='Enter') navigate('home')">
             <i class="fa-solid fa-seedling text-2xl"></i>
-            <h1 class="text-2xl tracking-wide" id="ui-title">쉽대</h1>
+            <h1 class="text-2xl tracking-wide" id="ui-title">शिपडे</h1>
         </div>
         
         <div class="flex items-center gap-4">
             <!-- 음악 토글 버튼 -->
-            <button id="musicBtn" onclick="toggleMusic()" class="text-white hover:text-yellow-200 transition-colors" aria-label="배경음악 켜기/끄기">
+            <button id="musicBtn" onclick="toggleMusic()" class="text-white hover:text-yellow-200 transition-colors" aria-label="Background music on/off">
                 <i class="fa-solid fa-music text-xl" id="musicIcon"></i>
             </button>
 
             <!-- 언어 선택 -->
             <select id="langSelect" onchange="changeLanguage()" class="bg-white text-gray-800 rounded-full px-3 py-1 text-sm font-sans focus:outline-none focus:ring-2 focus:ring-white">
-                <option value="ko">🇰🇷 한국어</option>
+                <option value="ko">🇰🇷 Korean</option>
                 <option value="en">🇺🇸 English</option>
                 <option value="hi" selected>🇮🇳 हिन्दी</option>
             </select>
@@ -98,21 +103,21 @@
     </header>
 
     <!-- 메인 컨텐츠 영역 -->
-    <main class="flex-grow p-4 flex flex-col items-center justify-center max-w-md mx-auto w-full relative">
+    <main class="flex-grow p-4 flex flex-col items-center justify-center w-full relative">
         
         <!-- ================= 화면 1. 홈 화면 ================= -->
         <section id="screen-home" class="screen active text-center w-full fade-in">
             <div class="mb-8 bounce-soft">
                 <span class="text-7xl">🐻‍❄️</span>
             </div>
-            <h2 class="text-3xl mb-2 text-gray-700" id="ui-welcome">안녕! 난 네 친구 쉽대야.</h2>
-            <p class="text-gray-500 mb-8 text-lg" id="ui-desc">남들 앞에서 말하기 떨릴 때, 내가 도와줄게!</p>
+            <h2 class="text-3xl mb-2 text-gray-700" id="ui-welcome">नमस्ते! मैं आपका दोस्त शिपडे हूँ।</h2>
+            <p class="text-gray-500 mb-8 text-lg" id="ui-desc">जब आपको दूसरों के सामने बोलने में घबराहट हो, तो मैं आपकी मदद करूँगा!</p>
 
             <div class="flex flex-col gap-4 w-full px-4">
                 <button onclick="navigate('feedback')" class="bg-primary hover-bg-primary-dark text-white rounded-2xl p-5 text-xl shadow-lg transition-transform transform hover:scale-105 active:scale-95 flex items-center justify-between group">
                     <span class="flex items-center gap-3">
                         <i class="fa-solid fa-microphone-lines text-2xl group-hover:animate-pulse"></i>
-                        <span id="ui-btn-feedback">말하기 팁 받기</span>
+                        <span id="ui-btn-feedback">बोलने के टिप्स लें</span>
                     </span>
                     <i class="fa-solid fa-chevron-right opacity-70"></i>
                 </button>
@@ -120,7 +125,7 @@
                 <button onclick="navigate('advice')" class="bg-yellow-100 hover:bg-yellow-200 text-yellow-700 rounded-2xl p-5 text-xl shadow-lg transition-transform transform hover:scale-105 active:scale-95 flex items-center justify-between group border-2 border-yellow-300">
                     <span class="flex items-center gap-3">
                         <i class="fa-solid fa-heart text-2xl text-red-400 group-hover:animate-bounce"></i>
-                        <span id="ui-btn-advice">응원 한마디 듣기</span>
+                        <span id="ui-btn-advice">प्रोत्साहक शब्द सुनें</span>
                     </span>
                     <i class="fa-solid fa-chevron-right opacity-70"></i>
                 </button>
@@ -131,22 +136,22 @@
         <!-- ================= 화면 2. AI 피드백 화면 ================= -->
         <section id="screen-feedback" class="screen w-full fade-in text-center">
             <button onclick="navigate('home')" class="absolute top-0 left-4 text-gray-400 hover:text-gray-600 mb-4 flex items-center gap-2">
-                <i class="fa-solid fa-arrow-left"></i> <span id="ui-back-1">뒤로</span>
+                <i class="fa-solid fa-arrow-left"></i> <span id="ui-back-1">पीछे</span>
             </button>
             
             <div class="mt-10 mb-4">
                 <span class="text-5xl">🗣️</span>
             </div>
-            <h2 class="text-2xl mb-4 text-gray-700" id="ui-feedback-title">어떤 이야기를 할 건가요?</h2>
+            <h2 class="text-2xl mb-4 text-gray-700" id="ui-feedback-title">आप किस बारे में बात करने जा रहे हैं?</h2>
             
-            <textarea id="topicInput" rows="3" class="w-full border-4 border-primary rounded-2xl p-4 text-lg focus:outline-none focus:ring-4 focus:ring-blue-200 resize-none mb-3" placeholder="예: 친구들 앞에서 내 취미 소개하기"></textarea>
-            <div class="grid grid-cols-2 gap-2 mb-4" aria-label="빠른 주제 선택">
-                <button onclick="setTopic('classIntro')" id="ui-chip-intro" class="bg-blue-50 border-2 border-blue-100 rounded-2xl p-3 text-blue-700 active:scale-95">자기소개</button>
-                <button onclick="setTopic('favorite')" id="ui-chip-favorite" class="bg-blue-50 border-2 border-blue-100 rounded-2xl p-3 text-blue-700 active:scale-95">좋아하는 것</button>
+            <textarea id="topicInput" rows="3" class="w-full border-4 border-primary rounded-2xl p-4 text-lg focus:outline-none focus:ring-4 focus:ring-blue-200 resize-none mb-3" placeholder="उदा: दोस्तों को अपने शौक के बारे में बताना"></textarea>
+            <div class="grid grid-cols-2 gap-2 mb-4" aria-label="Quick topic choices">
+                <button onclick="setTopic('classIntro')" id="ui-chip-intro" class="bg-blue-50 border-2 border-blue-100 rounded-2xl p-3 text-blue-700 active:scale-95">मेरा परिचय</button>
+                <button onclick="setTopic('favorite')" id="ui-chip-favorite" class="bg-blue-50 border-2 border-blue-100 rounded-2xl p-3 text-blue-700 active:scale-95">मेरी पसंद</button>
             </div>
             
             <button onclick="getFeedback()" class="bg-primary hover-bg-primary-dark text-white rounded-full py-3 px-8 text-xl shadow-md transition-transform transform hover:scale-105 w-full font-bold" id="ui-btn-get-feedback">
-                나에게 맞는 목소리 찾기 🔍
+                मेरी आवाज़ का स्वर खोजें 🔍
             </button>
 
             <!-- 결과 표시 영역 -->
@@ -164,16 +169,16 @@
         <!-- ================= 화면 3. AI 조언 화면 ================= -->
         <section id="screen-advice" class="screen w-full fade-in text-center">
             <button onclick="navigate('home')" class="absolute top-0 left-4 text-gray-400 hover:text-gray-600 mb-4 flex items-center gap-2">
-                <i class="fa-solid fa-arrow-left"></i> <span id="ui-back-2">뒤로</span>
+                <i class="fa-solid fa-arrow-left"></i> <span id="ui-back-2">पीछे</span>
             </button>
             
             <div class="mt-10 mb-6 bounce-soft">
                 <span class="text-6xl">✨</span>
             </div>
-            <h2 class="text-2xl mb-6 text-gray-700 leading-snug" id="ui-advice-title">많이 떨리나요?<br>제가 힘을 줄게요!</h2>
+            <h2 class="text-2xl mb-6 text-gray-700 leading-snug" id="ui-advice-title">घबराहट हो रही है?<br>मैं आपको हिम्मत दूँगा!</h2>
             
             <button onclick="getAdvice()" class="bg-yellow-300 hover:bg-yellow-400 text-yellow-800 rounded-full py-4 px-8 text-2xl shadow-lg transition-transform transform hover:scale-105 w-full font-bold shadow-yellow-200" id="ui-btn-get-advice">
-                힘이 나는 마법의 주문 듣기 🪄
+                एक जादुई मंत्र सुनें 🪄
             </button>
 
             <!-- 결과 표시 영역 -->
@@ -186,7 +191,7 @@
     </main>
 
     <footer class="text-center p-4 text-gray-400 text-sm">
-        &copy; 2026 쉽대 (ShipDae) App
+        &copy; 2026 ShipDae App
     </footer>
 
     <!-- JavaScript 로직 -->
@@ -204,9 +209,9 @@
                 back: "뒤로",
                 feedbackTitle: "어떤 이야기를 할 건가요?",
                 placeholder: "예: 친구들 앞에서 내 취미 소개하기",
-                btnGetFeedback: "나에게 맞는 목소리 찾기 🔍",
+                btnGetFeedback: "मेरी आवाज़ का स्वर खोजें 🔍",
                 adviceTitle: "많이 떨리나요?<br>제가 힘을 줄게요!",
-                btnGetAdvice: "힘이 나는 마법의 주문 듣기 🪄",
+                btnGetAdvice: "एक जादुई मंत्र सुनें 🪄",
                 errorText: "앗, 통신이 조금 지연되고 있어요. 다시 시도해볼까요? 🐶",
                 chipIntro: "자기소개",
                 chipFavorite: "좋아하는 것",
@@ -264,6 +269,7 @@
         // ==========================================
         function changeLanguage() {
             currentLang = document.getElementById('langSelect').value;
+            document.documentElement.lang = currentLang;
             const t = translations[currentLang];
             
             // UI 텍스트 업데이트
@@ -317,7 +323,7 @@
                 icon.parentElement.classList.add('text-white');
             } else {
                 music.volume = 0.3; // 잔잔하게 30% 볼륨
-                music.play().catch(e => console.log("음악 자동재생 차단됨:", e));
+                music.play().catch(e => console.log("Audio playback blocked:", e));
                 icon.classList.remove('fa-volume-xmark');
                 icon.classList.add('fa-music');
                 icon.parentElement.classList.remove('text-white');
@@ -354,7 +360,7 @@
                     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                     
                     const data = await response.json();
-                    return data.candidates?.[0]?.content?.parts?.[0]?.text || "응답을 가져올 수 없습니다.";
+                    return data.candidates?.[0]?.content?.parts?.[0]?.text || fallbackText;
                 } catch (error) {
                     if (i === delays.length) {
                         console.error("API Call failed after retries:", error);
@@ -385,14 +391,14 @@
             loader.classList.remove('hidden');
             content.innerText = '';
 
-            const systemPrompt = `당신은 초등학생 어린이에게 자신감을 불어넣어주는 다정하고 귀여운 AI 친구 '쉽대'입니다.
-어린이가 남들 앞에서 발표나 이야기를 하려고 합니다. 어린이의 주제를 보고,
-1. 어떤 목소리 톤(예: 밝고 통통 튀게, 차분하고 또렷하게)이 어울릴지 알려주세요.
-2. 긴장을 풀 수 있는 간단한 몸짓 팁(예: 심호흡 1번, 활짝 웃기)을 1개 주세요.
-답변은 매우 짧고, 이모지를 섞어서, 초등학생이 이해하기 쉬운 친절한 말투로 작성하세요.
-반드시 사용자가 요청한 언어(${currentLang})로만 대답하세요.`;
+            const systemPrompt = `You are ShipDae, a kind and cute AI friend who gives elementary-school children confidence.
+The child is preparing to speak in front of others. Based on the topic:
+1. Suggest a fitting voice tone.
+2. Give one simple body tip to relax.
+Keep the answer very short, friendly, emoji-rich, and easy for a child to understand.
+Answer only in the requested language code: ${currentLang}.`;
             
-            const userPrompt = `내가 할 이야기 주제: "${topic}"`;
+            const userPrompt = `My speaking topic: "${topic}"`;
 
             const result = await fetchGeminiAPI(systemPrompt, userPrompt, translations[currentLang].offlineTip);
             
@@ -412,12 +418,11 @@
             loader.classList.remove('hidden');
             content.innerText = '';
 
-            const systemPrompt = `당신은 남들 앞에서 말하기를 두려워하는(특히 인도 어린이) 초등학생에게 용기를 주는 친근한 요정입니다.
-자신감을 가질 수 있도록 짧고, 긍정적이고, 마법 주문 같은 힘찬 응원의 말을 2~3문장으로 해주세요.
-이모지를 풍부하게 사용하세요.
-반드시 사용자가 요청한 언어(${currentLang})로만 대답하세요.`;
+            const systemPrompt = `You are a friendly fairy who encourages elementary-school children, especially children in India, who feel nervous speaking in front of others.
+Give 2-3 short, positive, magic-spell-like encouragement sentences with plenty of emojis.
+Answer only in the requested language code: ${currentLang}.`;
             
-            const userPrompt = `나에게 용기를 줘!`;
+            const userPrompt = `Please give me courage!`;
 
             const result = await fetchGeminiAPI(systemPrompt, userPrompt, translations[currentLang].offlineAdvice);
             
