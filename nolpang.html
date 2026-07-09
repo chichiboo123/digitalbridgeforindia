@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>놀팡 (Nolpang)</title>
+    <title>नोलपंग (Nolpang)</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -11,7 +11,7 @@
     <!-- Google Fonts: 도현체 & 블랙한산스 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans:wght@400;500;700;800&family=Noto+Sans+Devanagari:wght@400;500;700;800&display=swap" rel="stylesheet">
 
     <!-- Tailwind 커스텀 설정 -->
     <script>
@@ -36,8 +36,8 @@
     <!-- 커스텀 CSS -->
     <style>
         /* 폰트 적용 */
-        .font-title { font-family: "Black Han Sans", sans-serif; font-weight: 400; font-style: normal; }
-        .font-body { font-family: "Do Hyeon", sans-serif; font-weight: 400; font-style: normal; }
+        .font-title { font-family: "Black Han Sans", "Noto Sans Devanagari", sans-serif; font-weight: 400; font-style: normal; }
+        .font-body { font-family: "Noto Sans", "Noto Sans Devanagari", sans-serif; font-weight: 500; font-style: normal; }
         
         body {
             background-color: #FFF8E1;
@@ -70,14 +70,14 @@
 <body class="font-body antialiased flex justify-center min-h-screen">
 
     <!-- 모바일 화면 비율을 맞춘 컨테이너 -->
-    <div id="app" class="w-full max-w-md bg-white shadow-2xl relative flex flex-col h-screen overflow-hidden">
+    <div id="app" class="w-full bg-white relative flex flex-col min-h-screen overflow-hidden">
         
         <!-- 상단 헤더 -->
         <header class="bg-primary pt-10 pb-4 px-6 rounded-b-3xl shadow-sm z-10 flex justify-between items-center">
-            <h1 class="font-title text-4xl text-secondary tracking-wide drop-shadow-sm" aria-label="놀팡 앱 이름">
-                🎈놀팡
+            <h1 class="font-title text-4xl text-secondary tracking-wide drop-shadow-sm" aria-label="Nolpang app name">
+                🎈नोलपंग
             </h1>
-            <button onclick="navigate('settings')" class="text-3xl btn-press" aria-label="설정" title="설정">
+            <button onclick="navigate('settings')" class="text-3xl btn-press" aria-label="Settings" title="Settings">
                 ⚙️
             </button>
         </header>
@@ -90,17 +90,17 @@
         <!-- 하단 네비게이션 탭 -->
         <nav class="absolute bottom-0 w-full bg-white rounded-t-3xl shadow-[0_-5px_15px_rgba(0,0,0,0.05)] pb-safe">
             <div class="flex justify-around items-center p-4">
-                <button onclick="navigate('home')" class="flex flex-col items-center btn-press p-2" aria-label="홈 탭">
+                <button onclick="navigate('home')" class="flex flex-col items-center btn-press p-2" aria-label="Home tab">
                     <span class="text-3xl mb-1" id="nav-icon-home">🏠</span>
-                    <span class="text-sm text-gray-500 font-title" id="nav-text-home" data-i18n="nav_home">홈</span>
+                    <span class="text-sm text-gray-500 font-title" id="nav-text-home" data-i18n="nav_home">मुख्य पृष्ठ</span>
                 </button>
-                <button onclick="navigate('tasks')" class="flex flex-col items-center btn-press p-2" aria-label="할일 탭">
+                <button onclick="navigate('tasks')" class="flex flex-col items-center btn-press p-2" aria-label="Tasks tab">
                     <span class="text-3xl mb-1" id="nav-icon-tasks">📝</span>
-                    <span class="text-sm text-gray-500 font-title" id="nav-text-tasks" data-i18n="nav_tasks">할일</span>
+                    <span class="text-sm text-gray-500 font-title" id="nav-text-tasks" data-i18n="nav_tasks">कार्य</span>
                 </button>
-                <button onclick="navigate('ideas')" class="flex flex-col items-center btn-press p-2" aria-label="놀이 탭">
+                <button onclick="navigate('ideas')" class="flex flex-col items-center btn-press p-2" aria-label="Play tab">
                     <span class="text-3xl mb-1" id="nav-icon-ideas">💡</span>
-                    <span class="text-sm text-gray-500 font-title" id="nav-text-ideas" data-i18n="nav_ideas">놀이</span>
+                    <span class="text-sm text-gray-500 font-title" id="nav-text-ideas" data-i18n="nav_ideas">खेल</span>
                 </button>
             </div>
         </nav>
@@ -116,6 +116,8 @@
                 nav_ideas: "놀이",
                 nav_settings: "설정",
                 title_home: "나의 놀이 시간 저금통",
+                guide_home: "할 일을 누르면 놀이 시간이 모여요",
+                guide_tasks: "카드를 누르면 완료! 시간이 바로 저금돼요",
                 title_tasks: "빨리 끝내고 놀자!",
                 title_ideas: "어떻게 놀까?",
                 title_settings: "언어 설정",
@@ -142,6 +144,8 @@
                 nav_ideas: "Play",
                 nav_settings: "Settings",
                 title_home: "My Playtime Bank",
+                guide_home: "Tap tasks to earn playtime",
+                guide_tasks: "Tap a card to finish it and save time",
                 title_tasks: "Finish fast, Play hard!",
                 title_ideas: "How to play?",
                 title_settings: "Language Settings",
@@ -168,6 +172,8 @@
                 nav_ideas: "खेल",
                 nav_settings: "सेटिंग्स",
                 title_home: "मेरा खेल समय बैंक",
+                guide_home: "खेल समय कमाने के लिए काम दबाएं",
+                guide_tasks: "कार्ड दबाएं, काम पूरा और समय जमा",
                 title_tasks: "जल्दी खत्म करो, खेलो!",
                 title_ideas: "कैसे खेलें?",
                 title_settings: "भाषा सेटिंग्स",
@@ -193,7 +199,7 @@
         // --- 2. 앱 상태 (State) 관리 ---
         const state = {
             currentScreen: 'home', // 'home', 'tasks', 'ideas', 'settings'
-            lang: 'ko',            // 기본 언어
+            lang: 'hi',            // 인도 어린이를 위해 기본 힌디어
             savedTime: 0,          // 모은 놀이 시간 (분)
             tasks: [
                 { id: 1, key: 'task_hw', time: 15, done: false, icon: '📚' },
@@ -212,6 +218,7 @@
             return `
                 <div class="flex flex-col items-center justify-center h-full space-y-8 mt-10">
                     <h2 class="text-2xl text-center text-textMain">${t('title_home')}</h2>
+                    <p class="bg-white/90 border-2 border-primaryDark rounded-2xl px-4 py-3 text-lg text-center text-textMain shadow-sm">${t('guide_home')}</p>
                     
                     <!-- 놀이 시간 저금통 UI -->
                     <div class="w-56 h-56 rounded-full bg-white border-8 border-primaryDark shadow-cute flex flex-col items-center justify-center relative">
@@ -230,7 +237,7 @@
         function renderTasks() {
             const pendingTasks = state.tasks.filter(task => !task.done);
             
-            let html = `<h2 class="text-2xl text-textMain mb-6 text-center">${t('title_tasks')}</h2>`;
+            let html = `<h2 class="text-2xl text-textMain mb-2 text-center">${t('title_tasks')}</h2><p class="bg-white rounded-2xl p-3 mb-4 text-center text-gray-600 shadow-sm">${t('guide_tasks')}</p>`;
             
             if (pendingTasks.length === 0) {
                 html += `
@@ -314,6 +321,7 @@
         // 언어 변경 함수
         function setLanguage(lang) {
             state.lang = lang;
+            document.documentElement.lang = lang;
             updateApp();
             updateNavUI(); // 하단 네비게이션 텍스트도 업데이트
         }
@@ -378,6 +386,7 @@
 
         // --- 5. 초기화 ---
         window.onload = () => {
+            document.documentElement.lang = state.lang;
             updateApp();
             updateNavUI();
         };

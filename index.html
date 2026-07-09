@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="hi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>고민해결 프렌즈 | 교육뮤지컬 꿈꾸는 치수쌤</title>
+<title>समस्या-समाधान मित्र | Digital Bridge for India</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans:wght@400;500;700;800&family=Noto+Sans+Devanagari:wght@400;500;700;800&display=swap" rel="stylesheet">
 
 <style>
   :root {
@@ -42,42 +44,34 @@
     --spacing-md: 16px;
     --spacing-lg: 24px;
     --spacing-xl: 40px;
+    --focus-ring: 0 0 0 4px rgba(0, 109, 210, 0.22);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
   body {
-    font-family: 'Pretendard GOV', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: 'Noto Sans', 'Noto Sans Devanagari', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     background: var(--color-gray-100);
     min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     color: var(--color-gray-900);
   }
 
-  /* 휴대폰 프레임처럼 보이는 앱 컨테이너 */
-  .device-frame {
+  /* 전체 화면을 사용하는 반응형 앱 컨테이너 */
+  .app-shell {
     width: 100%;
-    max-width: 430px;
-    height: 100vh;
-    max-height: 900px;
+    min-height: 100vh;
     background: var(--color-white);
     display: flex;
     flex-direction: column;
     overflow: hidden;
     position: relative;
-    box-shadow: 0 12px 32px rgba(0,0,0,0.18);
-  }
-  @media (min-width: 431px) {
-    .device-frame { height: 90vh; border-radius: 28px; }
   }
 
   /* ---------- 허브(홈) 화면 ---------- */
   #hubView {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    min-height: 100vh;
   }
 
   .hub-header {
@@ -110,10 +104,12 @@
     color: var(--color-white);
   }
   .lang-btn:active { transform: scale(0.93); }
+  .lang-btn:focus-visible, .app-card:focus-visible, .home-btn:focus-visible { outline: none; box-shadow: var(--focus-ring); }
 
+  .hub-title, .app-card .name { font-family: 'Black Han Sans', 'Noto Sans Devanagari', sans-serif; font-weight: 400; }
   .hub-title {
     font-size: 24px;
-    font-weight: 800;
+    font-weight: 400;
     margin-top: var(--spacing-md);
     line-height: 1.3;
   }
@@ -135,6 +131,12 @@
     border-radius: 999px;
   }
   .hub-note .material-icons-outlined { font-size: 14px; }
+  .hub-guide { margin-top: var(--spacing-md); display: grid; gap: 8px; }
+  .guide-chip { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.72); border-radius: 14px; padding: 8px 10px; font-size: 13px; font-weight: 700; color: var(--color-gray-700); }
+  .guide-chip strong { color: var(--color-gray-900); }
+  .ux-report { margin: 0 0 var(--spacing-md); padding: var(--spacing-md); border-radius: var(--border-radius-lg); background: #fff; border: 2px dashed var(--color-primary-light); color: var(--color-gray-700); }
+  .ux-report summary { cursor: pointer; font-weight: 800; color: var(--color-primary); font-size: 14px; }
+  .ux-report ul { margin: 10px 0 0 18px; font-size: 12.5px; line-height: 1.55; }
 
   .card-grid-wrap {
     flex: 1;
@@ -143,7 +145,7 @@
   }
   .card-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: var(--spacing-md);
   }
 
@@ -164,8 +166,8 @@
   .app-card:active { transform: scale(0.95); }
 
   .app-card .icon { font-size: 38px; line-height: 1; margin-bottom: 2px; }
-  .app-card .name { font-size: 15px; font-weight: 800; }
-  .app-card .desc { font-size: 11.5px; line-height: 1.4; font-weight: 500; min-height: 32px; }
+  .app-card .name { font-size: 18px; }
+  .app-card .desc { font-size: 11.5px; line-height: 1.4; font-weight: 500; min-height: 42px; }
   .app-card .open-btn {
     margin-top: var(--spacing-xs);
     font-size: 12px;
@@ -175,6 +177,7 @@
     gap: 2px;
   }
 
+  .app-card:hover { transform: translateY(-2px); }
   .card-green  { background: var(--color-pastel-green);  color: var(--color-pastel-green-dark); }
   .card-yellow { background: var(--color-pastel-yellow); color: var(--color-pastel-yellow-dark); }
   .card-blue   { background: var(--color-pastel-blue);   color: var(--color-pastel-blue-dark); }
@@ -245,49 +248,62 @@
 </head>
 <body>
 
-<div class="device-frame">
+<div class="app-shell">
 
   <!-- ================= 허브(홈) 화면 ================= -->
   <div id="hubView">
     <div class="hub-header">
       <div class="lang-switch">
-        <button class="lang-btn active" id="langBtn-ko" onclick="setLang('ko')">KR</button>
-        <button class="lang-btn" id="langBtn-en" onclick="setLang('en')">EN</button>
-        <button class="lang-btn" id="langBtn-hi" onclick="setLang('hi')">HI</button>
+        <button class="lang-btn" id="langBtn-ko" onclick="setLang('ko')" aria-label="Korean">KR</button>
+        <button class="lang-btn" id="langBtn-en" onclick="setLang('en')" aria-label="English">EN</button>
+        <button class="lang-btn active" id="langBtn-hi" onclick="setLang('hi')" aria-label="हिन्दी">HI</button>
       </div>
-      <div class="hub-title" data-i18n="main_title">고민해결 프렌즈</div>
-      <div class="hub-subtitle" data-i18n="main_subtitle">친구들을 위해 우리가 만든 앱이에요</div>
-      <div class="hub-note"><span class="material-icons-outlined">touch_app</span><span data-i18n="main_note">카드를 눌러서 앱을 열어보세요!</span></div>
+      <div class="hub-title" data-i18n="main_title">समस्या-समाधान मित्र</div>
+      <div class="hub-subtitle" data-i18n="main_subtitle">दुनिया के दोस्तों के लिए हमने बनाए ये ऐप्स</div>
+      <div class="hub-note"><span class="material-icons-outlined">touch_app</span><span data-i18n="main_note">ऐप खोलने के लिए कार्ड पर टैप करें!</span></div>
+      <div class="hub-guide" aria-label="Usage guide">
+        <div class="guide-chip">1️⃣ <span data-i18n="guide_lang">पहले <strong>HI</strong> दिखता है। KR/EN भी बदल सकते हैं।</span></div>
+        <div class="guide-chip">2️⃣ <span data-i18n="guide_simple">शुरू करने के लिए बड़े चित्र वाले कार्ड पर टैप करें।</span></div>
+      </div>
     </div>
 
     <div class="card-grid-wrap">
+      <details class="ux-report">
+        <summary data-i18n="report_title">पहली UI/UX समीक्षा देखें</summary>
+        <ul>
+          <li data-i18n="report_1">भारतीय बच्चों के लिए पहली स्क्रीन कोरियाई होने से कठिनाई थी, इसलिए HI पहले दिखाया गया है।</li>
+          <li data-i18n="report_2">हर ऐप में बटन अलग जगह थे; अब हब में पहले साझा निर्देश हैं।</li>
+          <li data-i18n="report_3">छोटे पाठ और कमजोर फोकस संकेत को बेहतर किया गया है।</li>
+          <li data-i18n="report_4">अगला कदम: 4 ऐप में समान हेडर, होम/भाषा बटन और ऑफलाइन मार्गदर्शन को एक जैसा करना।</li>
+        </ul>
+      </details>
       <div class="card-grid">
         <button class="app-card card-green" onclick="openApp('global-exercise.html','global')">
           <span class="icon">🏃</span>
-          <span class="name" data-i18n="name_global">글로벌 운동</span>
-          <span class="desc" data-i18n="desc_global">건강하게 운동하는 습관을 길러줘요</span>
-          <span class="open-btn"><span data-i18n="open">열기</span> →</span>
+          <span class="name" data-i18n="name_global">ग्लोबल एक्सरसाइज़</span>
+          <span class="desc" data-i18n="desc_global">स्वस्थ व्यायाम की आदत बनाता है</span>
+          <span class="open-btn"><span data-i18n="open">खोलें</span> →</span>
         </button>
 
         <button class="app-card card-yellow" onclick="openApp('nolpang.html','nolpang')">
           <span class="icon">🎈</span>
-          <span class="name" data-i18n="name_nolpang">놀팡</span>
-          <span class="desc" data-i18n="desc_nolpang">할 일을 끝내고 신나게 놀아요</span>
-          <span class="open-btn"><span data-i18n="open">열기</span> →</span>
+          <span class="name" data-i18n="name_nolpang">नोलपंग</span>
+          <span class="desc" data-i18n="desc_nolpang">काम खत्म करो, फिर खुशी से खेलो</span>
+          <span class="open-btn"><span data-i18n="open">खोलें</span> →</span>
         </button>
 
         <button class="app-card card-blue" onclick="openApp('homework-helper.html','homework')">
           <span class="icon">📝</span>
-          <span class="name" data-i18n="name_homework">숙제챙겨</span>
-          <span class="desc" data-i18n="desc_homework">숙제를 깜빡하지 않게 도와줘요</span>
-          <span class="open-btn"><span data-i18n="open">열기</span> →</span>
+          <span class="name" data-i18n="name_homework">होमवर्क हेल्पर</span>
+          <span class="desc" data-i18n="desc_homework">होमवर्क याद रखने में मदद करता है</span>
+          <span class="open-btn"><span data-i18n="open">खोलें</span> →</span>
         </button>
 
         <button class="app-card card-pink" onclick="openApp('shipdae.html','shipdae')">
           <span class="icon">💬</span>
-          <span class="name" data-i18n="name_shipdae">쉽대</span>
-          <span class="desc" data-i18n="desc_shipdae">발표할 때 떨리지 않게 응원해줘요</span>
-          <span class="open-btn"><span data-i18n="open">열기</span> →</span>
+          <span class="name" data-i18n="name_shipdae">शिपडे</span>
+          <span class="desc" data-i18n="desc_shipdae">बोलते समय घबराहट होने पर हिम्मत देता है</span>
+          <span class="open-btn"><span data-i18n="open">खोलें</span> →</span>
         </button>
       </div>
     </div>
@@ -295,7 +311,7 @@
     <footer class="chichiboo-footer">
       <a href="https://litt.ly/chichiboo" target="_blank" rel="noopener noreferrer">
         <span class="material-icons-outlined">auto_stories</span>
-        Created by. 교육뮤지컬 꿈꾸는 치수쌤
+        Created by Chichiboo
       </a>
     </footer>
   </div>
@@ -305,7 +321,7 @@
     <div class="app-topbar">
       <button class="home-btn" onclick="closeApp()">
         <span class="material-icons-outlined">home</span>
-        <span data-i18n="back">홈으로</span>
+        <span data-i18n="back">होम</span>
       </button>
       <span id="currentAppName"></span>
     </div>
@@ -319,6 +335,13 @@
     ko: {
       main_title: "고민해결 프렌즈",
       main_subtitle: "친구들을 위해 우리가 만든 앱이에요",
+      guide_lang: "<strong>HI</strong>부터 보여줘요. KR/EN도 바꿀 수 있어요.",
+      guide_simple: "큰 그림 카드를 누르면 바로 시작해요.",
+      report_title: "UI/UX 1차 진단 보고서 보기",
+      report_1: "인도 어린이가 처음 볼 때 한국어 기본값이 장벽이어서 HI를 우선 노출했습니다.",
+      report_2: "앱마다 조작 방식과 언어 선택 위치가 달라 혼란이 있어, 허브에서 공통 안내를 먼저 제공합니다.",
+      report_3: "작은 설명 문구와 약한 포커스 표시를 보완해 터치/키보드 접근성을 높였습니다.",
+      report_4: "다음 단계는 4개 앱의 공통 헤더, 같은 위치의 홈/언어 버튼, 오프라인 안내를 통일하는 것입니다.",
       main_note: "카드를 눌러서 앱을 열어보세요!",
       name_global: "글로벌 운동",
       desc_global: "건강하게 운동하는 습관을 길러줘요",
@@ -334,6 +357,13 @@
     en: {
       main_title: "Worry-Solving Friends",
       main_subtitle: "Apps we made for friends around the world",
+      guide_lang: "Start with <strong>HI</strong>. KR/EN are also available.",
+      guide_simple: "Tap a big picture card to start right away.",
+      report_title: "View first UI/UX review",
+      report_1: "Korean as the first screen can block Indian children, so HI is shown first.",
+      report_2: "Each app places controls differently; the hub now gives shared instructions first.",
+      report_3: "Small text and weak focus states were improved for touch and keyboard access.",
+      report_4: "Next: unify headers, home/language button positions, and offline guidance across all 4 apps.",
       main_note: "Tap a card to open the app!",
       name_global: "Global Exercise",
       desc_global: "Builds healthy exercise habits",
@@ -349,6 +379,13 @@
     hi: {
       main_title: "समस्या-समाधान मित्र",
       main_subtitle: "दुनिया के दोस्तों के लिए हमने बनाए ये ऐप्स",
+      guide_lang: "पहले <strong>HI</strong> दिखता है। KR/EN भी बदल सकते हैं।",
+      guide_simple: "शुरू करने के लिए बड़े चित्र वाले कार्ड पर टैप करें।",
+      report_title: "पहली UI/UX समीक्षा देखें",
+      report_1: "भारतीय बच्चों के लिए पहली स्क्रीन कोरियाई होने से कठिनाई थी, इसलिए HI पहले दिखाया गया है।",
+      report_2: "हर ऐप में बटन अलग जगह थे; अब हब में पहले साझा निर्देश हैं।",
+      report_3: "छोटे पाठ और कमजोर फोकस संकेत को बेहतर किया गया है।",
+      report_4: "अगला कदम: 4 ऐप में समान हेडर, होम/भाषा बटन और ऑफलाइन मार्गदर्शन को एक जैसा करना।",
       main_note: "ऐप खोलने के लिए कार्ड पर टैप करें!",
       name_global: "ग्लोबल एक्सरसाइज़",
       desc_global: "स्वस्थ व्यायाम की आदत बनाता है",
@@ -363,16 +400,17 @@
     }
   };
 
-  let currentLang = 'ko';
+  let currentLang = 'hi';
   let currentAppKey = null;
 
   function setLang(lang) {
     currentLang = lang;
+    document.documentElement.lang = lang;
     const t = translations[lang];
 
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.getAttribute('data-i18n');
-      if (t[key]) el.textContent = t[key];
+      if (t[key]) el.innerHTML = t[key];
     });
 
     ['ko','en','hi'].forEach(l => {
@@ -399,7 +437,7 @@
     currentAppKey = null;
   }
 
-  window.onload = () => setLang('ko');
+  window.onload = () => setLang('hi');
 </script>
 
 </body>

@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>글로벌 운동 (Global Exercise)</title>
+    <title>ग्लोबल व्यायाम (Global Exercise)</title>
     
-    <!-- 폰트 불러오기: 타이틀용(Black Han Sans), 본문용(Dongle) -->
+    <!-- 폰트 불러오기: 타이틀용(Black Han Sans), 본문용(Noto Sans) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Dongle:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans:wght@400;500;700;800&family=Noto+Sans+Devanagari:wght@400;500;700;800&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -28,8 +28,8 @@
                         }
                     },
                     fontFamily: {
-                        title: ['"Black Han Sans"', 'sans-serif'],
-                        body: ['"Dongle"', 'sans-serif'],
+                        title: ['"Black Han Sans"', '"Noto Sans Devanagari"', 'sans-serif'],
+                        body: ['"Noto Sans"', '"Noto Sans Devanagari"', 'sans-serif'],
                     }
                 }
             }
@@ -39,9 +39,9 @@
     <style>
         /* 기본 스타일 및 애니메이션 설정 */
         body {
-            font-family: 'Dongle', sans-serif;
-            font-size: 28px; /* 동글 폰트는 기본 크기가 작아 크게 설정 */
-            line-height: 1.2;
+            font-family: 'Noto Sans', 'Noto Sans Devanagari', sans-serif;
+            font-size: 18px;
+            line-height: 1.5;
             -webkit-tap-highlight-color: transparent;
         }
         
@@ -75,25 +75,25 @@
     </audio>
 
     <!-- 모바일 화면 크기에 맞춘 메인 컨테이너 -->
-    <div class="w-full max-w-md bg-white/60 min-h-screen shadow-2xl relative flex flex-col">
+    <div class="w-full min-h-screen bg-white/60 relative flex flex-col">
         
         <!-- 헤더 영역 -->
         <header class="bg-fire-600 text-white p-4 rounded-b-3xl shadow-md flex justify-between items-center z-10">
-            <button id="homeBtn" class="p-2 btn-bounce focus:outline-none focus:ring-4 focus:ring-fire-400 rounded-full" aria-label="홈으로 가기" onclick="navigate('home')">
+            <button id="homeBtn" class="p-2 btn-bounce focus:outline-none focus:ring-4 focus:ring-fire-400 rounded-full" aria-label="Home" onclick="navigate('home')">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
             </button>
-            <h1 class="font-title text-3xl tracking-wide flex-1 text-center" data-i18n="title">글로벌 운동</h1>
+            <h1 class="font-title text-3xl tracking-wide flex-1 text-center" data-i18n="title">ग्लोबल व्यायाम</h1>
             
             <!-- 언어 선택 드롭다운 -->
-            <select id="langSelect" class="bg-fire-800 text-white font-title text-xl rounded-lg p-1 border-2 border-white focus:outline-none" aria-label="언어 선택" onchange="changeLanguage(this.value)">
+            <select id="langSelect" class="bg-fire-800 text-white font-title text-xl rounded-lg p-1 border-2 border-white focus:outline-none" aria-label="Language select" onchange="changeLanguage(this.value)">
                 <option value="ko">KR</option>
                 <option value="en">EN</option>
-                <option value="hi">HI</option>
+                <option value="hi" selected>HI</option>
             </select>
         </header>
 
         <!-- 음악 재생 버튼 (플로팅) -->
-        <button id="musicBtn" onclick="toggleMusic()" class="absolute top-20 right-4 bg-fire-800 text-white p-3 rounded-full shadow-lg btn-bounce z-20 flex items-center justify-center animate-bounce-slow" aria-label="음악 재생/정지">
+        <button id="musicBtn" onclick="toggleMusic()" class="absolute top-20 right-4 bg-fire-800 text-white p-3 rounded-full shadow-lg btn-bounce z-20 flex items-center justify-center animate-bounce-slow" aria-label="Music on/off">
             🎵 <span id="musicStatus" class="text-xl ml-1 hidden">ON</span>
         </button>
 
@@ -102,59 +102,63 @@
             
             <!-- 화면 1. 홈 화면 -->
             <section id="screen-home" class="flex flex-col gap-4 h-full justify-center">
-                <p class="text-center text-fire-600 font-bold text-3xl mb-4" data-i18n="slogan">🔥 불꽃같은 열정으로 운동하자! 🔥</p>
+                <p class="text-center text-fire-600 font-bold text-3xl mb-4" data-i18n="slogan">🔥 जुनून के साथ व्यायाम करें! 🔥</p>
+                <div class="bg-white/80 border-2 border-fire-100 rounded-3xl p-4 text-center shadow-sm mb-4">
+                    <p class="text-fire-700 font-bold text-2xl" data-i18n="home_guide">4 बड़े बटनों में से एक चुनें</p>
+                    <p class="text-gray-600 text-xl" data-i18n="home_guide_sub">चलना, टाइमर, डायरी या सुझाव आसानी से शुरू करें</p>
+                </div>
                 
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <!-- 기능 1. 지도 -->
                     <button onclick="navigate('map')" class="bg-fire-500 text-white rounded-3xl p-6 shadow-lg btn-bounce flex flex-col items-center gap-2 focus:ring-4 focus:ring-fire-800">
                         <span class="text-5xl">🗺️</span>
-                        <span class="font-bold text-3xl" data-i18n="menu_map">길찾기 & 걷기</span>
+                        <span class="font-bold text-3xl" data-i18n="menu_map">नक्शा और चलना</span>
                     </button>
                     <!-- 기능 2. 타이머 -->
                     <button onclick="navigate('timer')" class="bg-fire-700 text-white rounded-3xl p-6 shadow-lg btn-bounce flex flex-col items-center gap-2 focus:ring-4 focus:ring-fire-800">
                         <span class="text-5xl">⏱️</span>
-                        <span class="font-bold text-3xl" data-i18n="menu_timer">운동 타이머</span>
+                        <span class="font-bold text-3xl" data-i18n="menu_timer">टाइमर</span>
                     </button>
                     <!-- 기능 3. 일기 (날짜) -->
                     <button onclick="navigate('diary')" class="bg-fire-800 text-white rounded-3xl p-6 shadow-lg btn-bounce flex flex-col items-center gap-2 focus:ring-4 focus:ring-fire-800">
                         <span class="text-5xl">📅</span>
-                        <span class="font-bold text-3xl" data-i18n="menu_diary">운동 일기</span>
+                        <span class="font-bold text-3xl" data-i18n="menu_diary">डायरी</span>
                     </button>
                     <!-- 기능 4. 추천 -->
                     <button onclick="navigate('recommend')" class="bg-fire-400 text-white rounded-3xl p-6 shadow-lg btn-bounce flex flex-col items-center gap-2 focus:ring-4 focus:ring-fire-800">
                         <span class="text-5xl">🎲</span>
-                        <span class="font-bold text-3xl" data-i18n="menu_rec">운동 추천</span>
+                        <span class="font-bold text-3xl" data-i18n="menu_rec">सुझाव</span>
                     </button>
                 </div>
             </section>
 
             <!-- 화면 2. 지도 및 걸음수 화면 -->
             <section id="screen-map" class="screen-hidden flex flex-col items-center h-full">
-                <h2 class="font-title text-4xl text-fire-600 mb-2" data-i18n="menu_map">길찾기 & 걷기</h2>
-                <p class="text-center text-gray-600 leading-tight mb-4" data-i18n="desc_map">내가 어디에 있는지 확인하고 얼마나 걸었는지 봐요!</p>
+                <h2 class="font-title text-4xl text-fire-600 mb-2" data-i18n="menu_map">नक्शा और चलना</h2>
+                <p class="text-center text-gray-600 leading-tight mb-4" data-i18n="desc_map">देखें आप कहाँ हैं और कदम गिनें!</p>
                 
                 <div id="mapPlaceholder" class="w-full h-48 bg-gray-200 rounded-2xl flex items-center justify-center border-4 border-fire-400 mb-4 shadow-inner relative overflow-hidden">
                     <div class="text-center z-10">
                         <span class="text-4xl block mb-2">📍</span>
-                        <span id="locationText" class="text-gray-500 font-bold" data-i18n="map_placeholder">버튼을 눌러 위치를 찾아요</span>
+                        <span id="locationText" class="text-gray-500 font-bold" data-i18n="map_placeholder">स्थान खोजने के लिए बटन दबाएं</span>
                     </div>
                 </div>
 
                 <div class="w-full bg-white p-4 rounded-2xl shadow-md text-center mb-6 border-2 border-fire-100">
-                    <p class="text-gray-500 text-2xl" data-i18n="step_count">오늘의 걸음 수</p>
+                    <p class="text-gray-500 text-2xl" data-i18n="step_count">आज के कदम</p>
                     <p class="font-title text-6xl text-fire-700">🐾 <span id="stepCounter">0</span></p>
                 </div>
 
                 <div class="flex gap-2 w-full mt-auto">
-                    <button onclick="getLocation()" class="flex-1 bg-fire-600 text-white font-bold py-3 rounded-2xl shadow-md btn-bounce text-2xl" data-i18n="btn_find_me">내 위치 찾기</button>
-                    <button onclick="simulateStep()" class="flex-1 bg-fire-800 text-white font-bold py-3 rounded-2xl shadow-md btn-bounce text-2xl" data-i18n="btn_walk">한 걸음 걷기!</button>
+                    <button onclick="getLocation()" class="flex-1 bg-fire-600 text-white font-bold py-3 rounded-2xl shadow-md btn-bounce text-2xl" data-i18n="btn_find_me">मुझे ढूंडो</button>
+                    <button onclick="simulateStep()" class="flex-1 bg-fire-800 text-white font-bold py-3 rounded-2xl shadow-md btn-bounce text-2xl" data-i18n="btn_walk">एक कदम चलो!</button>
                 </div>
             </section>
 
             <!-- 화면 3. 운동 타이머 화면 -->
             <section id="screen-timer" class="screen-hidden flex flex-col items-center h-full">
-                <h2 class="font-title text-4xl text-fire-700 mb-2" data-i18n="menu_timer">운동 타이머</h2>
-                <p class="text-center text-gray-600 leading-tight mb-6" data-i18n="desc_timer">시간을 정하고 0초가 될 때까지 열심히 운동해요!</p>
+                <h2 class="font-title text-4xl text-fire-700 mb-2" data-i18n="menu_timer">टाइमर</h2>
+                <p class="text-center text-gray-600 leading-tight mb-6" data-i18n="desc_timer">समय निर्धारित करें और 0 तक व्यायाम करें!</p>
                 
                 <div class="bg-white w-full rounded-3xl p-8 shadow-lg border-4 border-fire-500 flex flex-col items-center mb-8 relative overflow-hidden">
                     <!-- 배경 장식 -->
@@ -165,34 +169,34 @@
                     </div>
                     
                     <div class="flex gap-4 mt-6 z-10" id="timerInputs">
-                        <input type="number" id="minInput" placeholder="분" class="w-24 text-center border-b-4 border-fire-400 text-3xl focus:outline-none bg-transparent" min="0" max="60">
+                        <input type="number" id="minInput" placeholder="मिनट" class="w-24 text-center border-b-4 border-fire-400 text-3xl focus:outline-none bg-transparent" min="0" max="60">
                         <span class="text-3xl font-bold">:</span>
-                        <input type="number" id="secInput" placeholder="초" class="w-24 text-center border-b-4 border-fire-400 text-3xl focus:outline-none bg-transparent" min="0" max="59">
+                        <input type="number" id="secInput" placeholder="सेकंड" class="w-24 text-center border-b-4 border-fire-400 text-3xl focus:outline-none bg-transparent" min="0" max="59">
                     </div>
                 </div>
 
                 <div class="flex gap-4 w-full mt-auto">
-                    <button id="startTimerBtn" onclick="startTimer()" class="flex-1 bg-fire-500 text-white font-bold py-4 rounded-2xl shadow-md btn-bounce text-3xl" data-i18n="btn_start">시작!</button>
-                    <button onclick="resetTimer()" class="flex-1 bg-gray-400 text-white font-bold py-4 rounded-2xl shadow-md btn-bounce text-3xl" data-i18n="btn_reset">초기화</button>
+                    <button id="startTimerBtn" onclick="startTimer()" class="flex-1 bg-fire-500 text-white font-bold py-4 rounded-2xl shadow-md btn-bounce text-3xl" data-i18n="btn_start">शुरू!</button>
+                    <button onclick="resetTimer()" class="flex-1 bg-gray-400 text-white font-bold py-4 rounded-2xl shadow-md btn-bounce text-3xl" data-i18n="btn_reset">रीसेट</button>
                 </div>
             </section>
 
             <!-- 화면 4. 운동 일기 화면 -->
             <section id="screen-diary" class="screen-hidden flex flex-col h-full">
-                <h2 class="font-title text-4xl text-fire-800 mb-2 text-center" data-i18n="menu_diary">운동 일기</h2>
-                <p class="text-center text-gray-600 leading-tight mb-4" data-i18n="desc_diary">언제 무슨 운동을 했는지 기록해 보아요.</p>
+                <h2 class="font-title text-4xl text-fire-800 mb-2 text-center" data-i18n="menu_diary">डायरी</h2>
+                <p class="text-center text-gray-600 leading-tight mb-4" data-i18n="desc_diary">रिकॉर्ड करें कि आपने कब क्या किया।</p>
                 
                 <div class="bg-white p-4 rounded-2xl shadow-md mb-4 border-2 border-fire-400">
                     <input type="date" id="diaryDate" class="w-full mb-2 p-2 border-2 border-gray-200 rounded-xl text-2xl focus:border-fire-500 outline-none">
-                    <textarea id="diaryText" rows="3" class="w-full p-2 border-2 border-gray-200 rounded-xl text-2xl focus:border-fire-500 outline-none" placeholder="오늘 어떤 운동을 했나요?"></textarea>
-                    <button onclick="saveDiary()" class="w-full bg-fire-600 text-white font-bold py-2 mt-2 rounded-xl shadow btn-bounce text-2xl" data-i18n="btn_save">저장하기</button>
+                    <textarea id="diaryText" rows="3" class="w-full p-2 border-2 border-gray-200 rounded-xl text-2xl focus:border-fire-500 outline-none" placeholder="आपने कौन सा व्यायाम किया?"></textarea>
+                    <button onclick="saveDiary()" class="w-full bg-fire-600 text-white font-bold py-2 mt-2 rounded-xl shadow btn-bounce text-2xl" data-i18n="btn_save">सहेजें</button>
                 </div>
 
                 <!-- 저장된 일기 목록 -->
                 <div class="flex-1 overflow-y-auto">
                     <h3 class="font-bold text-gray-600 text-2xl mb-2 flex justify-between items-center">
-                        <span data-i18n="list_diary">나의 기록</span>
-                        <button onclick="clearDiary()" class="text-sm bg-gray-200 px-2 py-1 rounded text-gray-600" data-i18n="btn_clear">전체 삭제</button>
+                        <span data-i18n="list_diary">मेरे रिकॉर्ड</span>
+                        <button onclick="clearDiary()" class="text-sm bg-gray-200 px-2 py-1 rounded text-gray-600" data-i18n="btn_clear">सभी मिटाएं</button>
                     </h3>
                     <ul id="diaryList" class="flex flex-col gap-3 pb-4">
                         <!-- 일기가 여기에 추가됩니다 -->
@@ -202,15 +206,15 @@
 
             <!-- 화면 5. 운동 추천 화면 -->
             <section id="screen-recommend" class="screen-hidden flex flex-col items-center justify-center h-full">
-                <h2 class="font-title text-4xl text-fire-500 mb-2 text-center" data-i18n="menu_rec">운동 추천</h2>
-                <p class="text-center text-gray-600 leading-tight mb-8" data-i18n="desc_rec">오늘은 무슨 운동을 할까? 버튼을 눌러보세요!</p>
+                <h2 class="font-title text-4xl text-fire-500 mb-2 text-center" data-i18n="menu_rec">सुझाव</h2>
+                <p class="text-center text-gray-600 leading-tight mb-8" data-i18n="desc_rec">आज क्या करें? बटन दबाएं!</p>
 
-                <div id="recResult" class="w-full aspect-square max-h-64 bg-white rounded-full shadow-2xl flex items-center justify-center mb-8 border-8 border-fire-400 transition-all duration-500 transform scale-90">
+                <div id="recResult" class="w-full aspect-square md:aspect-[2/1] max-h-64 bg-white rounded-full shadow-2xl flex items-center justify-center mb-8 border-8 border-fire-400 transition-all duration-500 transform scale-90">
                     <p class="text-center text-gray-400 font-bold text-3xl px-6" data-i18n="rec_placeholder">?</p>
                 </div>
 
                 <button onclick="pickExercise()" class="w-full max-w-xs bg-fire-600 text-white font-bold py-4 rounded-full shadow-[0_8px_0_#9F1239] active:shadow-[0_0px_0_#9F1239] active:translate-y-2 transition-all text-4xl" data-i18n="btn_pick">
-                    추천 받기!
+                    एक चुनें!
                 </button>
             </section>
 
@@ -226,6 +230,8 @@
             ko: {
                 title: "글로벌 운동",
                 slogan: "🔥 불꽃같은 열정으로 운동하자! 🔥",
+                home_guide: "큰 버튼 4개 중 하나를 고르세요",
+                home_guide_sub: "걷기 · 타이머 · 일기 · 추천을 쉽게 시작해요",
                 menu_map: "길찾기 & 걷기",
                 menu_timer: "운동 타이머",
                 menu_diary: "운동 일기",
@@ -245,11 +251,14 @@
                 btn_clear: "전체 삭제",
                 desc_rec: "오늘은 무슨 운동을 할까? 버튼을 눌러보세요!",
                 rec_placeholder: "버튼을 누르면 알려줄게요!",
-                btn_pick: "추천 받기!",
+                btn_pick: "एक चुनें!",
                 alert_timer_end: "타이머 종료! 운동 수고했어요! 🎉",
                 alert_diary_empty: "내용을 입력해주세요!",
                 alert_loc_denied: "위치 권한이 거부되었습니다.",
                 alert_loc_error: "위치를 찾을 수 없습니다.",
+                locating: "탐색 중... 🧭",
+                location_found: "내 주변 위치를 찾았어요!",
+                confirm_clear: "정말 다 지울까요?",
                 ex_1: "💪 팔벌려뛰기 20회",
                 ex_2: "🏃 제자리 걷기 5분",
                 ex_3: "🧘 고양이 자세 스트레칭",
@@ -259,6 +268,8 @@
             en: {
                 title: "Global Exercise",
                 slogan: "🔥 Exercise with Fiery Passion! 🔥",
+                home_guide: "Choose one of the 4 big buttons",
+                home_guide_sub: "Start walking, timer, diary, or recommendations easily",
                 menu_map: "Map & Walk",
                 menu_timer: "Timer",
                 menu_diary: "Diary",
@@ -283,6 +294,9 @@
                 alert_diary_empty: "Please enter text!",
                 alert_loc_denied: "Location access denied.",
                 alert_loc_error: "Cannot find location.",
+                locating: "Searching... 🧭",
+                location_found: "Found your nearby location!",
+                confirm_clear: "Delete all records?",
                 ex_1: "💪 20 Jumping Jacks",
                 ex_2: "🏃 Walk in place (5 mins)",
                 ex_3: "🧘 Cat-cow stretching",
@@ -292,6 +306,8 @@
             hi: {
                 title: "ग्लोबल व्यायाम",
                 slogan: "🔥 जुनून के साथ व्यायाम करें! 🔥",
+                home_guide: "4 बड़े बटनों में से एक चुनें",
+                home_guide_sub: "चलना, टाइमर, डायरी या सुझाव आसानी से शुरू करें",
                 menu_map: "नक्शा और चलना",
                 menu_timer: "टाइमर",
                 menu_diary: "डायरी",
@@ -316,6 +332,9 @@
                 alert_diary_empty: "कृपया टेक्स्ट दर्ज करें!",
                 alert_loc_denied: "स्थान पहुंच अस्वीकृत।",
                 alert_loc_error: "स्थान नहीं मिल रहा है।",
+                locating: "खोज रहे हैं... 🧭",
+                location_found: "आपके आसपास का स्थान मिल गया!",
+                confirm_clear: "क्या सब मिटाना है?",
                 ex_1: "💪 20 जंपिंग जैक",
                 ex_2: "🏃 अपनी जगह पर चलें (5 मिनट)",
                 ex_3: "🧘 स्ट्रेचिंग करें",
@@ -324,10 +343,11 @@
             }
         };
 
-        let currentLang = 'ko';
+        let currentLang = 'hi';
 
         function changeLanguage(lang) {
             currentLang = lang;
+            document.documentElement.lang = lang;
             const elements = document.querySelectorAll('[data-i18n]');
             elements.forEach(el => {
                 const key = el.getAttribute('data-i18n');
@@ -361,14 +381,14 @@
         let steps = 0;
         function getLocation() {
             const locText = document.getElementById('locationText');
-            locText.innerHTML = "탐색 중... 🧭";
+            locText.innerHTML = translations[currentLang].locating;
             
             if ("geolocation" in navigator) {
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
                         const lat = position.coords.latitude.toFixed(4);
                         const lon = position.coords.longitude.toFixed(4);
-                        locText.innerHTML = `<span class="text-3xl text-fire-600 font-bold">우리집 주변 도착!</span><br><span class="text-xl">(${lat}, ${lon})</span>`;
+                        locText.innerHTML = `<span class="text-3xl text-fire-600 font-bold">${translations[currentLang].location_found}</span><br><span class="text-xl">(${lat}, ${lon})</span>`;
                         // 시각적 피드백 효과
                         document.getElementById('mapPlaceholder').classList.add('bg-blue-100');
                     },
@@ -497,7 +517,7 @@
         }
 
         function clearDiary() {
-            if(confirm("정말 다 지울까요?")) {
+            if(confirm(translations[currentLang].confirm_clear)) {
                 localStorage.removeItem('globalExerciseDiary');
                 loadDiary();
             }
@@ -553,7 +573,7 @@
             document.getElementById('diaryDate').value = today;
             
             // 초기 언어 적용 (한국어)
-            changeLanguage('ko');
+            changeLanguage('hi');
             
             // 홈 화면 표시
             navigate('home');
