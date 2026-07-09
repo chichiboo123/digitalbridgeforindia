@@ -97,10 +97,8 @@
   }
 
   .lang-switch {
-    position: absolute;
-    top: var(--spacing-md);
-    right: var(--spacing-md);
     display: flex;
+    justify-content: flex-end;
     gap: 6px;
   }
   .lang-btn {
@@ -127,7 +125,7 @@
   .hub-title {
     font-size: 24px;
     font-weight: 400;
-    margin-top: var(--spacing-md);
+    margin-top: var(--spacing-sm);
     line-height: 1.3;
   }
   .hub-subtitle {
@@ -151,9 +149,6 @@
   .hub-guide { margin-top: var(--spacing-md); display: grid; gap: 8px; }
   .guide-chip { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.72); border-radius: 14px; padding: 8px 10px; font-size: 13px; font-weight: 700; color: var(--color-gray-700); }
   .guide-chip strong { color: var(--color-gray-900); }
-  .ux-report { margin: 0 0 var(--spacing-md); padding: var(--spacing-md); border-radius: var(--border-radius-lg); background: #fff; border: 2px dashed var(--color-primary-light); color: var(--color-gray-700); }
-  .ux-report summary { cursor: pointer; font-weight: 800; color: var(--color-primary); font-size: 14px; }
-  .ux-report ul { margin: 10px 0 0 18px; font-size: 12.5px; line-height: 1.55; }
 
   .card-grid-wrap {
     flex: 1;
@@ -280,21 +275,12 @@
       <div class="hub-subtitle" data-i18n="main_subtitle">दुनिया के दोस्तों के लिए हमने बनाए ये ऐप्स</div>
       <div class="hub-note"><span class="material-icons-outlined">touch_app</span><span data-i18n="main_note">ऐप खोलने के लिए कार्ड पर टैप करें!</span></div>
       <div class="hub-guide" aria-label="Usage guide">
-        <div class="guide-chip">1️⃣ <span data-i18n="guide_lang">पहले <strong>HI</strong> दिखता है। KR/EN भी बदल सकते हैं।</span></div>
-        <div class="guide-chip">2️⃣ <span data-i18n="guide_simple">शुरू करने के लिए बड़े चित्र वाले कार्ड पर टैप करें।</span></div>
+        <div class="guide-chip">🌍 <span data-i18n="guide_lang">दुनिया भर के बच्चों की छोटी-छोटी चिंताएँ हल करने में मदद के लिए बनाया गया।</span></div>
+        <div class="guide-chip">👆 <span data-i18n="guide_simple">शुरू करने के लिए बड़े चित्र वाले कार्ड पर टैप करें।</span></div>
       </div>
     </div>
 
     <div class="card-grid-wrap">
-      <details class="ux-report">
-        <summary data-i18n="report_title">UI/UX सुधार (दूसरा दौर) देखें</summary>
-        <ul>
-          <li data-i18n="report_1">अब हब में चुनी गई भाषा हर ऐप में वैसी ही रहती है और दोबारा खोलने पर भी याद रहती है।</li>
-          <li data-i18n="report_2">खेल का समय, अलार्म, कदम और डायरी सेव होते हैं — ऐप बंद करके फिर खोलें तो भी नहीं मिटते।</li>
-          <li data-i18n="report_3">सिस्टम पॉप-अप की जगह नरम इन-ऐप संदेश, बड़े बटन और ज़ूम की सुविधा जोड़ी गई है।</li>
-          <li data-i18n="report_4">अगला कदम: धीमे इंटरनेट पर भी चले, इसके लिए फ़ॉन्ट और डिज़ाइन ऐप के अंदर रखना (ऑफलाइन)।</li>
-        </ul>
-      </details>
       <div class="card-grid">
         <button class="app-card card-green" onclick="openApp('global-exercise.html','global')">
           <span class="icon">🏃</span>
@@ -353,13 +339,8 @@
     ko: {
       main_title: "고민해결 프렌즈",
       main_subtitle: "친구들을 위해 우리가 만든 앱이에요",
-      guide_lang: "<strong>HI</strong>부터 보여줘요. KR/EN도 바꿀 수 있어요.",
+      guide_lang: "세계 어린이들의 작은 고민을 해결하도록 돕기 위해 만들었어요.",
       guide_simple: "큰 그림 카드를 누르면 바로 시작해요.",
-      report_title: "UI/UX 개선 보고서(2차) 보기",
-      report_1: "허브에서 고른 언어가 각 앱에 그대로 이어지고, 앱을 다시 열어도 기억됩니다.",
-      report_2: "놀이시간·알람·걸음수·일기가 저장되어 앱을 껐다 켜도 사라지지 않습니다.",
-      report_3: "딱딱한 시스템 팝업을 부드러운 인앱 안내로 바꾸고, 큰 버튼과 화면 확대로 접근성을 높였습니다.",
-      report_4: "다음 단계는 인터넷이 약한 곳에서도 쓰도록 글꼴·디자인을 앱 안에 담는 오프라인 작업입니다.",
       main_note: "카드를 눌러서 앱을 열어보세요!",
       name_global: "글로벌 운동",
       desc_global: "건강하게 운동하는 습관을 길러줘요",
@@ -375,13 +356,8 @@
     en: {
       main_title: "Worry-Solving Friends",
       main_subtitle: "Apps we made for friends around the world",
-      guide_lang: "Start with <strong>HI</strong>. KR/EN are also available.",
+      guide_lang: "Made to help solve the little worries of children around the world.",
       guide_simple: "Tap a big picture card to start right away.",
-      report_title: "View UI/UX improvements (round 2)",
-      report_1: "The language you pick in the hub now carries into every app and is remembered when you reopen.",
-      report_2: "Playtime, alarms, steps, and diary are saved, so nothing is lost when you close and reopen an app.",
-      report_3: "Harsh system pop-ups became gentle in-app messages, with bigger buttons and pinch-to-zoom.",
-      report_4: "Next: bundle fonts and design inside the apps so they work on slow or offline connections.",
       main_note: "Tap a card to open the app!",
       name_global: "Global Exercise",
       desc_global: "Builds healthy exercise habits",
@@ -397,13 +373,8 @@
     hi: {
       main_title: "समस्या-समाधान मित्र",
       main_subtitle: "दुनिया के दोस्तों के लिए हमने बनाए ये ऐप्स",
-      guide_lang: "पहले <strong>HI</strong> दिखता है। KR/EN भी बदल सकते हैं।",
+      guide_lang: "दुनिया भर के बच्चों की छोटी-छोटी चिंताएँ हल करने में मदद के लिए बनाया गया।",
       guide_simple: "शुरू करने के लिए बड़े चित्र वाले कार्ड पर टैप करें।",
-      report_title: "UI/UX सुधार (दूसरा दौर) देखें",
-      report_1: "अब हब में चुनी गई भाषा हर ऐप में वैसी ही रहती है और दोबारा खोलने पर भी याद रहती है।",
-      report_2: "खेल का समय, अलार्म, कदम और डायरी सेव होते हैं — ऐप बंद करके फिर खोलें तो भी नहीं मिटते।",
-      report_3: "सिस्टम पॉप-अप की जगह नरम इन-ऐप संदेश, बड़े बटन और ज़ूम की सुविधा जोड़ी गई है।",
-      report_4: "अगला कदम: धीमे इंटरनेट पर भी चले, इसके लिए फ़ॉन्ट और डिज़ाइन ऐप के अंदर रखना (ऑफलाइन)।",
       main_note: "ऐप खोलने के लिए कार्ड पर टैप करें!",
       name_global: "ग्लोबल एक्सरसाइज़",
       desc_global: "स्वस्थ व्यायाम की आदत बनाता है",

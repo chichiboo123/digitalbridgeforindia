@@ -4,23 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>शिपडे (ShipDae) - Confidence Helper</title>
-    
-    <!-- 폰트 불러오기: 귀엽고 친근한 주아체 사용 -->
+
+    <!-- 폰트 불러오기 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans:wght@400;500;700;800&family=Noto+Sans+Devanagari:wght@400;500;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind CSS (스타일링 용도) -->
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- 아이콘 (FontAwesome) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* 기본 폰트 설정 */
         body {
             font-family: 'Noto Sans', 'Noto Sans Devanagari', sans-serif;
-            background-color: #FFFFFF; /* 배경색: 흰색 */
+            background-color: #FFFFFF;
             color: #333333;
             overflow-x: hidden;
         }
@@ -37,17 +33,13 @@
         .hover-bg-primary-dark:hover { background-color: #85C7E6; }
 
         /* 애니메이션 효과 */
-        .bounce-soft {
-            animation: bounce-soft 2s infinite ease-in-out;
-        }
+        .bounce-soft { animation: bounce-soft 2s infinite ease-in-out; }
         @keyframes bounce-soft {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
         }
 
-        .fade-in {
-            animation: fadeIn 0.5s ease-in;
-        }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -56,21 +48,6 @@
         /* 화면 전환용 클래스 */
         .screen { display: none; }
         .screen.active { display: block; }
-
-        /* 스피너 애니메이션 */
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #A0D8EF;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
 
         /* 모바일: 전체 화면 / 데스크톱: 폰 크기 중앙 프레임 */
         html {
@@ -94,115 +71,91 @@
 </head>
 <body class="min-h-screen flex flex-col">
 
-    <!-- 잔잔한 배경 음악 (안전한 저작권 무료 음원 URL 예시) -->
-    <audio id="bgMusic" loop>
-        <source src="https://cdn.pixabay.com/download/audio/2022/02/07/audio_4fb4274900.mp3?filename=ambient-piano-amp-strings-10711.mp3" type="audio/mpeg">
-    </audio>
-
     <!-- 네비게이션 및 상단 바 -->
     <header class="bg-primary text-white p-4 shadow-md sticky top-0 z-50 flex justify-between items-center rounded-b-3xl">
         <div class="flex items-center gap-2 cursor-pointer" onclick="navigate('home')" tabindex="0" aria-label="Home" onkeydown="if(event.key==='Enter') navigate('home')">
-            <i class="fa-solid fa-seedling text-2xl"></i>
+            <span class="text-2xl">🌱</span>
             <h1 class="text-2xl tracking-wide" id="ui-title">शिपडे</h1>
         </div>
-        
-        <div class="flex items-center gap-4">
-            <!-- 음악 토글 버튼 -->
-            <button id="musicBtn" onclick="toggleMusic()" class="text-white hover:text-yellow-200 transition-colors" aria-label="Background music on/off">
-                <i class="fa-solid fa-music text-xl" id="musicIcon"></i>
-            </button>
 
-            <!-- 언어 선택 -->
-            <select id="langSelect" onchange="changeLanguage()" class="bg-white text-gray-800 rounded-full px-3 py-1 text-sm font-sans focus:outline-none focus:ring-2 focus:ring-white">
-                <option value="ko">🇰🇷 Korean</option>
-                <option value="en">🇺🇸 English</option>
-                <option value="hi" selected>🇮🇳 हिन्दी</option>
-            </select>
-        </div>
+        <!-- 언어 선택 -->
+        <select id="langSelect" onchange="changeLanguage()" class="bg-white text-gray-800 rounded-full px-3 py-1 text-sm font-sans focus:outline-none focus:ring-2 focus:ring-white">
+            <option value="ko">🇰🇷 Korean</option>
+            <option value="en">🇺🇸 English</option>
+            <option value="hi" selected>🇮🇳 हिन्दी</option>
+        </select>
     </header>
 
     <!-- 메인 컨텐츠 영역 -->
     <main class="flex-grow p-4 flex flex-col items-center justify-center w-full relative">
-        
+
         <!-- ================= 화면 1. 홈 화면 ================= -->
         <section id="screen-home" class="screen active text-center w-full fade-in">
             <div class="mb-8 bounce-soft">
                 <span class="text-7xl">🐻‍❄️</span>
             </div>
             <h2 class="text-3xl mb-2 text-gray-700" id="ui-welcome">नमस्ते! मैं आपका दोस्त शिपडे हूँ।</h2>
-            <p class="text-gray-500 mb-8 text-lg" id="ui-desc">जब आपको दूसरों के सामने बोलने में घबराहट हो, तो मैं आपकी मदद करूँगा!</p>
+            <p class="text-gray-500 mb-8 text-lg" id="ui-desc">जब आपको बोलने में घबराहट हो, तो मैं आपकी मदद करूँगा!</p>
 
             <div class="flex flex-col gap-4 w-full px-4">
-                <button onclick="navigate('feedback')" class="bg-primary hover-bg-primary-dark text-white rounded-2xl p-5 text-xl shadow-lg transition-transform transform hover:scale-105 active:scale-95 flex items-center justify-between group">
+                <button onclick="navigate('feedback')" class="bg-primary hover-bg-primary-dark text-white rounded-2xl p-5 text-xl shadow-lg transition-transform transform hover:scale-105 active:scale-95 flex items-center justify-between">
                     <span class="flex items-center gap-3">
-                        <i class="fa-solid fa-microphone-lines text-2xl group-hover:animate-pulse"></i>
+                        <span class="text-2xl">🎤</span>
                         <span id="ui-btn-feedback">बोलने के टिप्स लें</span>
                     </span>
-                    <i class="fa-solid fa-chevron-right opacity-70"></i>
+                    <span class="opacity-70">›</span>
                 </button>
 
-                <button onclick="navigate('advice')" class="bg-yellow-100 hover:bg-yellow-200 text-yellow-700 rounded-2xl p-5 text-xl shadow-lg transition-transform transform hover:scale-105 active:scale-95 flex items-center justify-between group border-2 border-yellow-300">
+                <button onclick="navigate('advice')" class="bg-yellow-100 hover:bg-yellow-200 text-yellow-700 rounded-2xl p-5 text-xl shadow-lg transition-transform transform hover:scale-105 active:scale-95 flex items-center justify-between border-2 border-yellow-300">
                     <span class="flex items-center gap-3">
-                        <i class="fa-solid fa-heart text-2xl text-red-400 group-hover:animate-bounce"></i>
+                        <span class="text-2xl">💛</span>
                         <span id="ui-btn-advice">प्रोत्साहक शब्द सुनें</span>
                     </span>
-                    <i class="fa-solid fa-chevron-right opacity-70"></i>
+                    <span class="opacity-70">›</span>
                 </button>
             </div>
         </section>
 
 
-        <!-- ================= 화면 2. AI 피드백 화면 ================= -->
+        <!-- ================= 화면 2. 말하기 팁 화면 ================= -->
         <section id="screen-feedback" class="screen w-full fade-in text-center">
-            <button onclick="navigate('home')" class="absolute top-0 left-4 text-gray-400 hover:text-gray-600 mb-4 flex items-center gap-2">
-                <i class="fa-solid fa-arrow-left"></i> <span id="ui-back-1">पीछे</span>
+            <button onclick="navigate('home')" class="absolute top-0 left-4 text-gray-400 hover:text-gray-600 flex items-center gap-2">
+                ← <span id="ui-back-1">पीछे</span>
             </button>
-            
+
             <div class="mt-10 mb-4">
-                <span class="text-5xl">🗣️</span>
+                <span class="text-6xl">🗣️</span>
             </div>
-            <h2 class="text-2xl mb-4 text-gray-700" id="ui-feedback-title">आप किस बारे में बात करने जा रहे हैं?</h2>
-            
-            <textarea id="topicInput" rows="3" class="w-full border-4 border-primary rounded-2xl p-4 text-lg focus:outline-none focus:ring-4 focus:ring-blue-200 resize-none mb-3" placeholder="उदा: दोस्तों को अपने शौक के बारे में बताना"></textarea>
-            <div class="grid grid-cols-2 gap-2 mb-4" aria-label="Quick topic choices">
-                <button onclick="setTopic('classIntro')" id="ui-chip-intro" class="bg-blue-50 border-2 border-blue-100 rounded-2xl p-3 text-blue-700 active:scale-95">मेरा परिचय</button>
-                <button onclick="setTopic('favorite')" id="ui-chip-favorite" class="bg-blue-50 border-2 border-blue-100 rounded-2xl p-3 text-blue-700 active:scale-95">मेरी पसंद</button>
-            </div>
-            
-            <button onclick="getFeedback()" class="bg-primary hover-bg-primary-dark text-white rounded-full py-3 px-8 text-xl shadow-md transition-transform transform hover:scale-105 w-full font-bold" id="ui-btn-get-feedback">
-                मेरी आवाज़ का स्वर खोजें 🔍
+            <h2 class="text-2xl mb-6 text-gray-700" id="ui-feedback-title">बोलने का आसान तरीका</h2>
+
+            <button onclick="getTip()" class="bg-primary hover-bg-primary-dark text-white rounded-full py-4 px-8 text-2xl shadow-md transition-transform transform hover:scale-105 w-full font-bold" id="ui-btn-get-feedback">
+                एक टिप पाएं 🔍
             </button>
 
             <!-- 결과 표시 영역 -->
             <div id="feedbackResultArea" class="mt-8 hidden bg-blue-50 border-2 border-blue-200 rounded-2xl p-6 text-left relative">
-                <div id="feedbackLoader" class="loader hidden"></div>
-                <div id="feedbackContent" class="text-gray-700 text-lg leading-relaxed whitespace-pre-wrap"></div>
-                <!-- 닫기 버튼 -->
-                <button onclick="document.getElementById('feedbackResultArea').classList.add('hidden')" class="absolute top-2 right-3 text-gray-400 hover:text-gray-600">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
+                <div id="feedbackContent" class="text-gray-700 text-lg leading-relaxed"></div>
             </div>
         </section>
 
 
-        <!-- ================= 화면 3. AI 조언 화면 ================= -->
+        <!-- ================= 화면 3. 응원 화면 ================= -->
         <section id="screen-advice" class="screen w-full fade-in text-center">
-            <button onclick="navigate('home')" class="absolute top-0 left-4 text-gray-400 hover:text-gray-600 mb-4 flex items-center gap-2">
-                <i class="fa-solid fa-arrow-left"></i> <span id="ui-back-2">पीछे</span>
+            <button onclick="navigate('home')" class="absolute top-0 left-4 text-gray-400 hover:text-gray-600 flex items-center gap-2">
+                ← <span id="ui-back-2">पीछे</span>
             </button>
-            
+
             <div class="mt-10 mb-6 bounce-soft">
                 <span class="text-6xl">✨</span>
             </div>
             <h2 class="text-2xl mb-6 text-gray-700 leading-snug" id="ui-advice-title">घबराहट हो रही है?<br>मैं आपको हिम्मत दूँगा!</h2>
-            
+
             <button onclick="getAdvice()" class="bg-yellow-300 hover:bg-yellow-400 text-yellow-800 rounded-full py-4 px-8 text-2xl shadow-lg transition-transform transform hover:scale-105 w-full font-bold shadow-yellow-200" id="ui-btn-get-advice">
                 एक जादुई मंत्र सुनें 🪄
             </button>
 
             <!-- 결과 표시 영역 -->
-            <div id="adviceResultArea" class="mt-8 hidden bg-yellow-50 border-2 border-yellow-200 rounded-2xl p-6 relative">
-                <div id="adviceLoader" class="loader hidden" style="border-top-color: #FCD34D;"></div>
+            <div id="adviceResultArea" class="mt-8 hidden bg-yellow-50 border-2 border-yellow-200 rounded-2xl p-6">
                 <div id="adviceContent" class="text-gray-800 text-xl leading-relaxed font-bold break-keep"></div>
             </div>
         </section>
@@ -216,7 +169,7 @@
     <!-- JavaScript 로직 -->
     <script>
         // ==========================================
-        // 1. 다국어 (I18N) 데이터
+        // 1. 다국어 (I18N) 데이터 (오프라인·인터넷 없이 동작)
         // ==========================================
         const translations = {
             ko: {
@@ -226,18 +179,22 @@
                 btnFeedback: "말하기 팁 받기",
                 btnAdvice: "응원 한마디 듣기",
                 back: "뒤로",
-                feedbackTitle: "어떤 이야기를 할 건가요?",
-                placeholder: "예: 친구들 앞에서 내 취미 소개하기",
-                btnGetFeedback: "मेरी आवाज़ का स्वर खोजें 🔍",
+                feedbackTitle: "쉽게 말하는 방법",
                 adviceTitle: "많이 떨리나요?<br>제가 힘을 줄게요!",
-                btnGetAdvice: "एक जादुई मंत्र सुनें 🪄",
-                errorText: "앗, 통신이 조금 지연되고 있어요. 다시 시도해볼까요? 🐶",
-                chipIntro: "자기소개",
-                chipFavorite: "좋아하는 것",
-                topicClassIntro: "친구들 앞에서 나를 소개하기",
-                topicFavorite: "내가 좋아하는 음식이나 놀이 소개하기",
-                offlineTip: "또렷한 목소리로 천천히 말해봐요. 시작 전에 숨을 크게 한 번 쉬고, 친구 한 명을 보고 웃으면 쉬워져요! 🌟",
-                offlineAdvice: "나는 할 수 있어! 틀려도 괜찮아. 한 문장씩 천천히 말하면 모두가 내 이야기를 들어줄 거야! 🪄"
+                btnGetFeedback: "팁 하나 받기 🔍",
+                btnGetAdvice: "마법 주문 듣기 🪄",
+                tips: [
+                    "🌟 시작 전에 숨을 크게 한 번 쉬고, 천천히 또박또박 말해봐요.",
+                    "😊 친구 한 명의 눈을 보고 웃으면서 말하면 훨씬 편해져요.",
+                    "🐢 급하지 않아도 돼요. 한 문장씩 천천히 말해요.",
+                    "👐 손은 편하게 두고, 어깨를 펴면 목소리가 더 잘 나와요.",
+                ],
+                advices: [
+                    "나는 할 수 있어! 틀려도 괜찮아. 🪄",
+                    "한 문장씩 말하면 모두가 내 이야기를 들어줄 거야! ✨",
+                    "떨리는 건 잘하고 싶은 마음이야. 넌 이미 멋져! 💛",
+                    "천천히, 크게, 웃으며! 넌 최고야! 🌈",
+                ]
             },
             en: {
                 title: "ShipDae",
@@ -246,38 +203,46 @@
                 btnFeedback: "Get Speaking Tips",
                 btnAdvice: "Hear Cheering Words",
                 back: "Back",
-                feedbackTitle: "What are you going to talk about?",
-                placeholder: "Ex: Introducing my hobby to friends",
-                btnGetFeedback: "Find my voice tone 🔍",
+                feedbackTitle: "An easy way to speak",
                 adviceTitle: "Feeling nervous?<br>Let me give you strength!",
-                btnGetAdvice: "Hear a magic cheering spell 🪄",
-                errorText: "Oops, connection is a bit slow. Let's try again! 🐶",
-                chipIntro: "Self intro",
-                chipFavorite: "Favorite thing",
-                topicClassIntro: "Introducing myself to friends",
-                topicFavorite: "Talking about my favorite food or game",
-                offlineTip: "Speak slowly with a clear voice. Take one big breath first, smile at one friend, and begin! 🌟",
-                offlineAdvice: "I can do this! Mistakes are okay. One sentence at a time, my story will be heard! 🪄"
+                btnGetFeedback: "Get a tip 🔍",
+                btnGetAdvice: "Hear a magic spell 🪄",
+                tips: [
+                    "🌟 Take one big breath first, then speak slowly and clearly.",
+                    "😊 Look at one friend and smile while you talk — it feels easier.",
+                    "🐢 No rush. Say one sentence at a time.",
+                    "👐 Relax your hands and open your shoulders for a stronger voice.",
+                ],
+                advices: [
+                    "I can do this! Mistakes are okay. 🪄",
+                    "One sentence at a time, my story will be heard! ✨",
+                    "Feeling nervous means you care. You're already great! 💛",
+                    "Slow, loud, and smiling! You're the best! 🌈",
+                ]
             },
             hi: {
                 title: "शिपडे",
                 welcome: "नमस्ते! मैं आपका दोस्त शिपडे हूँ।",
-                desc: "जब आपको दूसरों के सामने बोलने में घबराहट हो, तो मैं आपकी मदद करूँगा!",
+                desc: "जब आपको बोलने में घबराहट हो, तो मैं आपकी मदद करूँगा!",
                 btnFeedback: "बोलने के टिप्स लें",
                 btnAdvice: "प्रोत्साहक शब्द सुनें",
                 back: "पीछे",
-                feedbackTitle: "आप किस बारे में बात करने जा रहे हैं?",
-                placeholder: "उदा: दोस्तों को अपने शौक के बारे में बताना",
-                btnGetFeedback: "मेरी आवाज़ का स्वर खोजें 🔍",
+                feedbackTitle: "बोलने का आसान तरीका",
                 adviceTitle: "घबराहट हो रही है?<br>मैं आपको हिम्मत दूँगा!",
-                btnGetAdvice: "एक जादुई मंत्र सुनें 🪄",
-                errorText: "उफ़, कनेक्शन थोड़ा धीमा है। आइए फिर से कोशिश करें! 🐶",
-                chipIntro: "मेरा परिचय",
-                chipFavorite: "मेरी पसंद",
-                topicClassIntro: "दोस्तों के सामने अपना परिचय देना",
-                topicFavorite: "मेरे पसंदीदा खाने या खेल के बारे में बताना",
-                offlineTip: "धीरे और साफ आवाज़ में बोलें। पहले एक गहरी सांस लें, एक दोस्त को देखकर मुस्कुराएं, फिर शुरू करें! 🌟",
-                offlineAdvice: "मैं कर सकता/सकती हूँ! गलती हो तो भी ठीक है। एक-एक वाक्य बोलूंगा/बोलूंगी और सब मेरी बात सुनेंगे! 🪄"
+                btnGetFeedback: "एक टिप पाएं 🔍",
+                btnGetAdvice: "जादुई मंत्र सुनें 🪄",
+                tips: [
+                    "🌟 शुरू करने से पहले एक गहरी सांस लें, फिर धीरे और साफ बोलें।",
+                    "😊 एक दोस्त की आँखों में देखकर मुस्कुराते हुए बोलें — आसान लगेगा।",
+                    "🐢 जल्दी मत करो। एक-एक वाक्य धीरे बोलो।",
+                    "👐 हाथ आराम से रखें और कंधे सीधे करें, आवाज़ अच्छी निकलेगी।",
+                ],
+                advices: [
+                    "मैं कर सकता/सकती हूँ! गलती हो तो भी ठीक है। 🪄",
+                    "एक-एक वाक्य बोलूंगा/बोलूंगी और सब मेरी बात सुनेंगे! ✨",
+                    "घबराहट का मतलब है तुम्हें परवाह है। तुम पहले से शानदार हो! 💛",
+                    "धीरे, ज़ोर से, मुस्कुराते हुए! तुम सबसे अच्छे हो! 🌈",
+                ]
             }
         };
 
@@ -306,8 +271,7 @@
             document.documentElement.lang = currentLang;
             try { localStorage.setItem(LANG_KEY, currentLang); } catch (e) { /* 무시 */ }
             const t = translations[currentLang];
-            
-            // UI 텍스트 업데이트
+
             document.getElementById('ui-title').innerText = t.title;
             document.getElementById('ui-welcome').innerText = t.welcome;
             document.getElementById('ui-desc').innerText = t.desc;
@@ -316,177 +280,49 @@
             document.getElementById('ui-back-1').innerText = t.back;
             document.getElementById('ui-back-2').innerText = t.back;
             document.getElementById('ui-feedback-title').innerText = t.feedbackTitle;
-            document.getElementById('topicInput').placeholder = t.placeholder;
             document.getElementById('ui-btn-get-feedback').innerText = t.btnGetFeedback;
-            document.getElementById('ui-chip-intro').innerText = t.chipIntro;
-            document.getElementById('ui-chip-favorite').innerText = t.chipFavorite;
-            document.getElementById('ui-advice-title').innerHTML = t.adviceTitle; // <br> 처리를 위해 innerHTML
+            document.getElementById('ui-advice-title').innerHTML = t.adviceTitle; // <br> 처리
             document.getElementById('ui-btn-get-advice').innerText = t.btnGetAdvice;
         }
 
         // 화면 네비게이션 함수
         function navigate(screenId) {
-            // 모든 화면 숨기기
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            // 대상 화면 보이기
             document.getElementById(`screen-${screenId}`).classList.add('active');
-            
-            // 화면 전환 시 이전 결과 초기화
-            if(screenId === 'home') {
+            if (screenId === 'home') {
                 document.getElementById('feedbackResultArea').classList.add('hidden');
                 document.getElementById('adviceResultArea').classList.add('hidden');
-                document.getElementById('topicInput').value = '';
             }
         }
 
-        function setTopic(kind) {
-            const t = translations[currentLang];
-            document.getElementById('topicInput').value = kind === 'classIntro' ? t.topicClassIntro : t.topicFavorite;
-        }
+        // 배열에서 무작위 항목 하나 뽑기
+        function pickRandom(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
-        // 배경음악 토글
-        let isMusicPlaying = false;
-        function toggleMusic() {
-            const music = document.getElementById('bgMusic');
-            const icon = document.getElementById('musicIcon');
-            
-            if (isMusicPlaying) {
-                music.pause();
-                icon.classList.remove('fa-music');
-                icon.classList.add('fa-volume-xmark');
-                icon.parentElement.classList.remove('text-yellow-200');
-                icon.parentElement.classList.add('text-white');
-            } else {
-                music.volume = 0.3; // 잔잔하게 30% 볼륨
-                music.play().catch(e => console.log("Audio playback blocked:", e));
-                icon.classList.remove('fa-volume-xmark');
-                icon.classList.add('fa-music');
-                icon.parentElement.classList.remove('text-white');
-                icon.parentElement.classList.add('text-yellow-200');
-            }
-            isMusicPlaying = !isMusicPlaying;
-        }
-
-
-        // ==========================================
-        // 3. Gemini API 연동 로직
-        // ==========================================
-        const apiKey = ""; // 시스템 환경에서 주입됨
-
-        // API 호출 공통 함수 (지수 백오프 적용)
-        async function fetchGeminiAPI(systemInstruction, userPrompt, fallbackText) {
-            if (!apiKey) return fallbackText;
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-            const payload = {
-                contents: [{ parts: [{ text: userPrompt }] }],
-                systemInstruction: { parts: [{ text: systemInstruction }] }
-            };
-
-            const delays = [1000, 2000, 4000, 8000, 16000];
-            
-            for (let i = 0; i < delays.length + 1; i++) {
-                try {
-                    const response = await fetch(url, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-
-                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                    
-                    const data = await response.json();
-                    return data.candidates?.[0]?.content?.parts?.[0]?.text || fallbackText;
-                } catch (error) {
-                    if (i === delays.length) {
-                        console.error("API Call failed after retries:", error);
-                        return translations[currentLang].errorText;
-                    }
-                    // 지연 후 재시도
-                    await new Promise(resolve => setTimeout(resolve, delays[i]));
-                }
-            }
-        }
-
-        // 기능 1: AI 피드백 (목소리/톤 추천)
-        async function getFeedback() {
-            const topic = document.getElementById('topicInput').value.trim();
+        // 기능 1: 말하기 팁 (인터넷 없이 준비된 팁 중 하나)
+        function getTip() {
             const area = document.getElementById('feedbackResultArea');
-            const loader = document.getElementById('feedbackLoader');
             const content = document.getElementById('feedbackContent');
-
-            if (!topic) {
-                // 입력값이 없을 때 힌트 애니메이션
-                document.getElementById('topicInput').classList.add('animate-pulse', 'border-red-400');
-                setTimeout(() => document.getElementById('topicInput').classList.remove('animate-pulse', 'border-red-400'), 1000);
-                return;
-            }
-
-            // UI 상태 변경 (로딩 중)
+            content.innerText = pickRandom(translations[currentLang].tips);
             area.classList.remove('hidden');
-            loader.classList.remove('hidden');
-            content.innerText = '';
-
-            const systemPrompt = `You are ShipDae, a kind and cute AI friend who gives elementary-school children confidence.
-The child is preparing to speak in front of others. Based on the topic:
-1. Suggest a fitting voice tone.
-2. Give one simple body tip to relax.
-Keep the answer very short, friendly, emoji-rich, and easy for a child to understand.
-Answer only in the requested language code: ${currentLang}.`;
-            
-            const userPrompt = `My speaking topic: "${topic}"`;
-
-            const result = await fetchGeminiAPI(systemPrompt, userPrompt, translations[currentLang].offlineTip);
-            
-            loader.classList.add('hidden');
-            // 타이핑 효과로 텍스트 출력
-            typeWriter(content, result);
+            content.classList.remove('fade-in');
+            void content.offsetWidth;
+            content.classList.add('fade-in');
         }
 
-        // 기능 2: AI 조언 (응원 한마디)
-        async function getAdvice() {
+        // 기능 2: 응원 한마디 (인터넷 없이 준비된 응원 중 하나)
+        function getAdvice() {
             const area = document.getElementById('adviceResultArea');
-            const loader = document.getElementById('adviceLoader');
             const content = document.getElementById('adviceContent');
-
-            // UI 상태 변경 (로딩 중)
+            content.innerText = pickRandom(translations[currentLang].advices);
             area.classList.remove('hidden');
-            loader.classList.remove('hidden');
-            content.innerText = '';
-
-            const systemPrompt = `You are a friendly fairy who encourages elementary-school children, especially children in India, who feel nervous speaking in front of others.
-Give 2-3 short, positive, magic-spell-like encouragement sentences with plenty of emojis.
-Answer only in the requested language code: ${currentLang}.`;
-            
-            const userPrompt = `Please give me courage!`;
-
-            const result = await fetchGeminiAPI(systemPrompt, userPrompt, translations[currentLang].offlineAdvice);
-            
-            loader.classList.add('hidden');
-            // 타이핑 효과로 텍스트 출력
-            typeWriter(content, result);
-        }
-
-        // 타이핑 효과 유틸리티 함수
-        function typeWriter(element, text) {
-            element.innerHTML = '';
-            let i = 0;
-            // 줄바꿈 문자를 <br>로 변환
-            const formattedText = text.replace(/\n/g, '<br>');
-            element.innerHTML = formattedText;
-            
-            // 단순 출력을 원하면 위 코드만 유지하고, 한글자씩 나오게 하려면 아래 주석 해제 및 수정 필요. 
-            // 현재는 HTML태그(<br>)가 포함될 수 있어 innerHTML로 즉시 출력하는 것이 안전함.
-            // 아이들이 기다리기 지루해할 수 있으므로 페이드인 애니메이션으로 대체.
-            element.classList.add('fade-in');
-            setTimeout(() => element.classList.remove('fade-in'), 500);
+            content.classList.remove('fade-in');
+            void content.offsetWidth;
+            content.classList.add('fade-in');
         }
 
         // 초기화 실행 (허브/저장값에서 이어받은 언어 적용)
         document.getElementById('langSelect').value = getInitialLang();
         changeLanguage();
-        // 초기 음악 아이콘 상태 설정
-        document.getElementById('musicIcon').classList.add('fa-volume-xmark');
-        
     </script>
 </body>
 </html>
