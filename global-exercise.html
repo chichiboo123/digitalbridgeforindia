@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ग्लोबल व्यायाम (Global Exercise)</title>
-    
+
     <!-- 폰트 불러오기: 타이틀용(Black Han Sans), 본문용(Noto Sans) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans:wght@400;500;700;800&family=Noto+Sans+Devanagari:wght@400;500;700;800&display=swap" rel="stylesheet">
-    
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -19,12 +19,12 @@
                 extend: {
                     colors: {
                         fire: {
-                            100: '#FFE4E6', // 연한 배경
-                            400: '#F43F5E', // Rose
-                            500: '#EF4444', // Red
-                            600: '#E11D48', // Dark Rose
-                            700: '#F97316', // Orange
-                            800: '#F59E0B', // Amber
+                            100: '#FFE4E6',
+                            400: '#F43F5E',
+                            500: '#EF4444',
+                            600: '#E11D48',
+                            700: '#F97316',
+                            800: '#F59E0B',
                         }
                     },
                     fontFamily: {
@@ -37,30 +37,23 @@
     </script>
 
     <style>
-        /* 기본 스타일 및 애니메이션 설정 */
         body {
             font-family: 'Noto Sans', 'Noto Sans Devanagari', sans-serif;
             font-size: 18px;
             line-height: 1.5;
             -webkit-tap-highlight-color: transparent;
         }
-        
+
         /* 버튼 누를 때 귀여운 효과 */
-        .btn-bounce {
-            transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .btn-bounce:active {
-            transform: scale(0.95);
-        }
+        .btn-bounce { transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1); }
+        .btn-bounce:active { transform: scale(0.95); }
 
         /* 통통 튀는 애니메이션 */
         @keyframes bounce-slow {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
         }
-        .animate-bounce-slow {
-            animation: bounce-slow 2s infinite ease-in-out;
-        }
+        .animate-bounce-slow { animation: bounce-slow 2s infinite ease-in-out; }
 
         /* 탭 숨김 처리용 클래스 */
         .screen-hidden { display: none !important; }
@@ -80,22 +73,16 @@
 </head>
 <body class="bg-gradient-to-br from-yellow-100 via-orange-100 to-red-100 min-h-screen text-gray-800 flex flex-col items-center">
 
-    <!-- BGM (운동 노래) 오디오 태그 (사용자 클릭 시 재생) -->
-    <!-- 참고: 저작권 문제로 무료 효과음 링크를 placeholder로 사용합니다 -->
-    <audio id="bgmAudio" loop>
-        <source src="https://cdn.pixabay.com/audio/2022/01/18/audio_d0a13f69d2.mp3" type="audio/mpeg">
-    </audio>
-
     <!-- 모바일 화면 크기에 맞춘 메인 컨테이너 -->
     <div class="app-root w-full min-h-screen bg-white/60 relative flex flex-col">
-        
+
         <!-- 헤더 영역 -->
         <header class="bg-fire-600 text-white p-4 rounded-b-3xl shadow-md flex justify-between items-center z-10">
             <button id="homeBtn" class="p-2 btn-bounce focus:outline-none focus:ring-4 focus:ring-fire-400 rounded-full" aria-label="Home" onclick="navigate('home')">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
             </button>
             <h1 class="font-title text-3xl tracking-wide flex-1 text-center" data-i18n="title">ग्लोबल व्यायाम</h1>
-            
+
             <!-- 언어 선택 드롭다운 -->
             <select id="langSelect" class="bg-fire-800 text-white font-title text-xl rounded-lg p-1 border-2 border-white focus:outline-none" aria-label="Language select" onchange="changeLanguage(this.value)">
                 <option value="ko">KR</option>
@@ -104,122 +91,34 @@
             </select>
         </header>
 
-        <!-- 음악 재생 버튼 (플로팅) -->
-        <button id="musicBtn" onclick="toggleMusic()" class="absolute top-20 right-4 bg-fire-800 text-white p-3 rounded-full shadow-lg btn-bounce z-20 flex items-center justify-center animate-bounce-slow" aria-label="Music on/off">
-            🎵 <span id="musicStatus" class="text-xl ml-1 hidden">ON</span>
-        </button>
-
         <!-- 메인 콘텐츠 영역 (화면 전환) -->
         <main class="flex-1 p-6 overflow-y-auto" id="mainContent">
-            
+
             <!-- 화면 1. 홈 화면 -->
-            <section id="screen-home" class="flex flex-col gap-4 h-full justify-center">
-                <p class="text-center text-fire-600 font-bold text-3xl mb-4" data-i18n="slogan">🔥 जुनून के साथ व्यायाम करें! 🔥</p>
-                <div class="bg-white/80 border-2 border-fire-100 rounded-3xl p-4 text-center shadow-sm mb-4">
-                    <p class="text-fire-700 font-bold text-2xl" data-i18n="home_guide">4 बड़े बटनों में से एक चुनें</p>
-                    <p class="text-gray-600 text-xl" data-i18n="home_guide_sub">चलना, टाइमर, डायरी या सुझाव आसानी से शुरू करें</p>
+            <section id="screen-home" class="flex flex-col gap-6 h-full justify-center">
+                <p class="text-center text-fire-600 font-bold text-3xl" data-i18n="slogan">🔥 जुनून के साथ व्यायाम करें! 🔥</p>
+                <div class="bg-white/80 border-2 border-fire-100 rounded-3xl p-4 text-center shadow-sm">
+                    <p class="text-fire-700 font-bold text-2xl" data-i18n="home_guide">2 बड़े बटनों में से एक चुनें</p>
                 </div>
-                
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <!-- 기능 1. 지도 -->
-                    <button onclick="navigate('map')" class="bg-fire-500 text-white rounded-3xl p-6 shadow-lg btn-bounce flex flex-col items-center gap-2 focus:ring-4 focus:ring-fire-800">
-                        <span class="text-5xl">🗺️</span>
-                        <span class="font-bold text-3xl" data-i18n="menu_map">नक्शा और चलना</span>
+
+                <div class="grid grid-cols-1 gap-5">
+                    <!-- 기능 1. 추천 -->
+                    <button onclick="navigate('recommend')" class="bg-fire-600 text-white rounded-3xl p-8 shadow-lg btn-bounce flex flex-col items-center gap-3 focus:ring-4 focus:ring-fire-800">
+                        <span class="text-6xl">🎲</span>
+                        <span class="font-bold text-3xl" data-i18n="menu_rec">आज क्या करें?</span>
                     </button>
                     <!-- 기능 2. 타이머 -->
-                    <button onclick="navigate('timer')" class="bg-fire-700 text-white rounded-3xl p-6 shadow-lg btn-bounce flex flex-col items-center gap-2 focus:ring-4 focus:ring-fire-800">
-                        <span class="text-5xl">⏱️</span>
+                    <button onclick="navigate('timer')" class="bg-fire-700 text-white rounded-3xl p-8 shadow-lg btn-bounce flex flex-col items-center gap-3 focus:ring-4 focus:ring-fire-800">
+                        <span class="text-6xl">⏱️</span>
                         <span class="font-bold text-3xl" data-i18n="menu_timer">टाइमर</span>
                     </button>
-                    <!-- 기능 3. 일기 (날짜) -->
-                    <button onclick="navigate('diary')" class="bg-fire-800 text-white rounded-3xl p-6 shadow-lg btn-bounce flex flex-col items-center gap-2 focus:ring-4 focus:ring-fire-800">
-                        <span class="text-5xl">📅</span>
-                        <span class="font-bold text-3xl" data-i18n="menu_diary">डायरी</span>
-                    </button>
-                    <!-- 기능 4. 추천 -->
-                    <button onclick="navigate('recommend')" class="bg-fire-400 text-white rounded-3xl p-6 shadow-lg btn-bounce flex flex-col items-center gap-2 focus:ring-4 focus:ring-fire-800">
-                        <span class="text-5xl">🎲</span>
-                        <span class="font-bold text-3xl" data-i18n="menu_rec">सुझाव</span>
-                    </button>
                 </div>
             </section>
 
-            <!-- 화면 2. 지도 및 걸음수 화면 -->
-            <section id="screen-map" class="screen-hidden flex flex-col items-center h-full">
-                <h2 class="font-title text-4xl text-fire-600 mb-2" data-i18n="menu_map">नक्शा और चलना</h2>
-                <p class="text-center text-gray-600 leading-tight mb-4" data-i18n="desc_map">देखें आप कहाँ हैं और कदम गिनें!</p>
-                
-                <div id="mapPlaceholder" class="w-full h-48 bg-gray-200 rounded-2xl flex items-center justify-center border-4 border-fire-400 mb-4 shadow-inner relative overflow-hidden">
-                    <div class="text-center z-10">
-                        <span class="text-4xl block mb-2">📍</span>
-                        <span id="locationText" class="text-gray-500 font-bold" data-i18n="map_placeholder">स्थान खोजने के लिए बटन दबाएं</span>
-                    </div>
-                </div>
-
-                <div class="w-full bg-white p-4 rounded-2xl shadow-md text-center mb-6 border-2 border-fire-100">
-                    <p class="text-gray-500 text-2xl" data-i18n="step_count">आज के कदम</p>
-                    <p class="font-title text-6xl text-fire-700">🐾 <span id="stepCounter">0</span></p>
-                </div>
-
-                <div class="flex gap-2 w-full mt-auto">
-                    <button onclick="getLocation()" class="flex-1 bg-fire-600 text-white font-bold py-3 rounded-2xl shadow-md btn-bounce text-2xl" data-i18n="btn_find_me">मुझे ढूंडो</button>
-                    <button onclick="simulateStep()" class="flex-1 bg-fire-800 text-white font-bold py-3 rounded-2xl shadow-md btn-bounce text-2xl" data-i18n="btn_walk">एक कदम चलो!</button>
-                </div>
-            </section>
-
-            <!-- 화면 3. 운동 타이머 화면 -->
-            <section id="screen-timer" class="screen-hidden flex flex-col items-center h-full">
-                <h2 class="font-title text-4xl text-fire-700 mb-2" data-i18n="menu_timer">टाइमर</h2>
-                <p class="text-center text-gray-600 leading-tight mb-6" data-i18n="desc_timer">समय निर्धारित करें और 0 तक व्यायाम करें!</p>
-                
-                <div class="bg-white w-full rounded-3xl p-8 shadow-lg border-4 border-fire-500 flex flex-col items-center mb-8 relative overflow-hidden">
-                    <!-- 배경 장식 -->
-                    <div class="absolute -top-10 -left-10 w-32 h-32 bg-fire-100 rounded-full opacity-50"></div>
-                    
-                    <div id="timeDisplay" class="font-title text-8xl text-fire-600 z-10 tracking-widest">
-                        00:00
-                    </div>
-                    
-                    <div class="flex gap-4 mt-6 z-10" id="timerInputs">
-                        <input type="number" id="minInput" placeholder="मिनट" class="w-24 text-center border-b-4 border-fire-400 text-3xl focus:outline-none bg-transparent" min="0" max="60">
-                        <span class="text-3xl font-bold">:</span>
-                        <input type="number" id="secInput" placeholder="सेकंड" class="w-24 text-center border-b-4 border-fire-400 text-3xl focus:outline-none bg-transparent" min="0" max="59">
-                    </div>
-                </div>
-
-                <div class="flex gap-4 w-full mt-auto">
-                    <button id="startTimerBtn" onclick="startTimer()" class="flex-1 bg-fire-500 text-white font-bold py-4 rounded-2xl shadow-md btn-bounce text-3xl" data-i18n="btn_start">शुरू!</button>
-                    <button onclick="resetTimer()" class="flex-1 bg-gray-400 text-white font-bold py-4 rounded-2xl shadow-md btn-bounce text-3xl" data-i18n="btn_reset">रीसेट</button>
-                </div>
-            </section>
-
-            <!-- 화면 4. 운동 일기 화면 -->
-            <section id="screen-diary" class="screen-hidden flex flex-col h-full">
-                <h2 class="font-title text-4xl text-fire-800 mb-2 text-center" data-i18n="menu_diary">डायरी</h2>
-                <p class="text-center text-gray-600 leading-tight mb-4" data-i18n="desc_diary">रिकॉर्ड करें कि आपने कब क्या किया।</p>
-                
-                <div class="bg-white p-4 rounded-2xl shadow-md mb-4 border-2 border-fire-400">
-                    <input type="date" id="diaryDate" class="w-full mb-2 p-2 border-2 border-gray-200 rounded-xl text-2xl focus:border-fire-500 outline-none">
-                    <textarea id="diaryText" rows="3" class="w-full p-2 border-2 border-gray-200 rounded-xl text-2xl focus:border-fire-500 outline-none" placeholder="आपने कौन सा व्यायाम किया?"></textarea>
-                    <button onclick="saveDiary()" class="w-full bg-fire-600 text-white font-bold py-2 mt-2 rounded-xl shadow btn-bounce text-2xl" data-i18n="btn_save">सहेजें</button>
-                </div>
-
-                <!-- 저장된 일기 목록 -->
-                <div class="flex-1 overflow-y-auto">
-                    <h3 class="font-bold text-gray-600 text-2xl mb-2 flex justify-between items-center">
-                        <span data-i18n="list_diary">मेरे रिकॉर्ड</span>
-                        <button onclick="clearDiary()" class="text-sm bg-gray-200 px-2 py-1 rounded text-gray-600" data-i18n="btn_clear">सभी मिटाएं</button>
-                    </h3>
-                    <ul id="diaryList" class="flex flex-col gap-3 pb-4">
-                        <!-- 일기가 여기에 추가됩니다 -->
-                    </ul>
-                </div>
-            </section>
-
-            <!-- 화면 5. 운동 추천 화면 -->
+            <!-- 화면 2. 운동 추천 화면 -->
             <section id="screen-recommend" class="screen-hidden flex flex-col items-center justify-center h-full">
-                <h2 class="font-title text-4xl text-fire-500 mb-2 text-center" data-i18n="menu_rec">सुझाव</h2>
-                <p class="text-center text-gray-600 leading-tight mb-8" data-i18n="desc_rec">आज क्या करें? बटन दबाएं!</p>
+                <h2 class="font-title text-4xl text-fire-500 mb-2 text-center" data-i18n="menu_rec">आज क्या करें?</h2>
+                <p class="text-center text-gray-600 leading-tight mb-8" data-i18n="desc_rec">बटन दबाएं और आज का व्यायाम पाएं!</p>
 
                 <div id="recResult" class="w-full aspect-square md:aspect-[2/1] max-h-64 bg-white rounded-full shadow-2xl flex items-center justify-center mb-8 border-8 border-fire-400 transition-all duration-500 transform scale-90">
                     <p class="text-center text-gray-400 font-bold text-3xl px-6" data-i18n="rec_placeholder">?</p>
@@ -230,22 +129,34 @@
                 </button>
             </section>
 
+            <!-- 화면 3. 운동 타이머 화면 -->
+            <section id="screen-timer" class="screen-hidden flex flex-col items-center h-full">
+                <h2 class="font-title text-4xl text-fire-700 mb-2" data-i18n="menu_timer">टाइमर</h2>
+                <p class="text-center text-gray-600 leading-tight mb-6" data-i18n="desc_timer">समय चुनें और 0 तक व्यायाम करें!</p>
+
+                <!-- 빠른 선택 버튼 (숫자 입력 대신 한 번에 시작) -->
+                <div class="grid grid-cols-3 gap-3 w-full mb-6">
+                    <button onclick="quickStart(1)" class="bg-fire-100 text-fire-700 font-bold py-4 rounded-2xl shadow btn-bounce text-2xl">1<span data-i18n="unit_min">मिनट</span></button>
+                    <button onclick="quickStart(3)" class="bg-fire-100 text-fire-700 font-bold py-4 rounded-2xl shadow btn-bounce text-2xl">3<span data-i18n="unit_min">मिनट</span></button>
+                    <button onclick="quickStart(5)" class="bg-fire-100 text-fire-700 font-bold py-4 rounded-2xl shadow btn-bounce text-2xl">5<span data-i18n="unit_min">मिनट</span></button>
+                </div>
+
+                <div class="bg-white w-full rounded-3xl p-8 shadow-lg border-4 border-fire-500 flex flex-col items-center mb-8 relative overflow-hidden">
+                    <div class="absolute -top-10 -left-10 w-32 h-32 bg-fire-100 rounded-full opacity-50"></div>
+                    <div id="timeDisplay" class="font-title text-8xl text-fire-600 z-10 tracking-widest">00:00</div>
+                </div>
+
+                <div class="flex gap-4 w-full mt-auto">
+                    <button id="startTimerBtn" onclick="toggleTimer()" class="flex-1 bg-fire-500 text-white font-bold py-4 rounded-2xl shadow-md btn-bounce text-3xl" data-i18n="btn_start">शुरू!</button>
+                    <button onclick="resetTimer()" class="flex-1 bg-gray-400 text-white font-bold py-4 rounded-2xl shadow-md btn-bounce text-3xl" data-i18n="btn_reset">रीसेट</button>
+                </div>
+            </section>
+
         </main>
     </div>
 
     <!-- 어린이용 인앱 토스트 (딱딱한 alert 대체) -->
     <div id="appToast" role="status" aria-live="polite" class="screen-hidden fixed left-1/2 -translate-x-1/2 bottom-8 z-50 bg-white border-4 border-fire-400 text-fire-700 font-bold text-2xl px-6 py-4 rounded-3xl shadow-2xl text-center max-w-[90%]"></div>
-
-    <!-- 어린이용 확인 모달 (딱딱한 confirm 대체) -->
-    <div id="appConfirm" class="screen-hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-6">
-        <div class="bg-white rounded-3xl p-6 w-full max-w-sm text-center shadow-2xl">
-            <p id="appConfirmMsg" class="text-2xl font-bold text-gray-700 mb-6"></p>
-            <div class="flex gap-3">
-                <button id="appConfirmNo" class="flex-1 bg-gray-200 text-gray-700 font-bold py-3 rounded-2xl text-2xl btn-bounce"></button>
-                <button id="appConfirmYes" class="flex-1 bg-fire-600 text-white font-bold py-3 rounded-2xl text-2xl btn-bounce"></button>
-            </div>
-        </div>
-    </div>
 
     <!-- 스크립트: 앱 로직 및 다국어 처리 -->
     <script>
@@ -255,38 +166,19 @@
         const translations = {
             ko: {
                 title: "글로벌 운동",
-                slogan: "🔥 불꽃같은 열정으로 운동하자! 🔥",
-                home_guide: "큰 버튼 4개 중 하나를 고르세요",
-                home_guide_sub: "걷기 · 타이머 · 일기 · 추천을 쉽게 시작해요",
-                menu_map: "길찾기 & 걷기",
+                slogan: "🔥 신나게 운동하자! 🔥",
+                home_guide: "큰 버튼 2개 중 하나를 고르세요",
                 menu_timer: "운동 타이머",
-                menu_diary: "운동 일기",
-                menu_rec: "운동 추천",
-                desc_map: "내가 어디에 있는지 확인하고 얼마나 걸었는지 봐요!",
-                map_placeholder: "버튼을 눌러 위치를 찾아요",
-                step_count: "오늘의 걸음 수",
-                btn_find_me: "내 위치 찾기",
-                btn_walk: "한 걸음 걷기!",
-                desc_timer: "시간을 정하고 0초가 될 때까지 열심히 운동해요!",
+                menu_rec: "오늘 뭐할까?",
+                desc_timer: "시간을 고르고 0초가 될 때까지 운동해요!",
+                unit_min: "분",
                 btn_start: "시작!",
                 btn_stop: "정지",
                 btn_reset: "초기화",
-                desc_diary: "언제 무슨 운동을 했는지 기록해 보아요.",
-                btn_save: "저장하기",
-                list_diary: "나의 기록",
-                btn_clear: "전체 삭제",
-                desc_rec: "오늘은 무슨 운동을 할까? 버튼을 눌러보세요!",
+                desc_rec: "버튼을 눌러 오늘의 운동을 받아요!",
                 rec_placeholder: "버튼을 누르면 알려줄게요!",
-                btn_pick: "एक चुनें!",
+                btn_pick: "하나 뽑기!",
                 alert_timer_end: "타이머 종료! 운동 수고했어요! 🎉",
-                alert_diary_empty: "내용을 입력해주세요!",
-                alert_loc_denied: "위치 권한이 거부되었습니다.",
-                alert_loc_error: "위치를 찾을 수 없습니다.",
-                locating: "탐색 중... 🧭",
-                location_found: "내 주변 위치를 찾았어요!",
-                confirm_clear: "정말 다 지울까요?",
-                yes: "네",
-                no: "아니요",
                 ex_1: "💪 팔벌려뛰기 20회",
                 ex_2: "🏃 제자리 걷기 5분",
                 ex_3: "🧘 고양이 자세 스트레칭",
@@ -295,38 +187,19 @@
             },
             en: {
                 title: "Global Exercise",
-                slogan: "🔥 Exercise with Fiery Passion! 🔥",
-                home_guide: "Choose one of the 4 big buttons",
-                home_guide_sub: "Start walking, timer, diary, or recommendations easily",
-                menu_map: "Map & Walk",
+                slogan: "🔥 Let's Exercise! 🔥",
+                home_guide: "Choose one of the 2 big buttons",
                 menu_timer: "Timer",
-                menu_diary: "Diary",
-                menu_rec: "Recommend",
-                desc_map: "Check where you are and count your steps!",
-                map_placeholder: "Press button to find location",
-                step_count: "Today's Steps",
-                btn_find_me: "Find Me",
-                btn_walk: "Take a step!",
-                desc_timer: "Set the time and exercise until 0!",
+                menu_rec: "What to do today?",
+                desc_timer: "Pick a time and exercise until 0!",
+                unit_min: "min",
                 btn_start: "Start!",
                 btn_stop: "Stop",
                 btn_reset: "Reset",
-                desc_diary: "Record when and what you exercised.",
-                btn_save: "Save",
-                list_diary: "My Records",
-                btn_clear: "Clear All",
-                desc_rec: "What to do today? Click the button!",
+                desc_rec: "Press the button for today's exercise!",
                 rec_placeholder: "Click the button to find out!",
                 btn_pick: "Pick one!",
                 alert_timer_end: "Time's up! Great job! 🎉",
-                alert_diary_empty: "Please enter text!",
-                alert_loc_denied: "Location access denied.",
-                alert_loc_error: "Cannot find location.",
-                locating: "Searching... 🧭",
-                location_found: "Found your nearby location!",
-                confirm_clear: "Delete all records?",
-                yes: "Yes",
-                no: "No",
                 ex_1: "💪 20 Jumping Jacks",
                 ex_2: "🏃 Walk in place (5 mins)",
                 ex_3: "🧘 Cat-cow stretching",
@@ -335,38 +208,19 @@
             },
             hi: {
                 title: "ग्लोबल व्यायाम",
-                slogan: "🔥 जुनून के साथ व्यायाम करें! 🔥",
-                home_guide: "4 बड़े बटनों में से एक चुनें",
-                home_guide_sub: "चलना, टाइमर, डायरी या सुझाव आसानी से शुरू करें",
-                menu_map: "नक्शा और चलना",
+                slogan: "🔥 चलो व्यायाम करें! 🔥",
+                home_guide: "2 बड़े बटनों में से एक चुनें",
                 menu_timer: "टाइमर",
-                menu_diary: "डायरी",
-                menu_rec: "सुझाव",
-                desc_map: "देखें आप कहाँ हैं और कदम गिनें!",
-                map_placeholder: "स्थान खोजने के लिए बटन दबाएं",
-                step_count: "आज के कदम",
-                btn_find_me: "मुझे ढूंडो",
-                btn_walk: "एक कदम चलो!",
-                desc_timer: "समय निर्धारित करें और 0 तक व्यायाम करें!",
+                menu_rec: "आज क्या करें?",
+                desc_timer: "समय चुनें और 0 तक व्यायाम करें!",
+                unit_min: "मिनट",
                 btn_start: "शुरू!",
                 btn_stop: "रुकें",
                 btn_reset: "रीसेट",
-                desc_diary: "रिकॉर्ड करें कि आपने कब क्या किया।",
-                btn_save: "सहेजें",
-                list_diary: "मेरे रिकॉर्ड",
-                btn_clear: "सभी मिटाएं",
-                desc_rec: "आज क्या करें? बटन दबाएं!",
+                desc_rec: "बटन दबाएं और आज का व्यायाम पाएं!",
                 rec_placeholder: "जानने के लिए बटन पर क्लिक करें!",
                 btn_pick: "एक चुनें!",
                 alert_timer_end: "समय समाप्त! बहुत बढ़िया! 🎉",
-                alert_diary_empty: "कृपया टेक्स्ट दर्ज करें!",
-                alert_loc_denied: "स्थान पहुंच अस्वीकृत।",
-                alert_loc_error: "स्थान नहीं मिल रहा है।",
-                locating: "खोज रहे हैं... 🧭",
-                location_found: "आपके आसपास का स्थान मिल गया!",
-                confirm_clear: "क्या सब मिटाना है?",
-                yes: "हाँ",
-                no: "नहीं",
                 ex_1: "💪 20 जंपिंग जैक",
                 ex_2: "🏃 अपनी जगह पर चलें (5 मिनट)",
                 ex_3: "🧘 स्ट्रेचिंग करें",
@@ -393,25 +247,13 @@
 
         let currentLang = 'hi';
 
-        // 어린이용 인앱 알림 / 확인 (네이티브 alert·confirm 대체)
+        // 어린이용 인앱 알림 (네이티브 alert 대체)
         function showToast(msg) {
             const el = document.getElementById('appToast');
             el.textContent = msg;
             el.classList.remove('screen-hidden');
             clearTimeout(el._t);
             el._t = setTimeout(() => el.classList.add('screen-hidden'), 2800);
-        }
-        function showConfirm(msg, onYes) {
-            const modal = document.getElementById('appConfirm');
-            document.getElementById('appConfirmMsg').textContent = msg;
-            const yes = document.getElementById('appConfirmYes');
-            const no = document.getElementById('appConfirmNo');
-            yes.textContent = translations[currentLang].yes;
-            no.textContent = translations[currentLang].no;
-            modal.classList.remove('screen-hidden');
-            const close = () => { modal.classList.add('screen-hidden'); yes.onclick = null; no.onclick = null; };
-            yes.onclick = () => { close(); onYes(); };
-            no.onclick = close;
         }
 
         function changeLanguage(lang) {
@@ -420,72 +262,47 @@
             persistLang(lang);
             const sel = document.getElementById('langSelect');
             if (sel && sel.value !== lang) sel.value = lang;
-            const elements = document.querySelectorAll('[data-i18n]');
-            elements.forEach(el => {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
-                if (translations[lang][key]) {
-                    el.textContent = translations[lang][key];
-                }
+                if (translations[lang][key]) el.textContent = translations[lang][key];
             });
-            // 일기 날짜 기본값 갱신 방지, 플레이스홀더 갱신
-            document.getElementById('minInput').placeholder = lang === 'ko' ? '분' : (lang === 'en' ? 'Min' : 'मिनट');
-            document.getElementById('secInput').placeholder = lang === 'ko' ? '초' : (lang === 'en' ? 'Sec' : 'सेकंड');
-            document.getElementById('diaryText').placeholder = lang === 'ko' ? '오늘 어떤 운동을 했나요?' : (lang === 'en' ? 'What exercise did you do?' : 'आपने कौन सा व्यायाम किया?');
-            loadDiary(); // 일기 목록 렌더링 시 다국어 반영 (기본 구조 변경 없음)
+            // 시작/정지 버튼 라벨을 현재 상태에 맞게 유지
+            const btn = document.getElementById('startTimerBtn');
+            if (btn) btn.textContent = isRunning ? translations[lang].btn_stop : translations[lang].btn_start;
         }
 
         // ==========================================
         // 2. 화면 네비게이션 로직
         // ==========================================
         function navigate(screenId) {
-            // 모든 섹션 숨기기
-            const screens = ['home', 'map', 'timer', 'diary', 'recommend'];
-            screens.forEach(s => {
+            ['home', 'timer', 'recommend'].forEach(s => {
                 document.getElementById(`screen-${s}`).classList.add('screen-hidden');
             });
-            // 선택한 섹션 보이기
             document.getElementById(`screen-${screenId}`).classList.remove('screen-hidden');
         }
 
         // ==========================================
-        // 3. 기능 1: 지도 및 걸음수 (가상 구현)
+        // 3. 기능: 운동 추천
         // ==========================================
-        let steps = parseInt(localStorage.getItem('globalExerciseSteps') || '0', 10) || 0;
-        function getLocation() {
-            const locText = document.getElementById('locationText');
-            locText.innerHTML = translations[currentLang].locating;
-            
-            if ("geolocation" in navigator) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const lat = position.coords.latitude.toFixed(4);
-                        const lon = position.coords.longitude.toFixed(4);
-                        locText.innerHTML = `<span class="text-3xl text-fire-600 font-bold">${translations[currentLang].location_found}</span><br><span class="text-xl">(${lat}, ${lon})</span>`;
-                        // 시각적 피드백 효과
-                        document.getElementById('mapPlaceholder').classList.add('bg-blue-100');
-                    },
-                    (error) => {
-                        locText.innerHTML = translations[currentLang].alert_loc_denied;
-                    }
-                );
-            } else {
-                locText.innerHTML = translations[currentLang].alert_loc_error;
-            }
-        }
+        function pickExercise() {
+            const resultBox = document.getElementById('recResult');
+            const exercises = ['ex_1', 'ex_2', 'ex_3', 'ex_4', 'ex_5'];
 
-        function simulateStep() {
-            steps++;
-            try { localStorage.setItem('globalExerciseSteps', String(steps)); } catch (e) { /* 무시 */ }
-            const counter = document.getElementById('stepCounter');
-            counter.innerText = steps;
-            counter.classList.remove('animate-bounce-slow');
-            // 애니메이션 재시작 트릭
-            void counter.offsetWidth; 
-            counter.classList.add('animate-bounce-slow');
+            resultBox.classList.remove('scale-100');
+            resultBox.classList.add('scale-90', 'bg-gray-100');
+            resultBox.innerHTML = `<p class="text-5xl animate-spin">⏳</p>`;
+
+            setTimeout(() => {
+                const randomKey = exercises[Math.floor(Math.random() * exercises.length)];
+                const picked = translations[currentLang][randomKey];
+                resultBox.classList.remove('scale-90', 'bg-gray-100');
+                resultBox.classList.add('scale-100', 'bg-fire-100');
+                resultBox.innerHTML = `<p class="text-center text-fire-700 font-bold text-4xl px-4 animate-bounce-slow">${picked}</p>`;
+            }, 800);
         }
 
         // ==========================================
-        // 4. 기능 2: 타이머
+        // 4. 기능: 타이머 (숫자 입력 대신 빠른 선택 버튼)
         // ==========================================
         let timerInterval;
         let totalSeconds = 0;
@@ -497,49 +314,44 @@
             document.getElementById('timeDisplay').innerText = `${m}:${s}`;
         }
 
-        function startTimer() {
+        function runTimer() {
             const btn = document.getElementById('startTimerBtn');
-            const minInput = document.getElementById('minInput');
-            const secInput = document.getElementById('secInput');
-            const inputsDiv = document.getElementById('timerInputs');
-
-            if (isRunning) {
-                // 일시정지
-                clearInterval(timerInterval);
-                isRunning = false;
-                btn.innerText = translations[currentLang].btn_start;
-                btn.classList.replace('bg-fire-700', 'bg-fire-500');
-                return;
-            }
-
-            // 시작
-            if (totalSeconds === 0) {
-                let m = parseInt(minInput.value) || 0;
-                let s = parseInt(secInput.value) || 0;
-                totalSeconds = m * 60 + s;
-            }
-
-            if (totalSeconds <= 0) return;
-
-            inputsDiv.style.display = 'none'; // 입력창 숨기기
             isRunning = true;
             btn.innerText = translations[currentLang].btn_stop;
             btn.classList.replace('bg-fire-500', 'bg-fire-700');
-
+            clearInterval(timerInterval);
             timerInterval = setInterval(() => {
                 totalSeconds--;
                 updateTimerDisplay();
-
                 if (totalSeconds <= 0) {
                     clearInterval(timerInterval);
                     isRunning = false;
                     btn.innerText = translations[currentLang].btn_start;
-                    inputsDiv.style.display = 'flex';
-                    
-                    // 완료 축하 (딱딱한 alert 대신 인앱 토스트)
+                    btn.classList.replace('bg-fire-700', 'bg-fire-500');
                     showToast(translations[currentLang].alert_timer_end);
                 }
             }, 1000);
+        }
+
+        // 빠른 선택 버튼: 분을 정하고 곧바로 시작
+        function quickStart(min) {
+            totalSeconds = min * 60;
+            updateTimerDisplay();
+            runTimer();
+        }
+
+        // 시작/정지 토글
+        function toggleTimer() {
+            if (isRunning) {
+                clearInterval(timerInterval);
+                isRunning = false;
+                const btn = document.getElementById('startTimerBtn');
+                btn.innerText = translations[currentLang].btn_start;
+                btn.classList.replace('bg-fire-700', 'bg-fire-500');
+                return;
+            }
+            if (totalSeconds <= 0) totalSeconds = 60; // 아무것도 안 골랐으면 1분 기본
+            runTimer();
         }
 
         function resetTimer() {
@@ -547,117 +359,19 @@
             isRunning = false;
             totalSeconds = 0;
             updateTimerDisplay();
-            document.getElementById('minInput').value = '';
-            document.getElementById('secInput').value = '';
-            document.getElementById('timerInputs').style.display = 'flex';
             const btn = document.getElementById('startTimerBtn');
             btn.innerText = translations[currentLang].btn_start;
             btn.classList.replace('bg-fire-700', 'bg-fire-500');
         }
 
         // ==========================================
-        // 5. 기능 3: 운동 일기 (로컬 스토리지)
-        // ==========================================
-        function saveDiary() {
-            const date = document.getElementById('diaryDate').value;
-            const text = document.getElementById('diaryText').value;
-            
-            if (!date || !text.trim()) {
-                showToast(translations[currentLang].alert_diary_empty);
-                return;
-            }
-
-            let diaries = JSON.parse(localStorage.getItem('globalExerciseDiary') || '[]');
-            diaries.unshift({ date, text }); // 최신 항목을 앞에 추가
-            localStorage.setItem('globalExerciseDiary', JSON.stringify(diaries));
-            
-            document.getElementById('diaryText').value = '';
-            loadDiary();
-        }
-
-        function loadDiary() {
-            const list = document.getElementById('diaryList');
-            list.innerHTML = '';
-            let diaries = JSON.parse(localStorage.getItem('globalExerciseDiary') || '[]');
-            
-            diaries.forEach(item => {
-                const li = document.createElement('li');
-                li.className = "bg-orange-50 p-3 rounded-xl border border-orange-200 shadow-sm";
-                li.innerHTML = `<span class="text-fire-600 font-bold block mb-1 text-xl">${item.date}</span>
-                                <span class="text-gray-700 text-2xl">${item.text}</span>`;
-                list.appendChild(li);
-            });
-        }
-
-        function clearDiary() {
-            showConfirm(translations[currentLang].confirm_clear, () => {
-                localStorage.removeItem('globalExerciseDiary');
-                loadDiary();
-            });
-        }
-
-        // ==========================================
-        // 6. 기능 4: 운동 추천
-        // ==========================================
-        function pickExercise() {
-            const resultBox = document.getElementById('recResult');
-            const exercises = ['ex_1', 'ex_2', 'ex_3', 'ex_4', 'ex_5'];
-            
-            // 섞기 애니메이션
-            resultBox.classList.remove('scale-100');
-            resultBox.classList.add('scale-90', 'bg-gray-100');
-            resultBox.innerHTML = `<p class="text-5xl animate-spin">⏳</p>`;
-
-            setTimeout(() => {
-                const randomKey = exercises[Math.floor(Math.random() * exercises.length)];
-                const picked = translations[currentLang][randomKey];
-                
-                resultBox.classList.remove('scale-90', 'bg-gray-100');
-                resultBox.classList.add('scale-100', 'bg-fire-100');
-                resultBox.innerHTML = `<p class="text-center text-fire-700 font-bold text-4xl px-4 animate-bounce-slow">${picked}</p>`;
-            }, 800);
-        }
-
-        // ==========================================
-        // 7. 보조 기능: 배경 음악
-        // ==========================================
-        let isMusicPlaying = false;
-        function toggleMusic() {
-            const audio = document.getElementById('bgmAudio');
-            const status = document.getElementById('musicStatus');
-            
-            if (isMusicPlaying) {
-                audio.pause();
-                status.classList.add('hidden');
-            } else {
-                // 사용자가 상호작용 한 후이므로 재생 가능
-                audio.play().catch(e => console.log("Audio play failed:", e));
-                status.classList.remove('hidden');
-            }
-            isMusicPlaying = !isMusicPlaying;
-        }
-
-        // ==========================================
         // 초기화 코드
         // ==========================================
         window.onload = () => {
-            // 날짜 기본값을 오늘로 설정
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('diaryDate').value = today;
-
-            // 저장된 걸음수 복원
-            document.getElementById('stepCounter').innerText = steps;
-
-            // 허브/저장값에서 이어받은 언어 적용
             changeLanguage(getInitialLang());
-
-            // 저장된 일기 불러오기
-            loadDiary();
-
-            // 홈 화면 표시
+            updateTimerDisplay();
             navigate('home');
         };
-
     </script>
 </body>
 </html>

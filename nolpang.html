@@ -89,9 +89,12 @@
             <h1 class="font-title text-4xl text-secondary tracking-wide drop-shadow-sm" aria-label="Nolpang app name">
                 🎈नोलपंग
             </h1>
-            <button onclick="navigate('settings')" class="text-3xl btn-press" aria-label="Settings" title="Settings">
-                ⚙️
-            </button>
+            <!-- 언어 선택 (설정 화면 대신 간단한 토글) -->
+            <div class="flex gap-1" id="lang-switch">
+                <button onclick="setLanguage('ko')" data-lang="ko" class="lang-btn btn-press bg-white/80 text-textMain font-title text-base min-w-[44px] py-2 rounded-full shadow-sm" aria-label="Korean">KR</button>
+                <button onclick="setLanguage('en')" data-lang="en" class="lang-btn btn-press bg-white/80 text-textMain font-title text-base min-w-[44px] py-2 rounded-full shadow-sm" aria-label="English">EN</button>
+                <button onclick="setLanguage('hi')" data-lang="hi" class="lang-btn btn-press bg-white/80 text-textMain font-title text-base min-w-[44px] py-2 rounded-full shadow-sm" aria-label="Hindi">HI</button>
+            </div>
         </header>
 
         <!-- 메인 콘텐츠 영역 (스크롤 가능) -->
@@ -344,24 +347,15 @@
             return html;
         }
 
-        function renderSettings() {
-            return `
-                <h2 class="text-2xl text-textMain mb-6 text-center">${t('title_settings')}</h2>
-                <div class="space-y-4">
-                    <button onclick="setLanguage('ko')" class="w-full bg-white p-4 rounded-3xl shadow-sm text-xl flex justify-between items-center btn-press ${state.lang === 'ko' ? 'border-4 border-primaryDark' : ''}">
-                        🇰🇷 ${t('lang_ko')}
-                        ${state.lang === 'ko' ? '✅' : ''}
-                    </button>
-                    <button onclick="setLanguage('en')" class="w-full bg-white p-4 rounded-3xl shadow-sm text-xl flex justify-between items-center btn-press ${state.lang === 'en' ? 'border-4 border-primaryDark' : ''}">
-                        🇺🇸 ${t('lang_en')}
-                        ${state.lang === 'en' ? '✅' : ''}
-                    </button>
-                    <button onclick="setLanguage('hi')" class="w-full bg-white p-4 rounded-3xl shadow-sm text-xl flex justify-between items-center btn-press ${state.lang === 'hi' ? 'border-4 border-primaryDark' : ''}">
-                        🇮🇳 ${t('lang_hi')}
-                        ${state.lang === 'hi' ? '✅' : ''}
-                    </button>
-                </div>
-            `;
+        // 헤더 언어 버튼의 선택 상태 표시
+        function updateLangButtons() {
+            document.querySelectorAll('#lang-switch .lang-btn').forEach(btn => {
+                const active = btn.dataset.lang === state.lang;
+                btn.classList.toggle('bg-secondary', active);
+                btn.classList.toggle('text-white', active);
+                btn.classList.toggle('bg-white/80', !active);
+                btn.classList.toggle('text-textMain', !active);
+            });
         }
 
         // --- 4. 코어 로직 ---
@@ -380,6 +374,7 @@
             try { localStorage.setItem(LANG_KEY, lang); } catch (e) { /* 무시 */ }
             updateApp();
             updateNavUI(); // 하단 네비게이션 텍스트도 업데이트
+            updateLangButtons(); // 헤더 언어 버튼 강조 갱신
         }
 
         // 할 일 완료 처리 함수
@@ -417,7 +412,6 @@
                 case 'home': contentHTML = renderHome(); break;
                 case 'tasks': contentHTML = renderTasks(); break;
                 case 'ideas': contentHTML = renderIdeas(); break;
-                case 'settings': contentHTML = renderSettings(); break;
             }
             mainContent.innerHTML = contentHTML;
         }
@@ -454,6 +448,7 @@
             document.documentElement.lang = state.lang;
             updateApp();
             updateNavUI();
+            updateLangButtons(); // 헤더 언어 버튼 초기 강조
         };
 
     </script>
