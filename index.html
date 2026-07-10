@@ -8,7 +8,11 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans:wght@400;500;700;800&family=Noto+Sans+Devanagari:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<!-- 본문·타이틀 통합 폰트: Pretendard GOV (한국어·영문) -->
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-gov-dynamic-subset.css">
+<!-- 힌디(데바나가리)용 폰트 -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;700;800&display=swap" rel="stylesheet">
 
 <style>
   :root {
@@ -34,6 +38,9 @@
 
     --radius-lg: 22px;
     --radius-pill: 999px;
+
+    /* 본문·타이틀 공통 폰트 스택 (Pretendard GOV + 힌디 폴백) */
+    --font-main: 'Pretendard GOV Variable', 'Pretendard GOV', 'Noto Sans Devanagari', system-ui, -apple-system, 'Segoe UI', sans-serif;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -41,7 +48,7 @@
   html { font-size: 16px; }
 
   body {
-    font-family: 'Noto Sans', 'Noto Sans Devanagari', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    font-family: var(--font-main);
     background: linear-gradient(160deg, #E8F3FF 0%, #F3F6FA 45%, #FFEAF1 100%);
     background-attachment: fixed;
     min-height: 100vh;
@@ -49,9 +56,12 @@
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
+    /* 어절 단위 줄바꿈: 한국어 단어가 중간에서 끊기지 않도록 */
+    word-break: keep-all;
+    overflow-wrap: break-word;
   }
 
-  .title-font { font-family: 'Black Han Sans', 'Noto Sans Devanagari', sans-serif; font-weight: 400; }
+  .title-font { font-family: var(--font-main); font-weight: 800; }
 
   /* ================= 상단 헤더 (전체 폭) ================= */
   .site-header {
@@ -77,7 +87,8 @@
   }
   .brand .logo { font-size: clamp(1.6rem, 4vw, 2rem); line-height: 1; flex-shrink: 0; }
   .brand .brand-name {
-    font-family: 'Black Han Sans', 'Noto Sans Devanagari', sans-serif;
+    font-family: var(--font-main);
+    font-weight: 800;
     font-size: clamp(1.15rem, 3.4vw, 1.6rem);
     color: var(--color-primary-dark);
     white-space: nowrap;
@@ -120,7 +131,8 @@
 
   .hub-intro { text-align: center; margin-bottom: clamp(22px, 4vw, 36px); }
   .hub-title {
-    font-family: 'Black Han Sans', 'Noto Sans Devanagari', sans-serif;
+    font-family: var(--font-main);
+    font-weight: 800;
     font-size: clamp(2rem, 6vw, 3rem);
     line-height: 1.2;
     color: var(--color-primary-dark);
@@ -180,7 +192,7 @@
   .app-card:active { transform: scale(0.97); }
 
   .app-card .icon { font-size: clamp(3rem, 7vw, 4rem); line-height: 1; }
-  .app-card .name { font-family: 'Black Han Sans', 'Noto Sans Devanagari', sans-serif; font-size: clamp(1.35rem, 3vw, 1.7rem); }
+  .app-card .name { font-family: var(--font-main); font-weight: 800; font-size: clamp(1.35rem, 3vw, 1.7rem); word-break: keep-all; }
   .app-card .meaning {
     font-size: 0.9rem;
     font-weight: 700;
@@ -188,16 +200,24 @@
     background: rgba(255,255,255,0.55);
     padding: 3px 10px;
     border-radius: var(--radius-pill);
+    word-break: keep-all;
   }
-  .app-card .desc { font-size: clamp(0.95rem, 2vw, 1.05rem); line-height: 1.45; font-weight: 500; }
+  .app-card .desc { font-size: clamp(0.95rem, 2vw, 1.05rem); line-height: 1.45; font-weight: 500; word-break: keep-all; }
+
+  /* '열기' 를 버튼 형태로 (화살표 제거) */
   .app-card .open-btn {
-    margin-top: 6px;
-    font-size: 1.05rem;
-    font-weight: 800;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
+    margin-top: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 9px 24px;
+    border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, 0.78);
+    color: inherit;
+    box-shadow: 0 2px 8px rgba(30, 70, 120, 0.12);
+    transition: background 0.18s, transform 0.18s, box-shadow 0.18s;
   }
+  .app-card:hover .open-btn { background: #fff; box-shadow: 0 4px 14px rgba(30, 70, 120, 0.20); }
+  .app-card:active .open-btn { transform: scale(0.97); }
 
   .card-green  { background: var(--color-pastel-green);  color: var(--color-pastel-green-dark); }
   .card-yellow { background: var(--color-pastel-yellow); color: var(--color-pastel-yellow-dark); }
@@ -312,7 +332,7 @@
           <span class="icon">🏃</span>
           <span class="name" data-i18n="name_global">ग्लोबल एक्सरसाइज़</span>
           <span class="desc" data-i18n="desc_global">स्वस्थ व्यायाम की आदत बनाता है</span>
-          <span class="open-btn"><span data-i18n="open">खोलें</span> →</span>
+          <span class="open-btn" data-i18n="open">खोलें</span>
         </button>
 
         <button class="app-card card-yellow" onclick="openApp('nolpang.html','nolpang')">
@@ -320,21 +340,21 @@
           <span class="name" data-i18n="name_nolpang">नोलपंग</span>
           <span class="meaning" data-i18n="mean_nolpang">= 'खेल-पैंग': खेलने का समय बढ़ाओ!</span>
           <span class="desc" data-i18n="desc_nolpang">काम खत्म करो, फिर खुशी से खेलो</span>
-          <span class="open-btn"><span data-i18n="open">खोलें</span> →</span>
+          <span class="open-btn" data-i18n="open">खोलें</span>
         </button>
 
         <button class="app-card card-blue" onclick="openApp('homework-helper.html','homework')">
           <span class="icon">📝</span>
           <span class="name" data-i18n="name_homework">होमवर्क हेल्पर</span>
           <span class="desc" data-i18n="desc_homework">होमवर्क याद रखने में मदद करता है</span>
-          <span class="open-btn"><span data-i18n="open">खोलें</span> →</span>
+          <span class="open-btn" data-i18n="open">खोलें</span>
         </button>
 
         <button class="app-card card-pink" onclick="openApp('shipdae.html','shipdae')">
           <span class="icon">🎤</span>
           <span class="name" data-i18n="name_shipdae">बोलो, हम साथ हैं!</span>
           <span class="desc" data-i18n="desc_shipdae">बोलते समय घबराहट होने पर हिम्मत देता है</span>
-          <span class="open-btn"><span data-i18n="open">खोलें</span> →</span>
+          <span class="open-btn" data-i18n="open">खोलें</span>
         </button>
       </div>
     </main>
