@@ -9,10 +9,12 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Google Fonts -->
+    <!-- 폰트: 본문·타이틀 통합 Pretendard GOV (한국어·영문) + 힌디용 Noto Sans Devanagari -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans:wght@400;500;700;800&family=Noto+Sans+Devanagari:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-gov-dynamic-subset.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;700;800&display=swap" rel="stylesheet">
 
     <script>
         tailwind.config = {
@@ -32,10 +34,10 @@
     </script>
 
     <style>
-        .font-title { font-family: "Black Han Sans", "Noto Sans Devanagari", sans-serif; font-weight: 400; }
-        .font-body { font-family: "Noto Sans", "Noto Sans Devanagari", sans-serif; font-weight: 500; }
+        .font-title { font-family: "Pretendard GOV Variable", "Pretendard GOV", "Noto Sans Devanagari", sans-serif; font-weight: 800; }
+        .font-body { font-family: "Pretendard GOV Variable", "Pretendard GOV", "Noto Sans Devanagari", sans-serif; font-weight: 500; }
 
-        body { background-color: #FFF8E1; color: #3E2723; -webkit-tap-highlight-color: transparent; }
+        body { background-color: #FFF8E1; color: #3E2723; -webkit-tap-highlight-color: transparent; word-break: keep-all; overflow-wrap: break-word; }
 
         .fade-in { animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }

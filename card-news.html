@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Bridge for India — Card News</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctext y='20' font-size='20'%3E%F0%9F%8C%89%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-gov-dynamic-subset.css">
+
+<style>
+  :root {
+    --font-main: 'Pretendard GOV Variable', 'Pretendard GOV', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --primary: #2F6DB0;
+    --primary-dark: #1E5290;
+    --ink: #23303C;
+    --ink-soft: #566674;
+
+    --green: #C8EDD9;  --green-d: #14663F;
+    --yellow: #FFF0B0; --yellow-d: #6E5600;
+    --blue: #CDE3FA;   --blue-d: #14507F;
+    --pink: #FFD6E0;   --pink-d: #8A2840;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-main);
+    color: var(--ink);
+    background: linear-gradient(160deg, #E8F3FF 0%, #F3F6FA 45%, #FFEAF1 100%);
+    background-attachment: fixed;
+    line-height: 1.5;
+    padding: clamp(20px, 5vw, 56px) 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(18px, 3vw, 28px);
+    overflow-wrap: break-word;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 560px;
+    background: #fff;
+    border-radius: 26px;
+    box-shadow: 0 10px 34px rgba(30, 70, 120, 0.12);
+    padding: clamp(26px, 5vw, 44px);
+    text-align: center;
+  }
+
+  /* Slide counter chip */
+  .chip {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--primary-dark);
+    background: rgba(47, 109, 176, 0.12);
+    padding: 5px 14px;
+    border-radius: 999px;
+    margin-bottom: 16px;
+  }
+
+  /* Cover */
+  .cover { background: linear-gradient(155deg, #ffffff 0%, #EAF3FF 100%); }
+  .cover .logo { font-size: clamp(3.4rem, 12vw, 5rem); line-height: 1; }
+  .cover h1 {
+    font-weight: 800;
+    font-size: clamp(1.9rem, 6.5vw, 2.9rem);
+    color: var(--primary-dark);
+    margin: 14px 0 8px;
+    line-height: 1.15;
+  }
+  .cover .sub { font-size: clamp(1.05rem, 3vw, 1.3rem); color: var(--ink-soft); font-weight: 500; }
+  .cover .tags { margin-top: 18px; font-size: 1.4rem; letter-spacing: 4px; }
+
+  h2 { font-weight: 800; font-size: clamp(1.5rem, 4.5vw, 2rem); line-height: 1.2; }
+  .lead { font-size: clamp(1rem, 2.8vw, 1.2rem); color: var(--ink-soft); margin-top: 12px; font-weight: 500; }
+
+  .emoji-big { font-size: clamp(3rem, 10vw, 4.4rem); line-height: 1; }
+
+  .name-en { font-weight: 800; font-size: clamp(1.5rem, 4.5vw, 2rem); margin-top: 10px; }
+  .name-native { font-size: 1rem; font-weight: 700; opacity: 0.85; margin-top: 4px; }
+  .desc { font-size: clamp(1rem, 2.8vw, 1.15rem); margin-top: 14px; }
+
+  /* Color themes for the app cards */
+  .theme-green  { background: var(--green);  color: var(--green-d); }
+  .theme-yellow { background: var(--yellow); color: var(--yellow-d); }
+  .theme-blue   { background: var(--blue);   color: var(--blue-d); }
+  .theme-pink   { background: var(--pink);   color: var(--pink-d); }
+  .theme-green .chip, .theme-yellow .chip, .theme-blue .chip, .theme-pink .chip {
+    color: inherit; background: rgba(255,255,255,0.55);
+  }
+
+  ul.features {
+    list-style: none;
+    display: grid;
+    gap: 12px;
+    margin-top: 22px;
+    text-align: left;
+  }
+  ul.features li {
+    background: rgba(47, 109, 176, 0.06);
+    border-radius: 14px;
+    padding: 14px 16px;
+    font-size: clamp(0.98rem, 2.6vw, 1.1rem);
+    font-weight: 500;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  ul.features li .fe { font-size: 1.4rem; line-height: 1.2; flex-shrink: 0; }
+
+  .outro { background: linear-gradient(155deg, var(--primary) 0%, var(--primary-dark) 100%); color: #fff; }
+  .outro h2 { color: #fff; }
+  .outro .lead { color: rgba(255,255,255,0.9); }
+  .outro a {
+    display: inline-block;
+    margin-top: 22px;
+    background: #fff;
+    color: var(--primary-dark);
+    font-weight: 800;
+    text-decoration: none;
+    padding: 13px 30px;
+    border-radius: 999px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+  }
+
+  .footnote { font-size: 0.85rem; color: var(--ink-soft); margin-top: 6px; }
+</style>
+</head>
+<body>
+
+  <!-- 01 · Cover -->
+  <section class="card cover">
+    <div class="logo">🌉</div>
+    <h1>Digital Bridge for India</h1>
+    <p class="sub">Little apps that solve kids' little worries — in any language.</p>
+    <div class="tags">🇰🇷 🇮🇳 🇺🇸</div>
+  </section>
+
+  <!-- 02 · What is it -->
+  <section class="card">
+    <span class="chip">What is it?</span>
+    <h2>One hub, four friendly apps</h2>
+    <p class="lead">A simple, offline-friendly website made for children around the
+      world. Big buttons, big pictures, and full support for
+      <strong>Korean, Hindi, and English</strong> so no child is left out.</p>
+  </section>
+
+  <!-- 03 · App 1 -->
+  <section class="card theme-green">
+    <span class="chip">App 1 of 4</span>
+    <div class="emoji-big">🏃</div>
+    <div class="name-en">Global Exercise</div>
+    <div class="name-native">ग्लोबल एक्सरसाइज़</div>
+    <p class="desc">Builds a healthy exercise habit. Get a random exercise to try,
+      then follow along with a quick 1, 3, or 5-minute workout timer.</p>
+  </section>
+
+  <!-- 04 · App 2 -->
+  <section class="card theme-yellow">
+    <span class="chip">App 2 of 4</span>
+    <div class="emoji-big">🎈</div>
+    <div class="name-en">Nolpang — the Playtime Bank</div>
+    <div class="name-native">नोलपंग</div>
+    <p class="desc">Finish your tasks and chores to earn play minutes, save them
+      up, then spend them on fun play ideas. Work first, play happily!</p>
+  </section>
+
+  <!-- 05 · App 3 -->
+  <section class="card theme-blue">
+    <span class="chip">App 3 of 4</span>
+    <div class="emoji-big">📝</div>
+    <div class="name-en">Homework Helper</div>
+    <div class="name-native">होमवर्क हेल्पर</div>
+    <p class="desc">Never forget your homework. Tap each task to check it off,
+      watch the progress bar fill, and get a celebration when it's all done.</p>
+  </section>
+
+  <!-- 06 · App 4 -->
+  <section class="card theme-pink">
+    <span class="chip">App 4 of 4</span>
+    <div class="emoji-big">🎤</div>
+    <div class="name-en">Cheer Your Speech</div>
+    <div class="name-native">बोलो, हम साथ हैं!</div>
+    <p class="desc">Nervous about presenting? Get gentle speaking tips and
+      encouraging words whenever you need them — and save your favourites.</p>
+  </section>
+
+  <!-- 07 · Why kids love it -->
+  <section class="card">
+    <span class="chip">Made for kids</span>
+    <h2>Simple by design</h2>
+    <ul class="features">
+      <li><span class="fe">🌏</span><span><strong>Three languages.</strong> Switch between Korean, Hindi, and English anytime — the choice follows you across every app.</span></li>
+      <li><span class="fe">👆</span><span><strong>Tap-and-go.</strong> Large picture cards and buttons, almost no typing.</span></li>
+      <li><span class="fe">📴</span><span><strong>Works offline.</strong> Progress and saved items stay on the device.</span></li>
+      <li><span class="fe">📱</span><span><strong>Any screen.</strong> Fills a phone, or shows a tidy phone-frame on desktop.</span></li>
+    </ul>
+  </section>
+
+  <!-- 08 · Outro -->
+  <section class="card outro">
+    <span class="chip">Try it now</span>
+    <h2>Open the bridge</h2>
+    <p class="lead">Four little friends, ready to help kids feel confident,
+      organised, and active — wherever they are.</p>
+    <a href="index.html">🌉 Launch the apps</a>
+    <p class="footnote" style="color:rgba(255,255,255,0.85);margin-top:20px;">Created by Chichiboo</p>
+  </section>
+
+</body>
+</html>
